@@ -1,0 +1,133 @@
+package org.telegram.api.input.media;
+
+import org.telegram.api.document.attribute.TLAbsDocumentAttribute;
+import org.telegram.api.input.file.TLAbsInputFile;
+import org.telegram.tl.StreamingUtils;
+import org.telegram.tl.TLContext;
+import org.telegram.tl.TLVector;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+/**
+ * The type TL input media uploaded thumb document.
+ */
+public class TLInputMediaUploadedThumbDocument extends TLAbsInputMedia {
+    /**
+     * The constant CLASS_ID.
+     */
+    public static final int CLASS_ID = 0xad613491;
+
+    /**
+     * The Attributes.
+     */
+    private TLAbsInputFile file;
+    private TLAbsInputFile thumb;
+    private String mimeType;
+    private TLVector<TLAbsDocumentAttribute> attributes;
+    private String caption;
+
+    /**
+     * Instantiates a new TL input media uploaded thumb document.
+     */
+    public TLInputMediaUploadedThumbDocument() {
+        super();
+    }
+
+    public int getClassId() {
+        return CLASS_ID;
+    }
+
+    /**
+     * Gets file.
+     *
+     * @return the file
+     */
+    public TLAbsInputFile getFile() {
+        return this.file;
+    }
+
+    /**
+     * Sets file.
+     *
+     * @param file the file
+     */
+    public void setFile(TLAbsInputFile file) {
+        this.file = file;
+    }
+
+    /**
+     * Gets thumb.
+     *
+     * @return the thumb
+     */
+    public TLAbsInputFile getThumb() {
+        return this.thumb;
+    }
+
+    /**
+     * Sets thumb.
+     *
+     * @param thumb the thumb
+     */
+    public void setThumb(TLAbsInputFile thumb) {
+        this.thumb = thumb;
+    }
+
+    /**
+     * Gets mime type.
+     *
+     * @return the mime type
+     */
+    public String getMimeType() {
+        return this.mimeType;
+    }
+
+    /**
+     * Sets mime type.
+     *
+     * @param mimeType the mime type
+     */
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public TLVector<TLAbsDocumentAttribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(TLVector<TLAbsDocumentAttribute> attributes) {
+        this.attributes = attributes;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public void serializeBody(OutputStream stream)
+            throws IOException {
+        StreamingUtils.writeTLObject(this.file, stream);
+        StreamingUtils.writeTLObject(this.thumb, stream);
+        StreamingUtils.writeTLString(this.mimeType, stream);
+        StreamingUtils.writeTLVector(this.attributes, stream);
+        StreamingUtils.writeTLString(this.caption, stream);
+    }
+
+    public void deserializeBody(InputStream stream, TLContext context)
+            throws IOException {
+        this.file = ((TLAbsInputFile) StreamingUtils.readTLObject(stream, context));
+        this.thumb = ((TLAbsInputFile) StreamingUtils.readTLObject(stream, context));
+        this.mimeType = StreamingUtils.readTLString(stream);
+        this.attributes = StreamingUtils.readTLVector(stream, context);
+        this.caption = StreamingUtils.readTLString(stream);
+    }
+
+    public String toString() {
+        return "inputMediaUploadedThumbDocument#ad613491";
+    }
+}
