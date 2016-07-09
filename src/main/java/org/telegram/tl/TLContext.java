@@ -17,7 +17,6 @@ import java.util.zip.GZIPInputStream;
  * but it uses reflection so it might be slow in some cases. It recommended to manually pass CLASS_ID
  * to registerClass method.
  *
- * @author Korshakov Stepan <me@ex3ndr.com>
  */
 public abstract class TLContext {
     private static final String TAG = "TLCONTEXT";

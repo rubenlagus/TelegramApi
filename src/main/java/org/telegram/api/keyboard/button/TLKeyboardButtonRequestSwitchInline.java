@@ -14,7 +14,7 @@ import java.io.OutputStream;
  * @date 07 of July of 2015
  */
 public class TLKeyboardButtonRequestSwitchInline extends TLAbsKeyboardButton {
-    public static final int CLASS_ID = 0xfc796b3f;
+    public static final int CLASS_ID = 0xea1b7a14;
 
     private String query;
 
@@ -33,7 +33,7 @@ public class TLKeyboardButtonRequestSwitchInline extends TLAbsKeyboardButton {
 
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
-        StreamingUtils.writeTLString(this.text, stream);
+        StreamingUtils.writeTLString(text, stream);
         StreamingUtils.writeTLString(query, stream);
     }
 

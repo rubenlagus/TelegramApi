@@ -21,7 +21,6 @@ import static org.telegram.tl.StreamingUtils.writeInt;
 import static org.telegram.tl.StreamingUtils.writeLong;
 
 /**
- * Author: Korshakov Stepan
  * Created: 23.08.13 1:46
  */
 @SuppressWarnings("ALL")

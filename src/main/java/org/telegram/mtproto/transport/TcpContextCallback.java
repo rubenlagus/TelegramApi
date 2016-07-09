@@ -1,7 +1,6 @@
 package org.telegram.mtproto.transport;
 
 /**
- * Author: Korshakov Stepan
  * Created: 13.08.13 15:35
  */
 public interface TcpContextCallback {

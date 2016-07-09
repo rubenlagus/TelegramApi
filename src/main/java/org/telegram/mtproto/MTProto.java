@@ -37,7 +37,7 @@ import static org.telegram.tl.StreamingUtils.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: ex3ndr
+ * User: Ruben Bermudez
  * Date: 03.11.13
  * Time: 8:14
  */
