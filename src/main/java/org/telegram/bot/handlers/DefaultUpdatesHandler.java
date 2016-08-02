@@ -46,6 +46,10 @@ import org.telegram.api.update.TLUpdateUserPhoto;
 import org.telegram.api.update.TLUpdateUserStatus;
 import org.telegram.api.update.TLUpdateUserTyping;
 import org.telegram.api.update.TLUpdateWebPage;
+import org.telegram.api.update.encrypted.TLUpdateEncryptedChatTyping;
+import org.telegram.api.update.encrypted.TLUpdateEncryptedMessagesRead;
+import org.telegram.api.update.encrypted.TLUpdateEncryption;
+import org.telegram.api.update.encrypted.TLUpdateNewEncryptedMessage;
 import org.telegram.api.updates.TLUpdateShortChatMessage;
 import org.telegram.api.updates.TLUpdateShortMessage;
 import org.telegram.api.updates.TLUpdateShortSentMessage;
@@ -299,6 +303,26 @@ public class DefaultUpdatesHandler extends UpdatesHandlerBase {
 
     @Override
     protected void onChatsCustom(List<TLAbsChat> chats) {
+
+    }
+
+    @Override
+    protected void onTLUpdateEncryptionCustom(TLUpdateEncryption update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateEncryptedMessagesReadCustom(TLUpdateEncryptedMessagesRead update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateNewEncryptedMessageCustom(TLUpdateNewEncryptedMessage update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateEncryptedChatTypingCustom(TLUpdateEncryptedChatTyping update) {
 
     }
 

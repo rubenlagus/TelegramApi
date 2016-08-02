@@ -161,6 +161,10 @@ public class TLChat extends TLAbsChat {
         this.flags = flags;
     }
 
+    public boolean isLeft() {
+        return (flags & FLAG_USER_LEFT) != 0;
+    }
+
     public boolean isForbidden() {
         return ((flags & FLAG_USER_KICKED) !=  0) || ((flags & FLAG_USER_LEFT) != 0);
     }

@@ -151,6 +151,14 @@ public class TLUser extends TLAbsUser {
         this.botInlinePlaceholder = botInlinePlaceholder;
     }
 
+    public boolean hasAccessHash() {
+        return (this.flags & FLAG_ACCESS_HASH) != 0;
+    }
+
+    public boolean hasPhone() {
+        return (this.flags & FLAG_PHONE) != 0;
+    }
+
     public boolean hasUserName() {
         return (this.flags & FLAG_USERNAME) != 0;
     }

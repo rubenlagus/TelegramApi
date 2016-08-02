@@ -55,6 +55,10 @@ import org.telegram.api.update.TLUpdateUserPhoto;
 import org.telegram.api.update.TLUpdateUserStatus;
 import org.telegram.api.update.TLUpdateUserTyping;
 import org.telegram.api.update.TLUpdateWebPage;
+import org.telegram.api.update.encrypted.TLUpdateEncryptedChatTyping;
+import org.telegram.api.update.encrypted.TLUpdateEncryptedMessagesRead;
+import org.telegram.api.update.encrypted.TLUpdateEncryption;
+import org.telegram.api.update.encrypted.TLUpdateNewEncryptedMessage;
 import org.telegram.api.updates.TLUpdateShortChatMessage;
 import org.telegram.api.updates.TLUpdateShortMessage;
 import org.telegram.api.updates.TLUpdateShortSentMessage;
@@ -199,6 +203,14 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
                 onTLUpdateEditMessage((TLUpdateEditMessage) update, updateWrapper.isGettingDifferences());
             } else if (update instanceof TLUpdateInlineBotCallbackQuery) {
                 onTLUpdateInlineBotCallbackQuery((TLUpdateInlineBotCallbackQuery) update, updateWrapper.isGettingDifferences());
+            } else if (update instanceof TLUpdateEncryption) {
+                onTLUpdateEncryption((TLUpdateEncryption) update);
+            } else if (update instanceof TLUpdateEncryptedChatTyping) {
+                onTLUpdateEncryptedChatTyping((TLUpdateEncryptedChatTyping) update);
+            } else if (update instanceof TLUpdateEncryptedMessagesRead) {
+                onTLUpdateEncryptedMessagesRead((TLUpdateEncryptedMessagesRead) update);
+            } else if (update instanceof TLUpdateNewEncryptedMessage) {
+                onTLUpdateNewEncryptedMessage((TLUpdateNewEncryptedMessage) update);
             } else {
                 BotLogger.debug(LOGTAG, "Unsupported TLAbsUpdate: " + update.toString());
             }
@@ -257,9 +269,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
                 updateWrapper.getSeq(), updateWrapper.getDate());
     }
 
-    private void onTLUpdateShortMessage(TLUpdateShortMessage update, boolean gettingDiffences) {
+    private void onTLUpdateShortMessage(TLUpdateShortMessage update, boolean gettingDifferences) {
         if (isUserFromShortMessageMissing(update)) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -267,9 +279,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateShortChatMessage(TLUpdateShortChatMessage update, boolean gettingDiffences) {
+    private void onTLUpdateShortChatMessage(TLUpdateShortChatMessage update, boolean gettingDifferences) {
         if (isChatMissing(update.getChatId()) || isUserMissing(update.getFromId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -281,9 +293,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         onTLUpdateShortSentMessageCustom(update);
     }
 
-    private void onTLUpdateChatParticipants(TLUpdateChatParticipants update, boolean gettingDiffences) {
+    private void onTLUpdateChatParticipants(TLUpdateChatParticipants update, boolean gettingDifferences) {
         if (isChatMissing(update.getParticipants().getChatId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -291,9 +303,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateNewMessage(TLUpdateNewMessage update, boolean gettingDiffences) {
+    private void onTLUpdateNewMessage(TLUpdateNewMessage update, boolean gettingDifferences) {
         if (isUserFromMessageMissing(update.getMessage())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -301,10 +313,10 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChannelNewMessage(TLUpdateChannelNewMessage update, boolean gettingDiffences) {
+    private void onTLUpdateChannelNewMessage(TLUpdateChannelNewMessage update, boolean gettingDifferences) {
         if (isUserFromMessageMissing(update.getMessage(), false)) {
             if (isChatMissing(update.getChannelId())) {
-                if (!gettingDiffences) {
+                if (!gettingDifferences) {
                     differencesHandler.getDifferences();
                 }
             } else {
@@ -318,9 +330,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChannel(TLUpdateChannel update, boolean gettingDiffences) {
+    private void onTLUpdateChannel(TLUpdateChannel update, boolean gettingDifferences) {
         if (isChatMissing(update.getChannelId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -328,9 +340,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateBotInlineQuery(TLUpdateBotInlineQuery update, boolean gettingDiffences) {
+    private void onTLUpdateBotInlineQuery(TLUpdateBotInlineQuery update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -338,9 +350,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateBotInlineSend(TLUpdateBotInlineSend update, boolean gettingDiffences) {
+    private void onTLUpdateBotInlineSend(TLUpdateBotInlineSend update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -348,9 +360,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChannelGroup(TLUpdateChannelGroup update, boolean gettingDiffences) {
+    private void onTLUpdateChannelGroup(TLUpdateChannelGroup update, boolean gettingDifferences) {
         if (isChatMissing(update.getChannelId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -358,9 +370,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChannelMessageViews(TLUpdateChannelMessageViews update, boolean gettingDiffences) {
+    private void onTLUpdateChannelMessageViews(TLUpdateChannelMessageViews update, boolean gettingDifferences) {
         if (isChatMissing(update.getChannelId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -368,9 +380,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChannelPinnedMessage(TLUpdateChannelPinnedMessage update, boolean gettingDiffences) {
+    private void onTLUpdateChannelPinnedMessage(TLUpdateChannelPinnedMessage update, boolean gettingDifferences) {
         if (isChatMissing(update.getChannelId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -378,9 +390,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChannelTooLong(TLUpdateChannelTooLong update, boolean gettingDiffences) {
+    private void onTLUpdateChannelTooLong(TLUpdateChannelTooLong update, boolean gettingDifferences) {
         if (isChatMissing(update.getChannelId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -391,9 +403,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChatAdmin(TLUpdateChatAdmin update, boolean gettingDiffences) {
+    private void onTLUpdateChatAdmin(TLUpdateChatAdmin update, boolean gettingDifferences) {
         if (isChatMissing(update.getChatId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -401,9 +413,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChatParticipantAdd(TLUpdateChatParticipantAdd update, boolean gettingDiffences) {
+    private void onTLUpdateChatParticipantAdd(TLUpdateChatParticipantAdd update, boolean gettingDifferences) {
         if (isChatMissing(update.getChatId()) || isUserMissing(update.getUserId()) || isUserMissing(update.getInviterId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -411,9 +423,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChatParticipantAdmin(TLUpdateChatParticipantAdmin update, boolean gettingDiffences) {
+    private void onTLUpdateChatParticipantAdmin(TLUpdateChatParticipantAdmin update, boolean gettingDifferences) {
         if (isChatMissing(update.getChatId()) || isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -421,9 +433,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChatParticipantDelete(TLUpdateChatParticipantDelete update, boolean gettingDiffences) {
+    private void onTLUpdateChatParticipantDelete(TLUpdateChatParticipantDelete update, boolean gettingDifferences) {
         if (isChatMissing(update.getChatId()) || isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -431,9 +443,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateChatUserTyping(TLUpdateChatUserTyping update, boolean gettingDiffences) {
+    private void onTLUpdateChatUserTyping(TLUpdateChatUserTyping update, boolean gettingDifferences) {
         if (isChatMissing(update.getChatId()) || isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -441,9 +453,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateContactLink(TLUpdateContactLink update, boolean gettingDiffences) {
+    private void onTLUpdateContactLink(TLUpdateContactLink update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -451,9 +463,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateContactRegistered(TLUpdateContactRegistered update, boolean gettingDiffences) {
+    private void onTLUpdateContactRegistered(TLUpdateContactRegistered update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -465,9 +477,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         onTLUpdateDcOptionsCustom(update);
     }
 
-    private void onTLUpdateDeleteChannelMessages(TLUpdateDeleteChannelMessages update, boolean gettingDiffences) {
+    private void onTLUpdateDeleteChannelMessages(TLUpdateDeleteChannelMessages update, boolean gettingDifferences) {
         if (isChatMissing(update.getChannelId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -475,14 +487,14 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateDeleteMessages(TLUpdateDeleteMessages update, boolean gettingDiffences) {
+    private void onTLUpdateDeleteMessages(TLUpdateDeleteMessages update, boolean gettingDifferences) {
         onTLUpdateDeleteMessagesCustom(update);
     }
 
-    private void onTLUpdateEditChannelMessage(TLUpdateEditChannelMessage update, boolean gettingDiffences) {
+    private void onTLUpdateEditChannelMessage(TLUpdateEditChannelMessage update, boolean gettingDifferences) {
         if (isUserFromMessageMissing(update.getMessage(), false)) {
             if (isChatMissing(update.getChannelId())) {
-                if (!gettingDiffences) {
+                if (!gettingDifferences) {
                     differencesHandler.getDifferences();
                 }
             } else {
@@ -508,9 +520,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         onTLUpdateNewStickerSetCustom(update);
     }
 
-    private void onTLUpdateNotifySettings(TLUpdateNotifySettings update, boolean gettingDiffences) {
+    private void onTLUpdateNotifySettings(TLUpdateNotifySettings update, boolean gettingDifferences) {
         if (isNotifyPeerMissing(update.getPeer())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -522,9 +534,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         onTLUpdatePrivacyCustom(update);
     }
 
-    private void onTLUpdateReadChannelInbox(TLUpdateReadChannelInbox update, boolean gettingDiffences) {
+    private void onTLUpdateReadChannelInbox(TLUpdateReadChannelInbox update, boolean gettingDifferences) {
         if (isChatMissing(update.getChannelId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -536,9 +548,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         onTLUpdateReadMessagesContentsCustom(update);
     }
 
-    private void onTLUpdateReadMessagesInbox(TLUpdateReadMessagesInbox update, boolean gettingDiffences) {
+    private void onTLUpdateReadMessagesInbox(TLUpdateReadMessagesInbox update, boolean gettingDifferences) {
         if (isPeerMissing(update.getPeer())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -546,9 +558,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateReadMessagesOutbox(TLUpdateReadMessagesOutbox update, boolean gettingDiffences) {
+    private void onTLUpdateReadMessagesOutbox(TLUpdateReadMessagesOutbox update, boolean gettingDifferences) {
         if (isPeerMissing(update.getPeer())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -572,9 +584,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         onTLUpdateStickerSetsOrderCustom(update);
     }
 
-    private void onTLUpdateUserBlocked(TLUpdateUserBlocked update, boolean gettingDiffences) {
+    private void onTLUpdateUserBlocked(TLUpdateUserBlocked update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -582,9 +594,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateUserName(TLUpdateUserName update, boolean gettingDiffences) {
+    private void onTLUpdateUserName(TLUpdateUserName update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -592,9 +604,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateUserPhone(TLUpdateUserPhone update, boolean gettingDiffences) {
+    private void onTLUpdateUserPhone(TLUpdateUserPhone update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -602,9 +614,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateUserPhoto(TLUpdateUserPhoto update, boolean gettingDiffences) {
+    private void onTLUpdateUserPhoto(TLUpdateUserPhoto update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -612,9 +624,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateUserStatus(TLUpdateUserStatus update, boolean gettingDiffences) {
+    private void onTLUpdateUserStatus(TLUpdateUserStatus update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -622,9 +634,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateUserTyping(TLUpdateUserTyping update, boolean gettingDiffences) {
+    private void onTLUpdateUserTyping(TLUpdateUserTyping update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -636,9 +648,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         onTLUpdateWebPageCustom(update);
     }
 
-    private void onTLUpdateBotCallbackQuery(TLUpdateBotCallbackQuery update, boolean gettingDiffences) {
+    private void onTLUpdateBotCallbackQuery(TLUpdateBotCallbackQuery update, boolean gettingDifferences) {
         if (isUserMissing(update.getUserId()) || isPeerMissing(update.getPeer())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -646,9 +658,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateEditMessage(TLUpdateEditMessage update, boolean gettingDiffences){
+    private void onTLUpdateEditMessage(TLUpdateEditMessage update, boolean gettingDifferences){
         if (isUserFromMessageMissing(update.getMessage())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
@@ -656,14 +668,30 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         }
     }
 
-    private void onTLUpdateInlineBotCallbackQuery(TLUpdateInlineBotCallbackQuery update, boolean gettingDiffences){
+    private void onTLUpdateInlineBotCallbackQuery(TLUpdateInlineBotCallbackQuery update, boolean gettingDifferences){
         if (isUserMissing(update.getUserId())) {
-            if (!gettingDiffences) {
+            if (!gettingDifferences) {
                 differencesHandler.getDifferences();
             }
         } else {
             onTLUpdateInlineBotCallbackQueryCustom(update);
         }
+    }
+
+    private void onTLUpdateEncryption(TLUpdateEncryption update){
+        onTLUpdateEncryptionCustom(update);
+    }
+
+    private void onTLUpdateEncryptedChatTyping(TLUpdateEncryptedChatTyping update) {
+        onTLUpdateEncryptedChatTypingCustom(update);
+    }
+
+    private void onTLUpdateEncryptedMessagesRead(TLUpdateEncryptedMessagesRead update) {
+        onTLUpdateEncryptedMessagesReadCustom(update);
+    }
+
+    private void onTLUpdateNewEncryptedMessage(TLUpdateNewEncryptedMessage update) {
+        onTLUpdateNewEncryptedMessageCustom(update);
     }
 
     @Override
@@ -853,4 +881,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     protected abstract void onTLAbsMessageCustom(TLAbsMessage message);
     protected abstract void onUsersCustom(List<TLAbsUser> users);
     protected abstract void onChatsCustom(List<TLAbsChat> chats);
+    protected abstract void onTLUpdateEncryptionCustom(TLUpdateEncryption update);
+    protected abstract void onTLUpdateEncryptedMessagesReadCustom(TLUpdateEncryptedMessagesRead update);
+    protected abstract void onTLUpdateNewEncryptedMessageCustom(TLUpdateNewEncryptedMessage update);
+    protected abstract void onTLUpdateEncryptedChatTypingCustom(TLUpdateEncryptedChatTyping update);
+
 }
