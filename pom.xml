@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <groupId>org.bistromathicdrive</groupId>
     <artifactId>telegramapi</artifactId>
-    <version>51.3-SNAPSHOT</version>
+    <version>51.4-SNAPSHOT</version>
 
     <name>Telegram Api</name>
     <url>https://github.com/rubenlagus/Deepthought</url>

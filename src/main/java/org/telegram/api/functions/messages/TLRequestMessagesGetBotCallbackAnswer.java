@@ -19,7 +19,7 @@ public class TLRequestMessagesGetBotCallbackAnswer extends TLMethod<TLMessagesBo
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x130c2c85;
+    public static final int CLASS_ID = 0xa6e94f04;
 
     private TLAbsInputPeer peer;
     private int msgId;

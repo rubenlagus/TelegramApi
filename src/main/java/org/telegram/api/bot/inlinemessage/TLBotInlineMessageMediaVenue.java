@@ -32,14 +32,14 @@ import java.io.OutputStream;
  * @date 13 of February of 2016
  */
 public class TLBotInlineMessageMediaVenue extends TLAbsBotInlineMessage {
-    public static final int CLASS_ID = 0x3a8fd8b8;
+    public static final int CLASS_ID = 0x4366232e;
 
     private static final int FLAG_UNUSED0        = 0x00000001; // 0
     private static final int FLAG_UNUSED1        = 0x00000002; // 1
     private static final int FLAG_REPLY_MARKUP   = 0x00000004; // 2
 
     private int flags;
-    private TLAbsGeoPoint geoPoint;
+    private TLAbsGeoPoint geo;
     private String title;
     private String address;
     private String provider;
@@ -54,8 +54,8 @@ public class TLBotInlineMessageMediaVenue extends TLAbsBotInlineMessage {
         return flags;
     }
 
-    public TLAbsGeoPoint getGeoPoint() {
-        return geoPoint;
+    public TLAbsGeoPoint getGeo() {
+        return geo;
     }
 
     public String getTitle() {
@@ -86,7 +86,7 @@ public class TLBotInlineMessageMediaVenue extends TLAbsBotInlineMessage {
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
         StreamingUtils.writeInt(flags, stream);
-        StreamingUtils.writeTLObject(geoPoint, stream);
+        StreamingUtils.writeTLObject(geo, stream);
         StreamingUtils.writeTLString(title, stream);
         StreamingUtils.writeTLString(address, stream);
         StreamingUtils.writeTLString(provider, stream);
@@ -99,7 +99,7 @@ public class TLBotInlineMessageMediaVenue extends TLAbsBotInlineMessage {
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
         flags = StreamingUtils.readInt(stream);
-        geoPoint = (TLAbsGeoPoint) StreamingUtils.readTLObject(stream, context);
+        geo = (TLAbsGeoPoint) StreamingUtils.readTLObject(stream, context);
         title = StreamingUtils.readTLString(stream);
         address = StreamingUtils.readTLString(stream);
         provider = StreamingUtils.readTLString(stream);

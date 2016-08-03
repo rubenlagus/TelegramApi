@@ -17,7 +17,7 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x130c2c85;
+    public static final int CLASS_ID = 0x481c591a;
 
     private static final int FLAG_MESSAGE = 0x00000001;
     private static final int FLAG_ALERT   = 0x00000002;
@@ -59,6 +59,10 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
 
     public String getMessage() {
         return message;
+    }
+
+    public boolean hasAlert() {
+        return (flags & FLAG_ALERT) != 0;
     }
 
     @Override

@@ -16,7 +16,7 @@
  */
 package org.telegram.api.input.bot.inlinemessage;
 
-import org.telegram.api.geo.point.TLAbsGeoPoint;
+import org.telegram.api.input.geopoint.TLAbsInputGeoPoint;
 import org.telegram.api.keyboard.replymarkup.TLAbsReplyMarkup;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
@@ -32,14 +32,14 @@ import java.io.OutputStream;
  * @date 13 of February of 2016
  */
 public class TLInputBotInlineMessageMediaGeo extends TLAbsInputBotInlineMessage {
-    public static final int CLASS_ID = 0x3dcd7a87;
+    public static final int CLASS_ID = 0xf4a59de1;
 
     private static final int FLAG_UNUSED0       = 0x00000001; // 0
     private static final int FLAG_UNUSED1       = 0x00000002; // 1
     private static final int FLAG_REPLY_MARKUP  = 0x00000004; // 2
 
     private int flags;
-    private TLAbsGeoPoint geoPoint;
+    private TLAbsInputGeoPoint geoPoint;
     private TLAbsReplyMarkup replyMarkup;
 
     public TLInputBotInlineMessageMediaGeo() {
@@ -50,7 +50,7 @@ public class TLInputBotInlineMessageMediaGeo extends TLAbsInputBotInlineMessage 
         return flags;
     }
 
-    public TLAbsGeoPoint getGeoPoint() {
+    public TLAbsInputGeoPoint getGeoPoint() {
         return geoPoint;
     }
 
@@ -75,7 +75,7 @@ public class TLInputBotInlineMessageMediaGeo extends TLAbsInputBotInlineMessage 
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
         flags = StreamingUtils.readInt(stream);
-        geoPoint = (TLAbsGeoPoint) StreamingUtils.readTLObject(stream, context);
+        geoPoint = (TLAbsInputGeoPoint) StreamingUtils.readTLObject(stream, context);
         if ((flags & FLAG_REPLY_MARKUP) != 0) {
             replyMarkup = (TLAbsReplyMarkup) StreamingUtils.readTLObject(stream, context);
         }

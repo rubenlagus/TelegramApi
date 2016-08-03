@@ -16,7 +16,7 @@
  */
 package org.telegram.api.input.bot.inlinemessage;
 
-import org.telegram.api.geo.point.TLAbsGeoPoint;
+import org.telegram.api.input.geopoint.TLAbsInputGeoPoint;
 import org.telegram.api.keyboard.replymarkup.TLAbsReplyMarkup;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
@@ -39,7 +39,7 @@ public class TLInputBotInlineMessageMediaVenue extends TLAbsInputBotInlineMessag
     private static final int FLAG_REPLY_MARKUP  = 0x00000004; // 2
 
     private int flags;
-    private TLAbsGeoPoint geoPoint;
+    private TLAbsInputGeoPoint geoPoint;
     private String title;
     private String address;
     private String provider;
@@ -54,7 +54,7 @@ public class TLInputBotInlineMessageMediaVenue extends TLAbsInputBotInlineMessag
         return flags;
     }
 
-    public TLAbsGeoPoint getGeoPoint() {
+    public TLAbsInputGeoPoint getGeoPoint() {
         return geoPoint;
     }
 
@@ -99,7 +99,7 @@ public class TLInputBotInlineMessageMediaVenue extends TLAbsInputBotInlineMessag
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
         flags = StreamingUtils.readInt(stream);
-        geoPoint = (TLAbsGeoPoint) StreamingUtils.readTLObject(stream, context);
+        geoPoint = (TLAbsInputGeoPoint) StreamingUtils.readTLObject(stream, context);
         title = StreamingUtils.readTLString(stream);
         address = StreamingUtils.readTLString(stream);
         provider = StreamingUtils.readTLString(stream);
