@@ -9,7 +9,6 @@ import java.io.Serializable;
  * @date 02.08.2014
  */
 public class BotConfig implements Serializable {
-    public String languageCode = "en"; ///< Language code
     public String number; ///< Telephone number
     public String hashCode; ///< HashCode of the login
     public boolean isRegistered; ///< Wether the bot was registered or not

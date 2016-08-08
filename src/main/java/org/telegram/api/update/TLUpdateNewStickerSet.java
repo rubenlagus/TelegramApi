@@ -17,7 +17,7 @@
 
 package org.telegram.api.update;
 
-import org.telegram.api.sticker.set.TLAbsStickerSet;
+import org.telegram.api.messages.stickers.TLMessagesStickerSet;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 
@@ -34,7 +34,7 @@ public class TLUpdateNewStickerSet extends TLAbsUpdate {
      */
     public static final int CLASS_ID = 0x688a30aa;
 
-    private TLAbsStickerSet stickerSet;
+    private TLMessagesStickerSet stickerSet;
 
     /**
      * Instantiates a new TL update new message.
@@ -47,11 +47,11 @@ public class TLUpdateNewStickerSet extends TLAbsUpdate {
         return CLASS_ID;
     }
 
-    public TLAbsStickerSet getStickerSet() {
+    public TLMessagesStickerSet getStickerSet() {
         return stickerSet;
     }
 
-    public void setStickerSet(TLAbsStickerSet stickerSet) {
+    public void setStickerSet(TLMessagesStickerSet stickerSet) {
         this.stickerSet = stickerSet;
     }
 
@@ -62,7 +62,7 @@ public class TLUpdateNewStickerSet extends TLAbsUpdate {
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.stickerSet = (TLAbsStickerSet) StreamingUtils.readTLObject(stream, context);
+        this.stickerSet = StreamingUtils.readTLObject(stream, context, TLMessagesStickerSet.class);
     }
 
     public String toString() {

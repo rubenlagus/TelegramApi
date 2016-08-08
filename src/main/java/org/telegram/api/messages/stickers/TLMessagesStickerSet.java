@@ -9,9 +9,10 @@ package org.telegram.api.messages.stickers;
 
 import org.telegram.api.document.TLDocument;
 import org.telegram.api.sticker.pack.TLStickerPack;
-import org.telegram.api.sticker.set.TLAbsStickerSet;
+import org.telegram.api.sticker.set.TLStickerSet;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
+import org.telegram.tl.TLObject;
 import org.telegram.tl.TLVector;
 
 import java.io.IOException;
@@ -25,20 +26,23 @@ import java.io.OutputStream;
  * @brief TLStickers
  * @date 9 /01/15
  */
-public class TLStickersSet extends TLAbsStickers {
+public class TLMessagesStickerSet extends TLObject {
     /**
      * The constant CLASS_ID.
      */
     public static final int CLASS_ID = 0xb60a24a6;
 
-    private TLAbsStickerSet set;
+    /*
+    messages.stickerSet#b60a24a6 set:StickerSet packs:Vector<StickerPack> documents:Vector<Document> = messages.StickerSet;
+     */
+    private TLStickerSet set;
     private TLVector<TLStickerPack> packs;
     private TLVector<TLDocument> documents;
 
     /**
      * Instantiates a new TL stickers.
      */
-    public TLStickersSet() {
+    public TLMessagesStickerSet() {
         super();
     }
 
@@ -55,11 +59,11 @@ public class TLStickersSet extends TLAbsStickers {
         this.packs = packs;
     }
 
-    public TLAbsStickerSet getSet() {
+    public TLStickerSet getSet() {
         return this.set;
     }
 
-    public void setSet(TLAbsStickerSet set) {
+    public void setSet(TLStickerSet set) {
         this.set = set;
     }
 
@@ -92,9 +96,9 @@ public class TLStickersSet extends TLAbsStickers {
     @Override
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.set = (TLAbsStickerSet) StreamingUtils.readTLObject(stream, context);
-        this.packs = StreamingUtils.readTLVector(stream, context);
-        this.documents = StreamingUtils.readTLVector(stream, context);
+        this.set = StreamingUtils.readTLObject(stream, context, TLStickerSet.class);
+        this.packs = StreamingUtils.readTLVector(stream, context, TLStickerPack.class);
+        this.documents = StreamingUtils.readTLVector(stream, context, TLDocument.class);
     }
 
     @Override

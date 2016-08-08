@@ -1,5 +1,6 @@
 package org.telegram.api.dialog;
 
+import org.telegram.api.draft.TLAbsDraftMessage;
 import org.telegram.api.peer.TLAbsPeer;
 import org.telegram.api.peer.notify.settings.TLAbsPeerNotifySettings;
 import org.telegram.tl.StreamingUtils;
@@ -23,12 +24,12 @@ public class TLDialog extends TLObject {
     private static final int FLAG_DRAFT             = 0x00000002; // 1
 
     private int flags;
-    protected TLAbsPeer peer;
-    protected int topMessage;
-    protected int readInboxMaxId;
-    protected int readOutboxMaxId;
-    protected int unreadCount;
-    protected TLAbsPeerNotifySettings notifySettings;
+    private TLAbsPeer peer;
+    private int topMessage;
+    private int readInboxMaxId;
+    private int readOutboxMaxId;
+    private int unreadCount;
+    private TLAbsPeerNotifySettings notifySettings;
     private int pts;
     private TLAbsDraftMessage draft;
 

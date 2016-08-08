@@ -7,7 +7,7 @@
  */
 package org.telegram.api.messages.stickers;
 
-import org.telegram.api.sticker.set.TLAbsStickerSet;
+import org.telegram.api.sticker.set.TLStickerSet;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLVector;
@@ -30,7 +30,7 @@ public class TLAllStickers extends TLAbsAllStickers {
     public static final int CLASS_ID = 0xedfd405f;
 
     private int hash;
-    private TLVector<TLAbsStickerSet> sets = new TLVector<>();
+    private TLVector<TLStickerSet> sets = new TLVector<>();
 
     /**
      * Instantiates a new TL all stickers.
@@ -62,11 +62,11 @@ public class TLAllStickers extends TLAbsAllStickers {
         this.hash = hash;
     }
 
-    public TLVector<TLAbsStickerSet> getSets() {
+    public TLVector<TLStickerSet> getSets() {
         return this.sets;
     }
 
-    public void setSets(TLVector<TLAbsStickerSet> sets) {
+    public void setSets(TLVector<TLStickerSet> sets) {
         this.sets = sets;
     }
 
@@ -81,7 +81,7 @@ public class TLAllStickers extends TLAbsAllStickers {
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
         this.hash = StreamingUtils.readInt(stream);
-        this.sets = (TLVector<TLAbsStickerSet>) StreamingUtils.readTLVector(stream, context);
+        this.sets = StreamingUtils.readTLVector(stream, context, TLStickerSet.class);
     }
 
     @Override

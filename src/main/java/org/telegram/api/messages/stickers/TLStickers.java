@@ -91,7 +91,7 @@ public class TLStickers extends TLAbsStickers {
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
         this.hash = StreamingUtils.readTLString(stream);
-        this.documents = StreamingUtils.readTLVector(stream, context);
+        this.documents = StreamingUtils.readTLVector(stream, context, TLDocument.class);
     }
 
     @Override

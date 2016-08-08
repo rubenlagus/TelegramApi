@@ -1,7 +1,7 @@
 package org.telegram.api.functions.messages;
 
 import org.telegram.api.input.sticker.set.TLAbsInputStickerSet;
-import org.telegram.api.sticker.set.TLAbsStickerSet;
+import org.telegram.api.messages.stickers.TLMessagesStickerSet;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLMethod;
@@ -14,7 +14,7 @@ import java.io.OutputStream;
 /**
  * The type TL request messages get stickers.
  */
-public class TLRequestMessagesGetStickersSet extends TLMethod<TLAbsStickerSet> {
+public class TLRequestMessagesGetStickersSet extends TLMethod<TLMessagesStickerSet> {
     /**
      * The constant CLASS_ID.
      */
@@ -33,14 +33,14 @@ public class TLRequestMessagesGetStickersSet extends TLMethod<TLAbsStickerSet> {
         return CLASS_ID;
     }
 
-    public TLAbsStickerSet deserializeResponse(InputStream stream, TLContext context)
+    public TLMessagesStickerSet deserializeResponse(InputStream stream, TLContext context)
             throws IOException {
         TLObject res = StreamingUtils.readTLObject(stream, context);
         if (res == null)
             throw new IOException("Unable to parse response");
-        if ((res instanceof TLAbsStickerSet))
-            return (TLAbsStickerSet) res;
-        throw new IOException("Incorrect response type. Expected org.telegram.api.messages.stickers.TLAbsStickerSet, got: " + res.getClass().getCanonicalName());
+        if ((res instanceof TLMessagesStickerSet))
+            return (TLMessagesStickerSet) res;
+        throw new IOException("Incorrect response type. Expected " + TLMessagesStickerSet.class.getCanonicalName() + ", got: " + res.getClass().getCanonicalName());
     }
 
     public void serializeBody(OutputStream stream)

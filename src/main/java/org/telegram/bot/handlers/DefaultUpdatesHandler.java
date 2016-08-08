@@ -7,7 +7,6 @@ import org.telegram.api.update.TLUpdateBotCallbackQuery;
 import org.telegram.api.update.TLUpdateBotInlineQuery;
 import org.telegram.api.update.TLUpdateBotInlineSend;
 import org.telegram.api.update.TLUpdateChannel;
-import org.telegram.api.update.TLUpdateChannelGroup;
 import org.telegram.api.update.TLUpdateChannelMessageViews;
 import org.telegram.api.update.TLUpdateChannelNewMessage;
 import org.telegram.api.update.TLUpdateChannelPinnedMessage;
@@ -98,11 +97,6 @@ public class DefaultUpdatesHandler extends UpdatesHandlerBase {
 
     @Override
     protected void onTLUpdateBotInlineSendCustom(TLUpdateBotInlineSend update) {
-
-    }
-
-    @Override
-    protected void onTLUpdateChannelGroupCustom(TLUpdateChannelGroup update) {
 
     }
 

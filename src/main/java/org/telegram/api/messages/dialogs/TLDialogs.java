@@ -1,12 +1,11 @@
 package org.telegram.api.messages.dialogs;
 
 import org.telegram.api.chat.TLAbsChat;
-import org.telegram.api.dialog.TLAbsDialog;
+import org.telegram.api.dialog.TLDialog;
 import org.telegram.api.message.TLAbsMessage;
 import org.telegram.api.user.TLAbsUser;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
-import org.telegram.tl.TLVector;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,10 +41,10 @@ public class TLDialogs extends TLAbsDialogs {
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.dialogs = (TLVector<TLAbsDialog>) StreamingUtils.readTLVector(stream, context);
-        this.messages = (TLVector<TLAbsMessage>) StreamingUtils.readTLVector(stream, context);
-        this.chats = (TLVector<TLAbsChat>) StreamingUtils.readTLVector(stream, context);
-        this.users = (TLVector<TLAbsUser>) StreamingUtils.readTLVector(stream, context);
+        this.dialogs = StreamingUtils.readTLVector(stream, context, TLDialog.class);
+        this.messages = StreamingUtils.readTLVector(stream, context, TLAbsMessage.class);
+        this.chats = StreamingUtils.readTLVector(stream, context, TLAbsChat.class);
+        this.users = StreamingUtils.readTLVector(stream, context, TLAbsUser.class);
     }
 
     public String toString() {

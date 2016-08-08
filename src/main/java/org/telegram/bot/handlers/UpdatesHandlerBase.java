@@ -15,7 +15,6 @@ import org.telegram.api.update.TLUpdateBotCallbackQuery;
 import org.telegram.api.update.TLUpdateBotInlineQuery;
 import org.telegram.api.update.TLUpdateBotInlineSend;
 import org.telegram.api.update.TLUpdateChannel;
-import org.telegram.api.update.TLUpdateChannelGroup;
 import org.telegram.api.update.TLUpdateChannelMessageViews;
 import org.telegram.api.update.TLUpdateChannelNewMessage;
 import org.telegram.api.update.TLUpdateChannelPinnedMessage;
@@ -125,8 +124,6 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
                 onTLUpdateBotInlineQuery((TLUpdateBotInlineQuery) update, updateWrapper.isGettingDifferences());
             } else if (update instanceof TLUpdateBotInlineSend) {
                 onTLUpdateBotInlineSend((TLUpdateBotInlineSend) update, updateWrapper.isGettingDifferences());
-            } else if (update instanceof TLUpdateChannelGroup) {
-                onTLUpdateChannelGroup((TLUpdateChannelGroup) update, updateWrapper.isGettingDifferences());
             } else if (update instanceof TLUpdateChannelMessageViews) {
                 onTLUpdateChannelMessageViews((TLUpdateChannelMessageViews) update, updateWrapper.isGettingDifferences());
             } else if (update instanceof TLUpdateChannelPinnedMessage) {
@@ -357,16 +354,6 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
             }
         } else {
             onTLUpdateBotInlineSendCustom(update);
-        }
-    }
-
-    private void onTLUpdateChannelGroup(TLUpdateChannelGroup update, boolean gettingDifferences) {
-        if (isChatMissing(update.getChannelId())) {
-            if (!gettingDifferences) {
-                differencesHandler.getDifferences();
-            }
-        } else {
-            onTLUpdateChannelGroupCustom(update);
         }
     }
 
@@ -837,7 +824,6 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     protected abstract void onTLUpdateChannelCustom(TLUpdateChannel update);
     protected abstract void onTLUpdateBotInlineQueryCustom(TLUpdateBotInlineQuery update);
     protected abstract void onTLUpdateBotInlineSendCustom(TLUpdateBotInlineSend update);
-    protected abstract void onTLUpdateChannelGroupCustom(TLUpdateChannelGroup update);
     protected abstract void onTLUpdateChannelMessageViewsCustom(TLUpdateChannelMessageViews update);
     protected abstract void onTLUpdateChannelPinnedMessageCustom(TLUpdateChannelPinnedMessage update);
     protected abstract void onTLUpdateChatAdminCustom(TLUpdateChatAdmin update);

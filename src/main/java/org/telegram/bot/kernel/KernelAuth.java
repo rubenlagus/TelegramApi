@@ -212,7 +212,6 @@ public class KernelAuth {
         tlRequestAuthSendCode.setPhoneNumber(config.number);
         tlRequestAuthSendCode.setApiId(apiKey);
         tlRequestAuthSendCode.setApiHash(apiHash);
-        tlRequestAuthSendCode.setLangCode(config.languageCode);
         return tlRequestAuthSendCode;
     }
 

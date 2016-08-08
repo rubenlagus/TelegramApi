@@ -14,7 +14,7 @@ package org.telegram.api.messages.stickers;
  * @brief TLStickersNotModified
  * @date 9 /01/15
  */
-public class TLStickersNotModified extends TLAbsAllStickers {
+public class TLStickersNotModified extends TLAbsStickers {
     /**
      * The constant CLASS_ID.
      */

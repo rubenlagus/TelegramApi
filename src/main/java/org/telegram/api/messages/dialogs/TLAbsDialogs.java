@@ -1,7 +1,7 @@
 package org.telegram.api.messages.dialogs;
 
 import org.telegram.api.chat.TLAbsChat;
-import org.telegram.api.dialog.TLAbsDialog;
+import org.telegram.api.dialog.TLDialog;
 import org.telegram.api.message.TLAbsMessage;
 import org.telegram.api.user.TLAbsUser;
 import org.telegram.tl.TLObject;
@@ -14,7 +14,7 @@ public abstract class TLAbsDialogs extends TLObject {
     /**
      * The Dialogs.
      */
-    protected TLVector<TLAbsDialog> dialogs;
+    protected TLVector<TLDialog> dialogs;
     /**
      * The Messages.
      */
@@ -40,7 +40,7 @@ public abstract class TLAbsDialogs extends TLObject {
      *
      * @return the dialogs
      */
-    public TLVector<TLAbsDialog> getDialogs() {
+    public TLVector<TLDialog> getDialogs() {
         return this.dialogs;
     }
 
@@ -49,7 +49,7 @@ public abstract class TLAbsDialogs extends TLObject {
      *
      * @param value the value
      */
-    public void setDialogs(TLVector<TLAbsDialog> value) {
+    public void setDialogs(TLVector<TLDialog> value) {
         this.dialogs = value;
     }
 
