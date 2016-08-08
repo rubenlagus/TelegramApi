@@ -320,6 +320,10 @@ public class StreamingUtils {
         return context.deserializeMessage(stream);
     }
 
+    public static <T extends TLObject> T readTLObject(InputStream stream, TLContext context, Class<T> type) throws IOException {
+        return (T) context.deserializeMessage(stream);
+    }
+
     /**
      * Reading tl-method from stream. Same as readTLObject, used for pretty code.
      *
@@ -459,6 +463,18 @@ public class StreamingUtils {
      */
     public static TLVector readTLVector(InputStream stream, TLContext context) throws IOException {
         return context.deserializeVector(stream);
+    }
+
+    /**
+     * Reading tl-vector from stream
+     *
+     * @param stream  source stream
+     * @param context tl-context
+     * @return tl-vector
+     * @throws IOException reading exception
+     */
+    public static <T> TLVector<T> readTLVector(InputStream stream, TLContext context, Class<T> vectorType) throws IOException {
+        return (TLVector<T>) context.deserializeVector(stream);
     }
 
     /**

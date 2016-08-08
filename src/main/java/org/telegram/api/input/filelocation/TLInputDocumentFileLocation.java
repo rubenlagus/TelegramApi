@@ -14,10 +14,11 @@ public class TLInputDocumentFileLocation extends TLAbsInputFileLocation {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x4e45abe9;
+    public static final int CLASS_ID = 0x430f0724;
 
     private long id;
     private long accessHash;
+    private int version;
 
     /**
      * Instantiates a new TL input document file location.
@@ -66,19 +67,29 @@ public class TLInputDocumentFileLocation extends TLAbsInputFileLocation {
         this.accessHash = accessHash;
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
-        StreamingUtils.writeLong(this.id, stream);
-        StreamingUtils.writeLong(this.accessHash, stream);
+        StreamingUtils.writeLong(id, stream);
+        StreamingUtils.writeLong(accessHash, stream);
+        StreamingUtils.writeInt(version, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.id = StreamingUtils.readLong(stream);
-        this.accessHash = StreamingUtils.readLong(stream);
+        id = StreamingUtils.readLong(stream);
+        accessHash = StreamingUtils.readLong(stream);
+        version = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "inputDocumentFileLocation#4e45abe9";
+        return "inputDocumentFileLocation#430f0724";
     }
 }

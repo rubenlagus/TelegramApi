@@ -27,7 +27,7 @@ public class TLDocument extends TLAbsDocument {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xf9a39f4f;
+    public static final int CLASS_ID = 0x87232bc7;
 
     private long accessHash; ///< Check sum, dependant on document ID
     private int date; ///< Creation date
@@ -35,8 +35,8 @@ public class TLDocument extends TLAbsDocument {
     private int size; ///< Document size in bytes
     private TLAbsPhotoSize thumb; ///< Document thumbnail
     private int dcId; ///< Datacenter where the document is stored
+    private int version;
     private TLVector<TLAbsDocumentAttribute> attributes = new TLVector<>(); ///< List of attributes of the document
-
 
     /**
      * Instantiates a new TL document.
@@ -49,130 +49,36 @@ public class TLDocument extends TLAbsDocument {
         return CLASS_ID;
     }
 
-    /**
-     * Gets access hash.
-     *
-     * @return the access hash
-     */
     public long getAccessHash() {
-        return this.accessHash;
+        return accessHash;
     }
 
-    /**
-     * Sets access hash.
-     *
-     * @param accessHash the access hash
-     */
-    public void setAccessHash(long accessHash) {
-        this.accessHash = accessHash;
-    }
-
-    /**
-     * Gets date.
-     *
-     * @return the date
-     */
     public int getDate() {
-        return this.date;
+        return date;
     }
 
-    /**
-     * Sets date.
-     *
-     * @param date the date
-     */
-    public void setDate(int date) {
-        this.date = date;
-    }
-
-    /**
-     * Gets mime type.
-     *
-     * @return the mime type
-     */
     public String getMimeType() {
-        return this.mimeType;
+        return mimeType;
     }
 
-    /**
-     * Sets mime type.
-     *
-     * @param mimeType the mime type
-     */
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
-
-    /**
-     * Gets size.
-     *
-     * @return the size
-     */
     public int getSize() {
-        return this.size;
+        return size;
     }
 
-    /**
-     * Sets size.
-     *
-     * @param size the size
-     */
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    /**
-     * Gets thumb.
-     *
-     * @return the thumb
-     */
     public TLAbsPhotoSize getThumb() {
-        return this.thumb;
+        return thumb;
     }
 
-    /**
-     * Sets thumb.
-     *
-     * @param thumb the thumb
-     */
-    public void setThumb(TLAbsPhotoSize thumb) {
-        this.thumb = thumb;
-    }
-
-    /**
-     * Gets dc id.
-     *
-     * @return the dc id
-     */
     public int getDcId() {
-        return this.dcId;
+        return dcId;
     }
 
-    /**
-     * Sets dc id.
-     *
-     * @param dcId the dc id
-     */
-    public void setDcId(int dcId) {
-        this.dcId = dcId;
+    public int getVersion() {
+        return version;
     }
 
-    /**
-     * Gets attributes.
-     *
-     * @return the attributes
-     */
     public TLVector<TLAbsDocumentAttribute> getAttributes() {
-        return this.attributes;
-    }
-
-    /**
-     * Sets attributes.
-     *
-     * @param attributes the attributes
-     */
-    public void setAttributes(TLVector<TLAbsDocumentAttribute> attributes) {
-        this.attributes = attributes;
+        return attributes;
     }
 
     public void serializeBody(OutputStream stream)
@@ -184,6 +90,7 @@ public class TLDocument extends TLAbsDocument {
         StreamingUtils.writeInt(this.size, stream);
         StreamingUtils.writeTLObject(this.thumb, stream);
         StreamingUtils.writeInt(this.dcId, stream);
+        StreamingUtils.writeInt(this.version, stream);
         StreamingUtils.writeTLVector(this.attributes, stream);
     }
 
@@ -196,10 +103,11 @@ public class TLDocument extends TLAbsDocument {
         this.size = StreamingUtils.readInt(stream);
         this.thumb = ((TLAbsPhotoSize) StreamingUtils.readTLObject(stream, context));
         this.dcId = StreamingUtils.readInt(stream);
+        this.version = StreamingUtils.readInt(stream);
         this.attributes = StreamingUtils.readTLVector(stream, context);
     }
 
     public String toString() {
-        return "document#f9a39f4f";
+        return "document#87232bc7";
     }
 }

@@ -19,7 +19,6 @@ public class TLRequestChannelsGetChannels extends TLMethod<TLMessagesChats> {
      * The constant CLASS_ID.
      */
     public static final int CLASS_ID = 0xa7f6bbb;
-// channels.getChannels#a7f6bbb id:Vector<InputChannel> = messages.Chats;
 
     private TLIntVector id;
 
@@ -65,6 +64,6 @@ public class TLRequestChannelsGetChannels extends TLMethod<TLMessagesChats> {
     }
 
     public String toString() {
-        return "functions.channels.TLRequestChannelsGetChannels#a7f6bbb";
+        return "channels.getChannels#a7f6bbb";
     }
 }

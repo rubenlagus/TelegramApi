@@ -18,7 +18,7 @@ public class TLMessageService extends TLAbsMessage {
      */
     public static final int CLASS_ID = 0x9e19a1f6;
 
-    private static final int FLAG_UNREAD           = 0x00000001; // 0
+    private static final int FLAG_UNUSED_0         = 0x00000001; // 0
     private static final int FLAG_OUT              = 0x00000002; // 1
     private static final int FLAG_UNUSED2          = 0x00000004; // 2
     private static final int FLAG_REPLY_TO_MSG_ID  = 0x00000008; // 3
@@ -176,6 +176,32 @@ public class TLMessageService extends TLAbsMessage {
 
     public boolean hasFromId() {
         return (flags & FLAG_FROMID) != 0;
+    }
+
+    public boolean isPost() {
+        return (this.flags & FLAG_POST) != 0;
+    }
+
+    public boolean isSilent() {
+        return (this.flags & FLAG_SILENT) != 0;
+    }
+
+
+    public boolean isUnreadContent() {
+        return (this.flags & FLAG_MEDIA_UNREAD) != 0;
+    }
+
+    /**
+     * Is sent.
+     *
+     * @return the boolean
+     */
+    public boolean isSent() {
+        return (this.flags & FLAG_OUT) != 0;
+    }
+
+    public boolean isMention() {
+        return (this.flags & FLAG_MENTIONED) != 0;
     }
 
     public void serializeBody(OutputStream stream)

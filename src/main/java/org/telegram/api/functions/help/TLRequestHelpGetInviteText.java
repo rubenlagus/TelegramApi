@@ -8,7 +8,6 @@ import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * The type TL request help get invite text.
@@ -17,9 +16,7 @@ public class TLRequestHelpGetInviteText extends TLMethod<TLInviteText> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xa4a95186;
-
-    private String langCode;
+    public static final int CLASS_ID = 0x4d392343;
 
     /**
      * Instantiates a new TL request help get invite text.
@@ -42,35 +39,7 @@ public class TLRequestHelpGetInviteText extends TLMethod<TLInviteText> {
         throw new IOException("Incorrect response type. Expected org.telegram.api.help.TLInviteText, got: " + res.getClass().getCanonicalName());
     }
 
-    /**
-     * Gets lang code.
-     *
-     * @return the lang code
-     */
-    public String getLangCode() {
-        return this.langCode;
-    }
-
-    /**
-     * Sets lang code.
-     *
-     * @param value the value
-     */
-    public void setLangCode(String value) {
-        this.langCode = value;
-    }
-
-    public void serializeBody(OutputStream stream)
-            throws IOException {
-        StreamingUtils.writeTLString(this.langCode, stream);
-    }
-
-    public void deserializeBody(InputStream stream, TLContext context)
-            throws IOException {
-        this.langCode = StreamingUtils.readTLString(stream);
-    }
-
     public String toString() {
-        return "help.getInviteText#a4a95186";
+        return "help.getInviteText#4d392343";
     }
 }

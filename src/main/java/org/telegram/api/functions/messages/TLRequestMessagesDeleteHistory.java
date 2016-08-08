@@ -18,8 +18,11 @@ public class TLRequestMessagesDeleteHistory extends TLMethod<TLAffectedHistory> 
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xb7c13bd9;
+    public static final int CLASS_ID = 0x1c015b09;
 
+    private static final int FLAG_JUST_CLEAR = 0x00000001;
+
+    private int flags;
     private TLAbsInputPeer peer;
     private int maxId;
 
@@ -72,19 +75,29 @@ public class TLRequestMessagesDeleteHistory extends TLMethod<TLAffectedHistory> 
         this.maxId = maxId;
     }
 
+    public boolean justClear() {
+        return (flags & FLAG_JUST_CLEAR) != 0;
+    }
+
+    public void enableJustClear() {
+        flags |= FLAG_JUST_CLEAR;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeTLObject(this.peer, stream);
         StreamingUtils.writeInt(this.maxId, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         this.peer = ((TLAbsInputPeer) StreamingUtils.readTLObject(stream, context));
         this.maxId = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "messages.deleteHistory#b7c13bd9";
+        return "messages.deleteHistory#1c015b09";
     }
 }

@@ -17,14 +17,16 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x481c591a;
+    public static final int CLASS_ID = 0xc927d44b;
 
-    private static final int FLAG_MESSAGE = 0x00000001;
-    private static final int FLAG_ALERT   = 0x00000002;
+    private static final int FLAG_MESSAGE = 0x00000001; // 0
+    private static final int FLAG_ALERT   = 0x00000002; // 1
+    private static final int FLAG_URL     = 0x00000004; // 2
 
     private int flags;
     private long queryId;
     private String message;
+    private String url;
 
     /**
      * Instantiates a new TL request channel edit admin
@@ -65,6 +67,28 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
         return (flags & FLAG_ALERT) != 0;
     }
 
+    public void setQueryId(long queryId) {
+        this.queryId = queryId;
+    }
+
+    public void setMessage(String message) {
+        flags |= FLAG_MESSAGE;
+        this.message = message;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        flags |= FLAG_URL;
+        this.url = url;
+    }
+
+    public boolean hasUrl() {
+        return (flags & FLAG_URL) != 0;
+    }
+
     @Override
     public void serializeBody(OutputStream stream)
             throws IOException {
@@ -72,6 +96,9 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
         StreamingUtils.writeLong(queryId, stream);
         if ((flags & FLAG_MESSAGE) != 0) {
             StreamingUtils.writeTLString(message, stream);
+        }
+        if ((flags & FLAG_URL) != 0) {
+            StreamingUtils.writeTLString(url, stream);
         }
     }
 
@@ -83,9 +110,12 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
         if ((flags & FLAG_MESSAGE) != 0) {
             message = StreamingUtils.readTLString(stream);
         }
+        if ((flags & FLAG_URL) != 0) {
+            url = StreamingUtils.readTLString(stream);
+        }
     }
 
     public String toString() {
-        return "messages.setBotCallbackAnswer#481c591a";
+        return "messages.setBotCallbackAnswer#c927d44b";
     }
 }

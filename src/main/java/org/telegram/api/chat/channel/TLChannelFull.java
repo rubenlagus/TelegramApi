@@ -20,7 +20,7 @@ import java.io.OutputStream;
  * @date 18 of September of 2015
  */
 public class TLChannelFull extends TLAbsChatFull {
-    public static final int CLASS_ID = 0x97bee562;
+    public static final int CLASS_ID = 0xc3d5512f;
 
     private static final int FLAG_PARTICIPANTS            = 0x00000001; // 0
     private static final int FLAG_ADMIN                   = 0x00000002; // 1
@@ -36,8 +36,8 @@ public class TLChannelFull extends TLAbsChatFull {
     private int adminCount;
     private int kickedCount;
     private int readInboxMaxId;
+    private int readOutboxMaxId;
     private int unreadCount;
-    private int unreadImportantCout;
     private TLVector<TLBotInfo> botInfo;
     private int migratedFromChatId;
     private int migratedFromMaxId;
@@ -52,92 +52,56 @@ public class TLChannelFull extends TLAbsChatFull {
         return CLASS_ID;
     }
 
-    public int getReadInboxMaxId() {
-        return readInboxMaxId;
-    }
-
-    public void setReadInboxMaxId(int readInboxMaxId) {
-        this.readInboxMaxId = readInboxMaxId;
-    }
-
-    public int getUnreadCount() {
-        return unreadCount;
-    }
-
-    public void setUnreadCount(int unreadCount) {
-        this.unreadCount = unreadCount;
-    }
-
-    public int getUnreadImportantCout() {
-        return unreadImportantCout;
-    }
-
-    public void setUnreadImportantCout(int unreadImportantCout) {
-        this.unreadImportantCout = unreadImportantCout;
-    }
-
-    public int getFlags() {
-        return flags;
-    }
-
-    public void setFlags(int flags) {
-        this.flags = flags;
-    }
-
     public String getAbout() {
         return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
     }
 
     public int getParticipantsCount() {
         return participantsCount;
     }
 
-    public void setParticipantsCount(int participantsCount) {
-        this.participantsCount = participantsCount;
-    }
-
     public int getAdminCount() {
         return adminCount;
-    }
-
-    public void setAdminCount(int adminCount) {
-        this.adminCount = adminCount;
     }
 
     public int getKickedCount() {
         return kickedCount;
     }
 
-    public void setKickedCount(int kickedCount) {
-        this.kickedCount = kickedCount;
+    public int getReadInboxMaxId() {
+        return readInboxMaxId;
+    }
+
+    public int getReadOutboxMaxId() {
+        return readOutboxMaxId;
+    }
+
+    public int getUnreadCount() {
+        return unreadCount;
     }
 
     public TLVector<TLBotInfo> getBotInfo() {
         return botInfo;
     }
 
-    public void setBotInfo(TLVector<TLBotInfo> botInfo) {
-        this.botInfo = botInfo;
-    }
-
     public int getMigratedFromChatId() {
         return migratedFromChatId;
-    }
-
-    public void setMigratedFromChatId(int migratedFromChatId) {
-        this.migratedFromChatId = migratedFromChatId;
     }
 
     public int getMigratedFromMaxId() {
         return migratedFromMaxId;
     }
 
-    public void setMigratedFromMaxId(int migratedFromMaxId) {
-        this.migratedFromMaxId = migratedFromMaxId;
+    public int getPinnedMessageId() {
+        return pinnedMessageId;
+    }
+
+    public boolean canViewParticipants() {
+        return (flags & FLAG_CAN_VIEW_PARTICIPANTS) != 0;
+    }
+
+    public boolean canSetUsername() {
+        return (flags & FLAG_CAN_SET_USERNAME) != 0;
     }
 
     @Override
@@ -155,8 +119,8 @@ public class TLChannelFull extends TLAbsChatFull {
             StreamingUtils.writeInt(kickedCount, stream);
         }
         StreamingUtils.writeInt(readInboxMaxId, stream);
+        StreamingUtils.writeInt(readOutboxMaxId, stream);
         StreamingUtils.writeInt(unreadCount, stream);
-        StreamingUtils.writeInt(unreadImportantCout, stream);
         StreamingUtils.writeTLObject(photo, stream);
         StreamingUtils.writeTLObject(notifySettings, stream);
         StreamingUtils.writeTLObject(exportedInvite, stream);
@@ -185,8 +149,8 @@ public class TLChannelFull extends TLAbsChatFull {
             this.kickedCount = StreamingUtils.readInt(stream);
         }
         this.readInboxMaxId = StreamingUtils.readInt(stream);
+        this.readOutboxMaxId = StreamingUtils.readInt(stream);
         this.unreadCount = StreamingUtils.readInt(stream);
-        this.unreadImportantCout = StreamingUtils.readInt(stream);
         this.photo = (TLAbsPhoto) StreamingUtils.readTLObject(stream, context);
         this.notifySettings = (TLAbsPeerNotifySettings) StreamingUtils.readTLObject(stream, context);
         this.exportedInvite = (TLAbsChatInvite) StreamingUtils.readTLObject(stream, context);
@@ -202,6 +166,6 @@ public class TLChannelFull extends TLAbsChatFull {
 
     @Override
     public String toString() {
-        return "channel.TLChannelFull#97bee562";
+        return "channelFull#c3d5512f";
     }
 }

@@ -19,7 +19,7 @@ public class TLUpdateShortMessage extends TLAbsUpdates {
      */
     public static final int CLASS_ID = 0x914fbf11;
 
-    private static final int FLAG_UNREAD             = 0x00000001; // 0
+    private static final int FLAG_UNUSED_0           = 0x00000001; // 0
     private static final int FLAG_OUT                = 0x00000002; // 1
     private static final int FLAG_FWD                = 0x00000004; // 2
     private static final int FLAG_REPLY              = 0x00000008; // 3
@@ -244,15 +244,6 @@ public class TLUpdateShortMessage extends TLAbsUpdates {
      */
     public boolean isSent() {
         return (this.flags & FLAG_OUT) != 0;
-    }
-
-    /**
-     * Is unread.
-     *
-     * @return the boolean
-     */
-    public boolean isUnread() {
-        return (this.flags & FLAG_UNREAD) != 0;
     }
 
     public boolean isMention() {

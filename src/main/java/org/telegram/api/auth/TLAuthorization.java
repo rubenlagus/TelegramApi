@@ -26,8 +26,11 @@ public class TLAuthorization extends TLObject {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xff036af1;
+    public static final int CLASS_ID = 0xcd050916;
 
+    private static final int FLAG_TMP_SESSIONS     = 0x00000001; // 0
+
+    private int flags;
     private TLAbsUser user; ///< Authorized user
 
     /**
@@ -50,25 +53,21 @@ public class TLAuthorization extends TLObject {
         return this.user;
     }
 
-    /**
-     * Sets user.
-     *
-     * @param value the value
-     */
-    public void setUser(TLAbsUser value) {
-        this.user = value;
+    public boolean isTemporalSession() {
+        return (flags & FLAG_TMP_SESSIONS) != 0;
     }
 
-
     public void serializeBody(OutputStream stream) throws IOException {
-        StreamingUtils.writeTLObject(this.user, stream);
+        StreamingUtils.writeInt(flags, stream);
+        StreamingUtils.writeTLObject(user, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
-        this.user = ((TLAbsUser) StreamingUtils.readTLObject(stream, context));
+        flags = StreamingUtils.readInt(stream);
+        user = ((TLAbsUser) StreamingUtils.readTLObject(stream, context));
     }
 
     public String toString() {
-        return "auth.authorization#ff036af1";
+        return "auth.authorization#cd050916";
     }
 }

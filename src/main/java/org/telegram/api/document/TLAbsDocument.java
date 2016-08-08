@@ -34,13 +34,4 @@ public abstract class TLAbsDocument extends TLObject {
     public long getId() {
         return this.id;
     }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
 }

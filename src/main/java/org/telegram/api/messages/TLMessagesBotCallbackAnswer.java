@@ -12,14 +12,16 @@ import java.io.OutputStream;
  * The type TL messages.
  */
 public class TLMessagesBotCallbackAnswer extends TLObject {
-    public static final int CLASS_ID = 0x1264f1c6;
+    public static final int CLASS_ID = 0xb10df1fb;
 
-    private static final int FLAG_MESSAGE = 0x00000000; // 0
-    private static final int FLAG_ALERT   = 0x00000001; // 1
-
+    private static final int FLAG_MESSAGE   = 0x00000001; // 0
+    private static final int FLAG_ALERT     = 0x00000002; // 1
+    private static final int FLAG_URL       = 0x00000004; // 2
+    private static final int FLAG_HAS_URL   = 0x00000008; // 3
 
     private int flags;
     private String message;
+    private String url;
 
     public TLMessagesBotCallbackAnswer() {
         super();
@@ -34,6 +36,10 @@ public class TLMessagesBotCallbackAnswer extends TLObject {
         return message;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
     public boolean hasAlert() {
         return (flags & FLAG_ALERT) != 0;
     }
@@ -42,11 +48,18 @@ public class TLMessagesBotCallbackAnswer extends TLObject {
         return (flags & FLAG_MESSAGE) != 0;
     }
 
+    public boolean hasUrl() {
+        return (flags & FLAG_HAS_URL) != 0;
+    }
+
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
         StreamingUtils.writeInt(flags, stream);
         if ((flags & FLAG_MESSAGE) != 0) {
             StreamingUtils.writeTLString(message, stream);
+        }
+        if ((flags & FLAG_URL) != 0) {
+            StreamingUtils.writeTLString(url, stream);
         }
     }
 
@@ -56,10 +69,13 @@ public class TLMessagesBotCallbackAnswer extends TLObject {
         if ((flags & FLAG_MESSAGE) != 0) {
             message = StreamingUtils.readTLString(stream);
         }
+        if ((flags & FLAG_URL) != 0) {
+            url = StreamingUtils.readTLString(stream);
+        }
     }
 
     @Override
     public String toString() {
-        return "messages.botCallbackAnswer#1264f1c6";
+        return "messages.botCallbackAnswer#b10df1fb";
     }
 }

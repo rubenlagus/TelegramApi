@@ -17,7 +17,7 @@ public class TLRequestAuthSendCode extends TLMethod<TLSentCode> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xccfd70cf;
+    public static final int CLASS_ID = 0x86aef0ec;
 
     private static final int FLAG_ALLOW_FLASHCALL = 0x00000001; // 0
 
@@ -26,7 +26,6 @@ public class TLRequestAuthSendCode extends TLMethod<TLSentCode> {
     private Boolean currentPhoneNumber;
     private int apiId;
     private String apiHash;
-    private String langCode;
 
     /**
      * Instantiates a new TL request auth send code.
@@ -105,24 +104,6 @@ public class TLRequestAuthSendCode extends TLMethod<TLSentCode> {
         this.apiHash = value;
     }
 
-    /**
-     * Gets lang code.
-     *
-     * @return the lang code
-     */
-    public String getLangCode() {
-        return this.langCode;
-    }
-
-    /**
-     * Sets lang code.
-     *
-     * @param value the value
-     */
-    public void setLangCode(String value) {
-        this.langCode = value;
-    }
-
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeInt(this.flags, stream);
@@ -132,7 +113,6 @@ public class TLRequestAuthSendCode extends TLMethod<TLSentCode> {
         }
         StreamingUtils.writeInt(this.apiId, stream);
         StreamingUtils.writeTLString(this.apiHash, stream);
-        StreamingUtils.writeTLString(this.langCode, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
@@ -144,10 +124,9 @@ public class TLRequestAuthSendCode extends TLMethod<TLSentCode> {
         }
         this.apiId = StreamingUtils.readInt(stream);
         this.apiHash = StreamingUtils.readTLString(stream);
-        this.langCode = StreamingUtils.readTLString(stream);
     }
 
     public String toString() {
-        return "auth.sendCode#ccfd70cf";
+        return "auth.sendCode#86aef0ec";
     }
 }

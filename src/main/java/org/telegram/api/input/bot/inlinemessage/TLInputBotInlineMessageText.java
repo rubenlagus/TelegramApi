@@ -60,6 +60,10 @@ public class TLInputBotInlineMessageText extends TLAbsInputBotInlineMessage {
         return entities;
     }
 
+    public boolean hasWebPreview() {
+        return (flags & FLAG_NO_WEBPAGE) == 0;
+    }
+
     @Override
     public int getClassId() {
         return CLASS_ID;

@@ -18,7 +18,7 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x5e167646;
+    public static final int CLASS_ID = 0x410dee07;
 
     private static final int FLAG_FINAL = 0x00000001; // 0
     private static final int FLAG_TIMEOUT = 0x00000002; // 1
@@ -26,8 +26,8 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
     private int topMessage;
     private int topImportantMessage;
     private int readInboxMaxId;
+    private int readOutboxMaxId;
     private int unreadCount;
-    private int unreadImportantCount;
     private TLVector<TLAbsMessage> messages;
     private TLVector<TLAbsChat> chats;
     private TLVector<TLAbsUser> users;
@@ -48,64 +48,32 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
         return topMessage;
     }
 
-    public void setTopMessage(int topMessage) {
-        this.topMessage = topMessage;
-    }
-
     public int getTopImportantMessage() {
         return topImportantMessage;
-    }
-
-    public void setTopImportantMessage(int topImportantMessage) {
-        this.topImportantMessage = topImportantMessage;
     }
 
     public int getReadInboxMaxId() {
         return readInboxMaxId;
     }
 
-    public void setReadInboxMaxId(int readInboxMaxId) {
-        this.readInboxMaxId = readInboxMaxId;
+    public int getReadOutboxMaxId() {
+        return readOutboxMaxId;
     }
 
     public int getUnreadCount() {
         return unreadCount;
     }
 
-    public void setUnreadCount(int unreadCount) {
-        this.unreadCount = unreadCount;
-    }
-
-    public int getUnreadImportantCount() {
-        return unreadImportantCount;
-    }
-
-    public void setUnreadImportantCount(int unreadImportantCount) {
-        this.unreadImportantCount = unreadImportantCount;
-    }
-
     public TLVector<TLAbsMessage> getMessages() {
         return messages;
-    }
-
-    public void setMessages(TLVector<TLAbsMessage> messages) {
-        this.messages = messages;
     }
 
     public TLVector<TLAbsChat> getChats() {
         return chats;
     }
 
-    public void setChats(TLVector<TLAbsChat> chats) {
-        this.chats = chats;
-    }
-
     public TLVector<TLAbsUser> getUsers() {
         return users;
-    }
-
-    public void setUsers(TLVector<TLAbsUser> users) {
-        this.users = users;
     }
 
     public void serializeBody(OutputStream stream)
@@ -118,8 +86,8 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
         StreamingUtils.writeInt(topMessage, stream);
         StreamingUtils.writeInt(topImportantMessage, stream);
         StreamingUtils.writeInt(readInboxMaxId, stream);
+        StreamingUtils.writeInt(readOutboxMaxId, stream);
         StreamingUtils.writeInt(unreadCount, stream);
-        StreamingUtils.writeInt(unreadImportantCount, stream);
         StreamingUtils.writeTLVector(messages, stream);
         StreamingUtils.writeTLVector(chats, stream);
         StreamingUtils.writeTLVector(users, stream);
@@ -135,14 +103,14 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
         this.topMessage = StreamingUtils.readInt(stream);
         this.topImportantMessage = StreamingUtils.readInt(stream);
         this.readInboxMaxId = StreamingUtils.readInt(stream);
+        this.readOutboxMaxId = StreamingUtils.readInt(stream);
         this.unreadCount = StreamingUtils.readInt(stream);
-        this.unreadImportantCount = StreamingUtils.readInt(stream);
-        this.messages = (TLVector<TLAbsMessage>) StreamingUtils.readTLVector(stream, context);
-        this.chats = (TLVector<TLAbsChat>) StreamingUtils.readTLVector(stream, context);
-        this.users = (TLVector<TLAbsUser>) StreamingUtils.readTLVector(stream, context);
+        this.messages = StreamingUtils.readTLVector(stream, context, TLAbsMessage.class);
+        this.chats = StreamingUtils.readTLVector(stream, context, TLAbsChat.class);
+        this.users = StreamingUtils.readTLVector(stream, context, TLAbsUser.class);
     }
 
     public String toString() {
-        return "updates.TLUpdatesChannelDifferencesTooLong#5e167646";
+        return "updates.channelDifferenceTooLong#410dee07";
     }
 }

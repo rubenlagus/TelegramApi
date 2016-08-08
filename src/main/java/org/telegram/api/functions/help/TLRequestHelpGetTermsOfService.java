@@ -24,7 +24,6 @@ import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * The type TL request help get app changelog.
@@ -33,9 +32,7 @@ public class TLRequestHelpGetTermsOfService extends TLMethod<TLTermsOfService> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x37d78f83;
-
-    private String languageCode;
+    public static final int CLASS_ID = 0x350170f3;
 
     /**
      * Instantiates a new TL request help get app changelog.
@@ -60,25 +57,7 @@ public class TLRequestHelpGetTermsOfService extends TLMethod<TLTermsOfService> {
         throw new IOException("Incorrect response type. Expected " + TLTermsOfService.class.getName() + ", got: " + res.getClass().getCanonicalName());
     }
 
-    public String getLanguageCode() {
-        return languageCode;
-    }
-
-    public void setLanguageCode(String languageCode) {
-        this.languageCode = languageCode;
-    }
-
-    @Override
-    public void serializeBody(OutputStream stream) throws IOException {
-        StreamingUtils.writeTLString(languageCode, stream);
-    }
-
-    @Override
-    public void deserializeBody(InputStream stream, TLContext context) throws IOException {
-        this.languageCode = StreamingUtils.readTLString(stream);
-    }
-
     public String toString() {
-        return "help.getTermsOfService#37d78f83";
+        return "help.getTermsOfService#350170f3";
     }
 }

@@ -2,6 +2,7 @@ package org.telegram.api.sticker.set;
 
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
+import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,12 +14,12 @@ import java.io.OutputStream;
  * @brief TODO
  * @date 07 of July of 2015
  */
-public class TLStickerSet extends TLAbsStickerSet {
+public class TLStickerSet extends TLObject {
     public static final int CLASS_ID = 0xcd303b41;
 
-    public static final int FLAG_INSTALLED      = 0x00000001; // 0
-    public static final int FLAG_DISABLED       = 0x00000002; // 1
-    public static final int FLAG_OFFICIAL       = 0x00000004; // 2
+    private static final int FLAG_INSTALLED      = 0x00000001; // 0
+    private static final int FLAG_ARCHIVED       = 0x00000002; // 1
+    private static final int FLAG_OFFICIAL       = 0x00000004; // 2
     
     private int flags;
     private long id;
@@ -34,59 +35,39 @@ public class TLStickerSet extends TLAbsStickerSet {
     }
 
     public long getId() {
-        return this.id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        return id;
     }
 
     public long getAccessHash() {
-        return this.accessHash;
-    }
-
-    public void setAccessHash(long accessHash) {
-        this.accessHash = accessHash;
+        return accessHash;
     }
 
     public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+        return title;
     }
 
     public String getShortName() {
-        return this.shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public int getFlags() {
-        return this.flags;
-    }
-
-    public void setFlags(int flags) {
-        this.flags = flags;
+        return shortName;
     }
 
     public int getCount() {
-        return this.count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
+        return count;
     }
 
     public int getHash() {
-        return this.hash;
+        return hash;
     }
 
-    public void setHash(int hash) {
-        this.hash = hash;
+    public boolean isInstalled() {
+        return (flags & FLAG_INSTALLED) != 0;
+    }
+
+    public boolean isArchived() {
+        return (flags & FLAG_ARCHIVED) != 0;
+    }
+
+    public boolean isOffcial() {
+        return (flags & FLAG_OFFICIAL) != 0;
     }
 
     @Override
@@ -113,6 +94,6 @@ public class TLStickerSet extends TLAbsStickerSet {
 
     @Override
     public String toString() {
-        return "stickers.set.StickerSet#cd303b41";
+        return "stickerSet#cd303b41";
     }
 }
