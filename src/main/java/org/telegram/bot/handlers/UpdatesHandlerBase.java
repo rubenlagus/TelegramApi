@@ -25,11 +25,13 @@ import org.telegram.api.update.TLUpdateChatParticipantAdmin;
 import org.telegram.api.update.TLUpdateChatParticipantDelete;
 import org.telegram.api.update.TLUpdateChatParticipants;
 import org.telegram.api.update.TLUpdateChatUserTyping;
+import org.telegram.api.update.TLUpdateConfig;
 import org.telegram.api.update.TLUpdateContactLink;
 import org.telegram.api.update.TLUpdateContactRegistered;
 import org.telegram.api.update.TLUpdateDcOptions;
 import org.telegram.api.update.TLUpdateDeleteChannelMessages;
 import org.telegram.api.update.TLUpdateDeleteMessages;
+import org.telegram.api.update.TLUpdateDraftMessage;
 import org.telegram.api.update.TLUpdateEditChannelMessage;
 import org.telegram.api.update.TLUpdateEditMessage;
 import org.telegram.api.update.TLUpdateInlineBotCallbackQuery;
@@ -39,10 +41,14 @@ import org.telegram.api.update.TLUpdateNewMessage;
 import org.telegram.api.update.TLUpdateNewStickerSet;
 import org.telegram.api.update.TLUpdateNotifySettings;
 import org.telegram.api.update.TLUpdatePrivacy;
+import org.telegram.api.update.TLUpdatePtsChanged;
 import org.telegram.api.update.TLUpdateReadChannelInbox;
+import org.telegram.api.update.TLUpdateReadChannelOutbox;
+import org.telegram.api.update.TLUpdateReadFeaturedStickers;
 import org.telegram.api.update.TLUpdateReadMessagesContents;
 import org.telegram.api.update.TLUpdateReadMessagesInbox;
 import org.telegram.api.update.TLUpdateReadMessagesOutbox;
+import org.telegram.api.update.TLUpdateRecentStickers;
 import org.telegram.api.update.TLUpdateSavedGifs;
 import org.telegram.api.update.TLUpdateServiceNotification;
 import org.telegram.api.update.TLUpdateStickerSets;
@@ -208,6 +214,18 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
                 onTLUpdateEncryptedMessagesRead((TLUpdateEncryptedMessagesRead) update);
             } else if (update instanceof TLUpdateNewEncryptedMessage) {
                 onTLUpdateNewEncryptedMessage((TLUpdateNewEncryptedMessage) update);
+            } else if (update instanceof TLUpdateConfig) {
+                onTLUpdateConfig((TLUpdateConfig) update);
+            } else if (update instanceof TLUpdateDraftMessage) {
+                onTLUpdateDraftMessage((TLUpdateDraftMessage) update, updateWrapper.isGettingDifferences());
+            } else if (update instanceof TLUpdatePtsChanged) {
+                onTLUpdatePtsChanged((TLUpdatePtsChanged) update);
+            } else if (update instanceof TLUpdateReadChannelOutbox) {
+                onTLUpdateReadChannelOutbox((TLUpdateReadChannelOutbox) update, updateWrapper.isGettingDifferences());
+            } else if (update instanceof TLUpdateReadFeaturedStickers) {
+                onTLUpdateReadFeaturedStickers((TLUpdateReadFeaturedStickers) update);
+            } else if (update instanceof TLUpdateRecentStickers) {
+                onTLUpdateRecentStickers((TLUpdateRecentStickers) update);
             } else {
                 BotLogger.debug(LOGTAG, "Unsupported TLAbsUpdate: " + update.toString());
             }
@@ -681,6 +699,42 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
         onTLUpdateNewEncryptedMessageCustom(update);
     }
 
+    private void onTLUpdateConfig(TLUpdateConfig update) {
+        onTLUpdateConfigCustom(update);
+    }
+
+    private void onTLUpdateDraftMessage(TLUpdateDraftMessage update, boolean gettingDifferences) {
+        if (isPeerMissing(update.getPeer())) {
+            if (!gettingDifferences) {
+                differencesHandler.getDifferences();
+            }
+        } else {
+            onTLUpdateDraftMessageCustom(update);
+        }
+    }
+
+    private void onTLUpdatePtsChanged(TLUpdatePtsChanged update) {
+        onTLUpdatePtsChangedCustom(update);
+    }
+
+    private void onTLUpdateReadChannelOutbox(TLUpdateReadChannelOutbox update, boolean gettingDifferences) {
+        if (isChatMissing(update.getChannelId())) {
+            if (!gettingDifferences) {
+                differencesHandler.getDifferences();
+            }
+        } else {
+            onTLUpdateReadChannelOutboxCustom(update);
+        }
+    }
+
+    private void onTLUpdateReadFeaturedStickers(TLUpdateReadFeaturedStickers update) {
+        onTLUpdateReadFeaturedStickersCustom(update);
+    }
+
+    private void onTLUpdateRecentStickers(TLUpdateRecentStickers update) {
+        onTLUpdateRecentStickersCustom(update);
+    }
+
     @Override
     public final void updateStateModification(TLUpdatesState state) {
         differencesHandler.updateStateModification(state, false);
@@ -871,5 +925,10 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     protected abstract void onTLUpdateEncryptedMessagesReadCustom(TLUpdateEncryptedMessagesRead update);
     protected abstract void onTLUpdateNewEncryptedMessageCustom(TLUpdateNewEncryptedMessage update);
     protected abstract void onTLUpdateEncryptedChatTypingCustom(TLUpdateEncryptedChatTyping update);
-
+    protected abstract void onTLUpdateConfigCustom(TLUpdateConfig update);
+    protected abstract void onTLUpdateDraftMessageCustom(TLUpdateDraftMessage update);
+    protected abstract void onTLUpdatePtsChangedCustom(TLUpdatePtsChanged update);
+    protected abstract void onTLUpdateReadChannelOutboxCustom(TLUpdateReadChannelOutbox update);
+    protected abstract void onTLUpdateReadFeaturedStickersCustom(TLUpdateReadFeaturedStickers update);
+    protected abstract void onTLUpdateRecentStickersCustom(TLUpdateRecentStickers update);
 }

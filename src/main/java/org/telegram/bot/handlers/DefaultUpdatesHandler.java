@@ -16,11 +16,13 @@ import org.telegram.api.update.TLUpdateChatParticipantAdmin;
 import org.telegram.api.update.TLUpdateChatParticipantDelete;
 import org.telegram.api.update.TLUpdateChatParticipants;
 import org.telegram.api.update.TLUpdateChatUserTyping;
+import org.telegram.api.update.TLUpdateConfig;
 import org.telegram.api.update.TLUpdateContactLink;
 import org.telegram.api.update.TLUpdateContactRegistered;
 import org.telegram.api.update.TLUpdateDcOptions;
 import org.telegram.api.update.TLUpdateDeleteChannelMessages;
 import org.telegram.api.update.TLUpdateDeleteMessages;
+import org.telegram.api.update.TLUpdateDraftMessage;
 import org.telegram.api.update.TLUpdateEditChannelMessage;
 import org.telegram.api.update.TLUpdateEditMessage;
 import org.telegram.api.update.TLUpdateInlineBotCallbackQuery;
@@ -30,10 +32,14 @@ import org.telegram.api.update.TLUpdateNewMessage;
 import org.telegram.api.update.TLUpdateNewStickerSet;
 import org.telegram.api.update.TLUpdateNotifySettings;
 import org.telegram.api.update.TLUpdatePrivacy;
+import org.telegram.api.update.TLUpdatePtsChanged;
 import org.telegram.api.update.TLUpdateReadChannelInbox;
+import org.telegram.api.update.TLUpdateReadChannelOutbox;
+import org.telegram.api.update.TLUpdateReadFeaturedStickers;
 import org.telegram.api.update.TLUpdateReadMessagesContents;
 import org.telegram.api.update.TLUpdateReadMessagesInbox;
 import org.telegram.api.update.TLUpdateReadMessagesOutbox;
+import org.telegram.api.update.TLUpdateRecentStickers;
 import org.telegram.api.update.TLUpdateSavedGifs;
 import org.telegram.api.update.TLUpdateServiceNotification;
 import org.telegram.api.update.TLUpdateStickerSets;
@@ -317,6 +323,36 @@ public class DefaultUpdatesHandler extends UpdatesHandlerBase {
 
     @Override
     protected void onTLUpdateEncryptedChatTypingCustom(TLUpdateEncryptedChatTyping update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateConfigCustom(TLUpdateConfig update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateDraftMessageCustom(TLUpdateDraftMessage update) {
+
+    }
+
+    @Override
+    protected void onTLUpdatePtsChangedCustom(TLUpdatePtsChanged update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateReadChannelOutboxCustom(TLUpdateReadChannelOutbox update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateReadFeaturedStickersCustom(TLUpdateReadFeaturedStickers update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateRecentStickersCustom(TLUpdateRecentStickers update) {
 
     }
 
