@@ -116,7 +116,7 @@ public class DifferencesHandler implements IDifferencesHandler {
             final TLInputChannel inputChannel = new TLInputChannel();
             inputChannel.setChannelId(chatId);
             inputChannel.setAccessHash(accessHash);
-            requestGetChannelDifference.setPeer(inputChannel);
+            requestGetChannelDifference.setChannel(inputChannel);
             TLAbsUpdatesChannelDifferences absDifference = null;
             do {
                 final int pts = differenceParametersService.getPts(chatId);

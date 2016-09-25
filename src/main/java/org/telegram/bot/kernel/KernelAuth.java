@@ -5,6 +5,7 @@ import org.telegram.api.auth.TLAuthorization;
 import org.telegram.api.auth.TLSentCode;
 import org.telegram.api.engine.RpcException;
 import org.telegram.api.engine.storage.AbsApiState;
+import org.telegram.api.functions.auth.TLRequestAuthImportBotAuthorization;
 import org.telegram.api.functions.auth.TLRequestAuthLogOut;
 import org.telegram.api.functions.auth.TLRequestAuthSendCode;
 import org.telegram.api.functions.auth.TLRequestAuthSignIn;
@@ -55,7 +56,7 @@ public class KernelAuth {
     }
 
     public LoginStatus start() {
-        return login();
+        return config.isBot() ? loginBot() : login();
     }
 
     /**
@@ -67,9 +68,9 @@ public class KernelAuth {
             if (getApiState().isAuthenticated()) {
                 kernelComm.doRpcCallSync(new TLRequestAuthLogOut()); // Logout previous
                 getApiState().resetAuth(); // Reset previous stored credentials
-                config.isRegistered = false;
+                config.setRegistered(false);
             } else {
-                config.isRegistered = false;
+                config.setRegistered(false);
             }
             result = true;
         } catch (ExecutionException | RpcException e) {
@@ -91,11 +92,11 @@ public class KernelAuth {
     public boolean setAuthCode(String code) {
         boolean result = false;
         try {
-            if (config.hashCode.compareTo("") == 0) {
+            if (config.getHashCode().compareTo("") == 0) {
                 result = false;
             } else {
                 final TLAuthorization authorization;
-                if (config.isRegistered) {
+                if (config.isRegistered()) {
                     final TLRequestAuthSignIn tlRequestAuthSignIn = getSignInRequest(code);
                     authorization = kernelComm.getApi().doRpcCallNonAuth(tlRequestAuthSignIn);
                 } else {
@@ -103,7 +104,7 @@ public class KernelAuth {
                     authorization = kernelComm.getApi().doRpcCallNonAuth(tlRequestAuthSignUp);
                 }
                 if (authorization != null) {
-                    config.isRegistered = true;
+                    config.setRegistered(true);
                     getApiState().doAuth(authorization);
                     BotLogger.info(LOGTAG,"Activation complete as #" + getApiState().getObj().getUid());
                     kernelComm.getApi().doRpcCall(new TLRequestUpdatesGetState());
@@ -127,7 +128,7 @@ public class KernelAuth {
         try {
             if (getApiState().isAuthenticated()) {
                 BotLogger.info(LOGTAG,"Found Auth file");
-                config.isRegistered = true;
+                config.setRegistered(true);
                 result = LoginStatus.ALREADYLOGGED;
             } else {
                 try {
@@ -137,7 +138,7 @@ public class KernelAuth {
                 } catch (IOException | TimeoutException e) {
                     BotLogger.error(LOGTAG, e);
                 }
-                BotLogger.info(LOGTAG,"Sending code to phone " + config.number + "...");
+                BotLogger.info(LOGTAG,"Sending code to phone " + config.getPhoneNumber() + "...");
                 TLSentCode sentCode = null;
                 try {
                     final TLRequestAuthSendCode tlRequestAuthSendCode = getSendCodeRequest();
@@ -158,8 +159,8 @@ public class KernelAuth {
                 }
 
                 if (sentCode != null) {
-                    config.hashCode = sentCode.getPhoneCodeHash();
-                    config.isRegistered = sentCode.isPhoneRegistered();
+                    config.setHashCode(sentCode.getPhoneCodeHash());
+                    config.setRegistered(sentCode.isPhoneRegistered());
                     BotLogger.info(LOGTAG,"sent Code");
                     result = LoginStatus.CODESENT;
                 } else {
@@ -191,6 +192,55 @@ public class KernelAuth {
         return result;
     }
 
+    private LoginStatus loginBot() {
+        LoginStatus result = null;
+        try {
+            if (getApiState().isAuthenticated()) {
+                BotLogger.info(LOGTAG,"Found Auth file");
+                config.setRegistered(true);
+                result = LoginStatus.ALREADYLOGGED;
+            } else {
+                try {
+                    final TLConfig config = kernelComm.getApi().doRpcCallNonAuth(new TLRequestHelpGetConfig());
+                    BotLogger.info(LOGTAG,"Loaded DC list");
+                    getApiState().updateSettings(config);
+                } catch (IOException | TimeoutException e) {
+                    BotLogger.error(LOGTAG, e);
+                }
+                BotLogger.info(LOGTAG,"Sending code to phone " + config.getPhoneNumber() + "...");
+                try {
+                    final TLRequestAuthImportBotAuthorization botAuthorization = new TLRequestAuthImportBotAuthorization();
+                    botAuthorization.setApiId(this.apiKey);
+                    botAuthorization.setApiHash(this.apiHash);
+                    botAuthorization.setBotAuthToken(config.getBotToken());
+                    TLAuthorization authorization = kernelComm.getApi().doRpcCallNonAuth(botAuthorization);
+
+                    if (authorization != null) {
+                        config.setRegistered(true);
+                        getApiState().doAuth(authorization);
+                        BotLogger.info(LOGTAG,"Activation complete as #" + getApiState().getObj().getUid());
+                        kernelComm.getApi().doRpcCall(new TLRequestUpdatesGetState());
+                        BotLogger.info(LOGTAG,"Loaded initial state");
+                        result =  LoginStatus.BOTLOGIN;
+                    }
+                } catch (RpcException e) {
+                    BotLogger.severe(LOGTAG, e);
+                } catch (TimeoutException e) {
+                    BotLogger.error(LOGTAG, e);
+                }
+            }
+        } catch (IOException ex) {
+            BotLogger.error(LOGTAG, ex);
+            result = LoginStatus.UNEXPECTEDERROR;
+        }
+
+        if (result == null) {
+            result = LoginStatus.BOTLOGINERROR;
+        }
+
+        return result;
+    }
+
     private void createNextCodeTimer(int timeout) {
         this.loginTimer.schedule(new TimerTask() {
             @Override
@@ -209,7 +259,7 @@ public class KernelAuth {
 
     private TLRequestAuthSendCode getSendCodeRequest() {
         final TLRequestAuthSendCode tlRequestAuthSendCode = new TLRequestAuthSendCode();
-        tlRequestAuthSendCode.setPhoneNumber(config.number);
+        tlRequestAuthSendCode.setPhoneNumber(config.getPhoneNumber());
         tlRequestAuthSendCode.setApiId(apiKey);
         tlRequestAuthSendCode.setApiHash(apiHash);
         return tlRequestAuthSendCode;
@@ -247,8 +297,8 @@ public class KernelAuth {
 
     private TLRequestAuthSignUp getSignUpRequest(String code) {
         final TLRequestAuthSignUp tlRequestAuthSignUp = new TLRequestAuthSignUp();
-        tlRequestAuthSignUp.setPhoneNumber(config.number);
-        tlRequestAuthSignUp.setPhoneCodeHash(config.hashCode);
+        tlRequestAuthSignUp.setPhoneNumber(config.getPhoneNumber());
+        tlRequestAuthSignUp.setPhoneCodeHash(config.getHashCode());
         tlRequestAuthSignUp.setPhoneCode(code);
         tlRequestAuthSignUp.setFirstName("Rubenlagus");
         tlRequestAuthSignUp.setLastName("Bot");
@@ -257,8 +307,8 @@ public class KernelAuth {
 
     private TLRequestAuthSignIn getSignInRequest(String code) {
         final TLRequestAuthSignIn tlRequestAuthSignIn = new TLRequestAuthSignIn();
-        tlRequestAuthSignIn.setPhoneNumber(config.number);
-        tlRequestAuthSignIn.setPhoneCodeHash(config.hashCode);
+        tlRequestAuthSignIn.setPhoneNumber(config.getPhoneNumber());
+        tlRequestAuthSignIn.setPhoneCodeHash(config.getHashCode());
         tlRequestAuthSignIn.setPhoneCode(code);
         return tlRequestAuthSignIn;
     }

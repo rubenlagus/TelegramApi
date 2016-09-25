@@ -90,7 +90,7 @@ public class TelegramBot {
 
     public LoginStatus init() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         BotLogger.debug(LOGTAG, "Creating API");
-        apiState = new MemoryApiState(config.authfile);
+        apiState = new MemoryApiState(config.getAuthfile());
         BotLogger.debug(LOGTAG, "API created");
         createKernelComm(); // Only set up threads and assign api state
         createKernelAuth(); // Only assign api state to kernel auth
@@ -145,11 +145,6 @@ public class TelegramBot {
         final long start = System.currentTimeMillis();
         this.kernelComm = new KernelComm(apiKey, apiState);
         BotLogger.info(LOGTAG, String.format("%s init in %d ms", getKernelComm().getClass().getName(), (start - System.currentTimeMillis()) * -1));
-    }
-
-    public void setConfig(BotConfig config) {
-        this.config.hashCode = config.hashCode;
-        this.config.isRegistered = config.isRegistered;
     }
 
     public BotConfig getConfig() {

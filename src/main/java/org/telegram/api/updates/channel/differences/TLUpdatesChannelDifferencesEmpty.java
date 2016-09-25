@@ -30,6 +30,10 @@ public class TLUpdatesChannelDifferencesEmpty extends TLAbsUpdatesChannelDiffere
         return CLASS_ID;
     }
 
+    public boolean isFinal() {
+        return (flags & FLAG_FINAL) != 0;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeInt(this.flags, stream);
@@ -49,6 +53,6 @@ public class TLUpdatesChannelDifferencesEmpty extends TLAbsUpdatesChannelDiffere
     }
 
     public String toString() {
-        return "updates.TLUpdatesChannelDifferencesEmpty#3e11affb";
+        return "updates.channelDifferenceEmpty#3e11affb";
     }
 }

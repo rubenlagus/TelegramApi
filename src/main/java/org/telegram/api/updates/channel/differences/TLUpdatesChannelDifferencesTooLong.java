@@ -24,7 +24,6 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
     private static final int FLAG_TIMEOUT = 0x00000002; // 1
 
     private int topMessage;
-    private int topImportantMessage;
     private int readInboxMaxId;
     private int readOutboxMaxId;
     private int unreadCount;
@@ -46,10 +45,6 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
 
     public int getTopMessage() {
         return topMessage;
-    }
-
-    public int getTopImportantMessage() {
-        return topImportantMessage;
     }
 
     public int getReadInboxMaxId() {
@@ -84,7 +79,6 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
             StreamingUtils.writeInt(timeout, stream);
         }
         StreamingUtils.writeInt(topMessage, stream);
-        StreamingUtils.writeInt(topImportantMessage, stream);
         StreamingUtils.writeInt(readInboxMaxId, stream);
         StreamingUtils.writeInt(readOutboxMaxId, stream);
         StreamingUtils.writeInt(unreadCount, stream);
@@ -101,7 +95,6 @@ public class TLUpdatesChannelDifferencesTooLong extends TLAbsUpdatesChannelDiffe
             this.timeout = StreamingUtils.readInt(stream);
         }
         this.topMessage = StreamingUtils.readInt(stream);
-        this.topImportantMessage = StreamingUtils.readInt(stream);
         this.readInboxMaxId = StreamingUtils.readInt(stream);
         this.readOutboxMaxId = StreamingUtils.readInt(stream);
         this.unreadCount = StreamingUtils.readInt(stream);

@@ -73,6 +73,10 @@ public class TLUpdatesChannelDifferences extends TLAbsUpdatesChannelDifferences 
         this.users = users;
     }
 
+    public boolean isFinal() {
+        return (flags & FLAG_FINAL) != 0;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeInt(this.flags, stream);
@@ -93,13 +97,13 @@ public class TLUpdatesChannelDifferences extends TLAbsUpdatesChannelDifferences 
         if ((this.flags & FLAG_TIMEOUT) != 0) {
             this.timeout = StreamingUtils.readInt(stream);
         }
-        this.newMessages = (TLVector<TLAbsMessage>) StreamingUtils.readTLVector(stream, context);
-        this.otherUpdates = (TLVector<TLAbsUpdate>) StreamingUtils.readTLVector(stream, context);
-        this.chats = (TLVector<TLAbsChat>) StreamingUtils.readTLVector(stream, context);
-        this.users = (TLVector<TLAbsUser>) StreamingUtils.readTLVector(stream, context);
+        this.newMessages = StreamingUtils.readTLVector(stream, context, TLAbsMessage.class);
+        this.otherUpdates = StreamingUtils.readTLVector(stream, context, TLAbsUpdate.class);
+        this.chats = StreamingUtils.readTLVector(stream, context, TLAbsChat.class);
+        this.users = StreamingUtils.readTLVector(stream, context, TLAbsUser.class);
     }
 
     public String toString() {
-        return "updates.TLUpdatesChannelDifferences#2064674e";
+        return "updates.channelDifference#2064674e";
     }
 }

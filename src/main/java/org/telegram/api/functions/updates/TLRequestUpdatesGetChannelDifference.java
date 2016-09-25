@@ -21,7 +21,7 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
      */
     public static final int CLASS_ID = 0xbb32d7c0;
 
-    private TLAbsInputChannel peer;
+    private TLAbsInputChannel channel;
     private TLAbsChannelMessagesFilter filter;
     private int pts;
     private int limit;
@@ -67,12 +67,12 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
         this.pts = value;
     }
 
-    public TLAbsInputChannel getPeer() {
-        return peer;
+    public TLAbsInputChannel getChannel() {
+        return channel;
     }
 
-    public void setPeer(TLAbsInputChannel peer) {
-        this.peer = peer;
+    public void setChannel(TLAbsInputChannel channel) {
+        this.channel = channel;
     }
 
     public TLAbsChannelMessagesFilter getFilter() {
@@ -93,7 +93,7 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
 
     public void serializeBody(OutputStream stream)
             throws IOException {
-        StreamingUtils.writeTLObject(this.peer, stream);
+        StreamingUtils.writeTLObject(this.channel, stream);
         StreamingUtils.writeTLObject(this.filter, stream);
         StreamingUtils.writeInt(this.pts, stream);
         StreamingUtils.writeInt(this.limit, stream);
@@ -101,13 +101,13 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.peer = (TLAbsInputChannel) StreamingUtils.readTLObject(stream, context);
-        this.filter = (TLAbsChannelMessagesFilter) StreamingUtils.readTLObject(stream, context);
+        this.channel = StreamingUtils.readTLObject(stream, context, TLAbsInputChannel.class);
+        this.filter = StreamingUtils.readTLObject(stream, context, TLAbsChannelMessagesFilter.class);
         this.pts = StreamingUtils.readInt(stream);
         this.limit = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "updates.TLRequestUpdatesGetChannelDifference#bb32d7c0";
+        return "updates.getChannelDifference#bb32d7c0";
     }
 }
