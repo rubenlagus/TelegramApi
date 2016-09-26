@@ -19,11 +19,16 @@ public class TLRequestMessagesGetBotCallbackAnswer extends TLMethod<TLMessagesBo
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xa6e94f04;
+    public static final int CLASS_ID = 0x6c996518;
 
+    private static final int FLAG_DATA            = 0x00000001; // 0
+    private static final int FLAG_GAMEID          = 0x00000002; // 1
+
+    private int flags;
     private TLAbsInputPeer peer;
     private int msgId;
     private TLBytes data;
+    private int gameId;
 
     /**
      * Instantiates a new TL request channel edit admin
@@ -60,23 +65,55 @@ public class TLRequestMessagesGetBotCallbackAnswer extends TLMethod<TLMessagesBo
         return data;
     }
 
+    public void setPeer(TLAbsInputPeer peer) {
+        this.peer = peer;
+    }
+
+    public void setMsgId(int msgId) {
+        this.msgId = msgId;
+    }
+
+    public void setData(TLBytes data) {
+        this.data = data;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
     @Override
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeTLObject(peer, stream);
         StreamingUtils.writeInt(msgId, stream);
-        StreamingUtils.writeTLBytes(data, stream);
+        if ((flags & FLAG_DATA) != 0) {
+            StreamingUtils.writeTLBytes(data, stream);
+        }
+        if ((flags & FLAG_GAMEID) != 0) {
+            StreamingUtils.writeInt(gameId, stream);
+        }
     }
 
     @Override
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        peer = (TLAbsInputPeer) StreamingUtils.readTLObject(stream, context);
+        flags = StreamingUtils.readInt(stream);
+        peer = StreamingUtils.readTLObject(stream, context, TLAbsInputPeer.class);
         msgId = StreamingUtils.readInt(stream);
-        data = StreamingUtils.readTLBytes(stream, context);
+        if ((flags & FLAG_DATA) != 0) {
+            data = StreamingUtils.readTLBytes(stream, context);
+        }
+        if ((flags & FLAG_GAMEID) != 0) {
+            gameId = StreamingUtils.readInt(stream);
+        }
     }
 
     public String toString() {
-        return "messages.getBotCallbackAnswer#a6e94f04";
+        return "messages.getBotCallbackAnswer#6c996518";
     }
 }

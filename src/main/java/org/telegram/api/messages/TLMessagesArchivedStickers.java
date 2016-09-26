@@ -1,6 +1,6 @@
 package org.telegram.api.messages;
 
-import org.telegram.api.sticker.TLStickerSetCovered;
+import org.telegram.api.sticker.stickersetconvered.TLAbsStickerSetCovered;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLObject;
@@ -20,7 +20,7 @@ public class TLMessagesArchivedStickers extends TLObject {
     public static final int CLASS_ID = 0x4fcba9c8;
 
     private int count;
-    private TLVector<TLStickerSetCovered> sets;
+    private TLVector<TLAbsStickerSetCovered> sets;
 
     public TLMessagesArchivedStickers() {
         super();
@@ -35,7 +35,7 @@ public class TLMessagesArchivedStickers extends TLObject {
         return count;
     }
 
-    public TLVector<TLStickerSetCovered> getSets() {
+    public TLVector<TLAbsStickerSetCovered> getSets() {
         return sets;
     }
 
@@ -48,7 +48,7 @@ public class TLMessagesArchivedStickers extends TLObject {
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
         count = StreamingUtils.readInt(stream);
-        sets = StreamingUtils.readTLVector(stream, context, TLStickerSetCovered.class);
+        sets = StreamingUtils.readTLVector(stream, context, TLAbsStickerSetCovered.class);
     }
 
     @Override

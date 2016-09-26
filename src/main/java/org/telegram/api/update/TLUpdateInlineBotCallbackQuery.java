@@ -33,12 +33,18 @@ public class TLUpdateInlineBotCallbackQuery extends TLAbsUpdate {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x2cbd95af;
+    public static final int CLASS_ID = 0x4f2f45d1;
 
+    private static final int FLAG_DATA    = 0x00000001; // 0
+    private static final int FLAG_GAMEID  = 0x00000002; // 1
+
+    private int flags;
     private long queryId;
     private int userId;
     private TLInputBotInlineMessageId msgId;
+    private long chatInstance;
     private TLBytes data;
+    private int gameId;
 
     /**
      * Instantiates a new TL update channel group
@@ -67,23 +73,45 @@ public class TLUpdateInlineBotCallbackQuery extends TLAbsUpdate {
         return data;
     }
 
+    public long getChatInstance() {
+        return chatInstance;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeLong(queryId, stream);
         StreamingUtils.writeInt(userId, stream);
         StreamingUtils.writeTLObject(msgId, stream);
-        StreamingUtils.writeTLBytes(data, stream);
+        StreamingUtils.writeLong(chatInstance, stream);
+        if ((flags & FLAG_DATA) != 0) {
+            StreamingUtils.writeTLBytes(data, stream);
+        }
+        if ((flags & FLAG_GAMEID) != 0) {
+            StreamingUtils.writeInt(gameId, stream);
+        }
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         queryId = StreamingUtils.readLong(stream);
         userId = StreamingUtils.readInt(stream);
         msgId = (TLInputBotInlineMessageId) StreamingUtils.readTLObject(stream, context);
-        data = StreamingUtils.readTLBytes(stream, context);
+        chatInstance = StreamingUtils.readInt(stream);
+        if ((flags & FLAG_DATA) != 0) {
+            data = StreamingUtils.readTLBytes(stream, context);
+        }
+        if ((flags & FLAG_GAMEID) != 0) {
+            gameId = StreamingUtils.readInt(stream);
+        }
     }
 
     public String toString() {
-        return "updateInlineBotCallbackQuery#2cbd95af";
+        return "updateInlineBotCallbackQuery#4f2f45d1";
     }
 }

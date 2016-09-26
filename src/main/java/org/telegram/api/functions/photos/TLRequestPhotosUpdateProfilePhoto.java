@@ -1,7 +1,6 @@
 package org.telegram.api.functions.photos;
 
 import org.telegram.api.input.photo.TLAbsInputPhoto;
-import org.telegram.api.input.photo.crop.TLAbsInputPhotoCrop;
 import org.telegram.api.user.profile.photo.TLAbsUserProfilePhoto;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
@@ -19,10 +18,9 @@ public class TLRequestPhotosUpdateProfilePhoto extends TLMethod<TLAbsUserProfile
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xeef579a0;
+    public static final int CLASS_ID = 0xf0bb5152;
 
     private TLAbsInputPhoto id;
-    private TLAbsInputPhotoCrop crop;
 
     /**
      * Instantiates a new TL request photos update profile photo.
@@ -42,7 +40,7 @@ public class TLRequestPhotosUpdateProfilePhoto extends TLMethod<TLAbsUserProfile
             throw new IOException("Unable to parse response");
         if ((res instanceof TLAbsUserProfilePhoto))
             return (TLAbsUserProfilePhoto) res;
-        throw new IOException("Incorrect response type. Expected org.telegram.api.user.profile.photo.TLAbsUserProfilePhoto, got: " + res.getClass().getCanonicalName());
+        throw new IOException("Incorrect response type. Expected " + TLAbsUserProfilePhoto.class.getCanonicalName() + ", got: " + res.getClass().getCanonicalName());
     }
 
     /**
@@ -63,37 +61,17 @@ public class TLRequestPhotosUpdateProfilePhoto extends TLMethod<TLAbsUserProfile
         this.id = value;
     }
 
-    /**
-     * Gets crop.
-     *
-     * @return the crop
-     */
-    public TLAbsInputPhotoCrop getCrop() {
-        return this.crop;
-    }
-
-    /**
-     * Sets crop.
-     *
-     * @param value the value
-     */
-    public void setCrop(TLAbsInputPhotoCrop value) {
-        this.crop = value;
-    }
-
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeTLObject(this.id, stream);
-        StreamingUtils.writeTLObject(this.crop, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.id = ((TLAbsInputPhoto) StreamingUtils.readTLObject(stream, context));
-        this.crop = ((TLAbsInputPhotoCrop) StreamingUtils.readTLObject(stream, context));
+        this.id = StreamingUtils.readTLObject(stream, context, TLAbsInputPhoto.class);
     }
 
     public String toString() {
-        return "photos.updateProfilePhoto#eef579a0";
+        return "photos.updateProfilePhoto#f0bb5152";
     }
 }

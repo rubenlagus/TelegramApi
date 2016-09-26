@@ -1,6 +1,5 @@
 package org.telegram.api.input.media;
 
-import org.telegram.api.input.file.TLAbsInputFile;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 
@@ -15,9 +14,10 @@ public class TLInputMediaDocumentExternal extends TLAbsInputMedia {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x7477f92c;
+    public static final int CLASS_ID = 0xe5e9607c;
 
-    private TLAbsInputFile url;
+    private String url;
+    private String caption;
 
     /**
      * Instantiates a new TL input media photo.
@@ -30,25 +30,35 @@ public class TLInputMediaDocumentExternal extends TLAbsInputMedia {
         return CLASS_ID;
     }
 
-    public TLAbsInputFile getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(TLAbsInputFile url) {
+    public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
     }
 
     public void serializeBody(OutputStream stream)
             throws IOException {
-        StreamingUtils.writeTLObject(this.url, stream);
+        StreamingUtils.writeTLString(url, stream);
+        StreamingUtils.writeTLString(caption, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.url = (TLAbsInputFile) StreamingUtils.readTLObject(stream, context);
+        url = StreamingUtils.readTLString(stream);
+        caption = StreamingUtils.readTLString(stream);
     }
 
     public String toString() {
-        return "inputMediaDocumentExternal#7477f92c";
+        return "inputMediaDocumentExternal#e5e9607c";
     }
 }

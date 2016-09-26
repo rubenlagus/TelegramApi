@@ -1,7 +1,6 @@
 package org.telegram.api.input.chat.photo;
 
 import org.telegram.api.input.photo.TLAbsInputPhoto;
-import org.telegram.api.input.photo.crop.TLAbsInputPhotoCrop;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 
@@ -16,10 +15,9 @@ public class TLInputChatPhoto extends TLAbsInputChatPhoto {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xb2e1bf08;
+    public static final int CLASS_ID = 0x8953ad37;
 
     private TLAbsInputPhoto id;
-    private TLAbsInputPhotoCrop crop;
 
     /**
      * Instantiates a new TL input chat photo.
@@ -50,37 +48,17 @@ public class TLInputChatPhoto extends TLAbsInputChatPhoto {
         this.id = id;
     }
 
-    /**
-     * Gets crop.
-     *
-     * @return the crop
-     */
-    public TLAbsInputPhotoCrop getCrop() {
-        return this.crop;
-    }
-
-    /**
-     * Sets crop.
-     *
-     * @param crop the crop
-     */
-    public void setCrop(TLAbsInputPhotoCrop crop) {
-        this.crop = crop;
-    }
-
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeTLObject(this.id, stream);
-        StreamingUtils.writeTLObject(this.crop, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.id = ((TLAbsInputPhoto) StreamingUtils.readTLObject(stream, context));
-        this.crop = ((TLAbsInputPhotoCrop) StreamingUtils.readTLObject(stream, context));
+        this.id = StreamingUtils.readTLObject(stream, context, TLAbsInputPhoto.class);
     }
 
     public String toString() {
-        return "inputChatPhoto#b2e1bf08";
+        return "inputChatPhoto#8953ad37";
     }
 }

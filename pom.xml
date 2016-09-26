@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <groupId>org.telegram</groupId>
     <artifactId>telegramapi</artifactId>
-    <version>55.3-SNAPSHOT</version>
+    <version>56.0-SNAPSHOT</version>
 
     <name>Telegram Api</name>
     <url>https://github.com/rubenlagus/Deepthought</url>
@@ -47,6 +47,30 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>${annotations.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160212</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

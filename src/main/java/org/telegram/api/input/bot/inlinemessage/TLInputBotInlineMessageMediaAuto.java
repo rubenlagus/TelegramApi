@@ -31,7 +31,7 @@ import java.io.OutputStream;
  * @date 13 of February of 2016
  */
 public class TLInputBotInlineMessageMediaAuto extends TLAbsInputBotInlineMessage {
-    public static final int CLASS_ID = 0x2e43e587;
+    public static final int CLASS_ID = 0x292fed13;
 
     private static final int FLAG_UNUSED0       = 0x00000001; // 0
     private static final int FLAG_UNUSED1       = 0x00000002; // 1

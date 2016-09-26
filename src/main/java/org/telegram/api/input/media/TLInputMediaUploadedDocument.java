@@ -1,6 +1,7 @@
 package org.telegram.api.input.media;
 
 import org.telegram.api.document.attribute.TLAbsDocumentAttribute;
+import org.telegram.api.input.document.TLAbsInputDocument;
 import org.telegram.api.input.file.TLAbsInputFile;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
@@ -17,18 +18,23 @@ public class TLInputMediaUploadedDocument extends TLAbsInputMedia {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x1d89306d;
+    public static final int CLASS_ID = 0xd070f1e9;
 
+    private static final int FLAG_STICKERS = 0x00000001; // 0
+
+    private int flags;
     private TLAbsInputFile file;
-    private String mimeType = "";
+    private String mimeType;
     private TLVector<TLAbsDocumentAttribute> attributes = new TLVector<>();
     private String caption;
+    private TLVector<TLAbsInputDocument> stickers;
 
     /**
      * Instantiates a new TL input media uploaded document.
      */
     public TLInputMediaUploadedDocument() {
         super();
+        mimeType = "";
     }
 
     public int getClassId() {
@@ -97,20 +103,41 @@ public class TLInputMediaUploadedDocument extends TLAbsInputMedia {
         this.caption = caption;
     }
 
+    public TLVector<TLAbsInputDocument> getStickers() {
+        return stickers;
+    }
+
+    public void setStickers(TLVector<TLAbsInputDocument> stickers) {
+        if (stickers == null || stickers.isEmpty()) {
+            flags &= ~FLAG_STICKERS;
+        } else {
+            flags |= FLAG_STICKERS;
+        }
+        this.stickers = stickers;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeTLObject(this.file, stream);
         StreamingUtils.writeTLString(this.mimeType, stream);
         StreamingUtils.writeTLObject(this.attributes, stream);
         StreamingUtils.writeTLString(this.caption, stream);
+        if ((flags & FLAG_STICKERS) != 0) {
+            StreamingUtils.writeTLVector(stickers, stream);
+        }
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         this.file = ((TLAbsInputFile) StreamingUtils.readTLObject(stream, context));
         this.mimeType = StreamingUtils.readTLString(stream);
-        this.attributes = (TLVector<TLAbsDocumentAttribute>) StreamingUtils.readTLObject(stream, context);
+        this.attributes = StreamingUtils.readTLVector(stream, context, TLAbsDocumentAttribute.class);
         this.caption = StreamingUtils.readTLString(stream);
+        if ((flags & FLAG_STICKERS) != 0) {
+            stickers = StreamingUtils.readTLVector(stream, context, TLAbsInputDocument.class);
+        }
     }
 
     public String toString() {

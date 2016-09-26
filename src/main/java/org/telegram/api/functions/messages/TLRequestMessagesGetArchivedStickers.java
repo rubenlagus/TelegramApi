@@ -17,8 +17,11 @@ public class TLRequestMessagesGetArchivedStickers extends TLMethod<TLMessagesArc
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x906e241f;
+    public static final int CLASS_ID = 0x57f17692;
 
+    private static final int FLAG_MASKS    = 0x00000001; // 0
+
+    private int flags;
     private long offsetId;
     private int limit;
 
@@ -62,19 +65,29 @@ public class TLRequestMessagesGetArchivedStickers extends TLMethod<TLMessagesArc
         this.offsetId = offsetId;
     }
 
+    public void enableMasks(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_MASKS;
+        } else {
+            this.flags &= ~FLAG_MASKS;
+        }
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeLong(offsetId, stream);
         StreamingUtils.writeInt(limit, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         offsetId = StreamingUtils.readLong(stream);
         limit = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "messages.getArchivedStickers#906e241f";
+        return "messages.getArchivedStickers#57f17692";
     }
 }

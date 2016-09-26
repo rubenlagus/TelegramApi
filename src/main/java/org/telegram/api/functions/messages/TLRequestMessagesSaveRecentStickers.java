@@ -18,8 +18,11 @@ public class TLRequestMessagesSaveRecentStickers extends TLMethod<TLBool> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x348e39bf;
+    public static final int CLASS_ID = 0x392718f8;
 
+    private static final int FLAG_ATTACHED = 0x00000001; // 0
+
+    private int flags;
     private TLAbsInputDocument id;
     private boolean unsave;
 
@@ -62,19 +65,29 @@ public class TLRequestMessagesSaveRecentStickers extends TLMethod<TLBool> {
         this.unsave = unsave;
     }
 
+    public void enableAttached(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_ATTACHED;
+        } else {
+            this.flags &= ~FLAG_ATTACHED;
+        }
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeTLObject(id, stream);
         StreamingUtils.writeTLBool(unsave, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         id = StreamingUtils.readTLObject(stream, context, TLAbsInputDocument.class);
         unsave = StreamingUtils.readTLBool(stream);
     }
 
     public String toString() {
-        return "messages.saveRecentSticker#348e39bf";
+        return "messages.saveRecentSticker#392718f8";
     }
 }

@@ -1,6 +1,6 @@
 package org.telegram.api.messages.stickers.featured;
 
-import org.telegram.api.sticker.TLStickerSetCovered;
+import org.telegram.api.sticker.stickersetconvered.TLAbsStickerSetCovered;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLLongVector;
@@ -20,7 +20,7 @@ public class TLMessagesFeaturedStickers extends TLAbsMessagesFeaturedStickers {
     public static final int CLASS_ID = 0xf89d88e5;
 
     private int hash;
-    private TLVector<TLStickerSetCovered> sets;
+    private TLVector<TLAbsStickerSetCovered> sets;
     private TLLongVector unread;
 
     public TLMessagesFeaturedStickers() {
@@ -36,7 +36,7 @@ public class TLMessagesFeaturedStickers extends TLAbsMessagesFeaturedStickers {
         return hash;
     }
 
-    public TLVector<TLStickerSetCovered> getSets() {
+    public TLVector<TLAbsStickerSetCovered> getSets() {
         return sets;
     }
 
@@ -54,7 +54,7 @@ public class TLMessagesFeaturedStickers extends TLAbsMessagesFeaturedStickers {
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
         hash = StreamingUtils.readInt(stream);
-        sets = StreamingUtils.readTLVector(stream, context, TLStickerSetCovered.class);
+        sets = StreamingUtils.readTLVector(stream, context, TLAbsStickerSetCovered.class);
         unread = StreamingUtils.readTLLongVector(stream, context);
     }
 

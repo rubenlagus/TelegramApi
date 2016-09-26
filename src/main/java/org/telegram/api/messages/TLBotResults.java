@@ -34,7 +34,7 @@ import java.io.OutputStream;
  * @date 13 of February of 2016
  */
 public class TLBotResults extends TLObject {
-    public static final int CLASS_ID = 0x1170b0a3;
+    public static final int CLASS_ID = 0x256709a6;
 
     private static final int FLAG_GALLERY     = 0x00000001; // 0
     private static final int FLAG_NEXT_OFFSET = 0x00000002; // 1
@@ -96,13 +96,13 @@ public class TLBotResults extends TLObject {
             nextOffset = StreamingUtils.readTLString(stream);
         }
         if ((flags & FLAG_SWITCH_PM) != 0) {
-            switchPm = (TLInlineBotSwitchPm) StreamingUtils.readTLObject(stream, context);
+            switchPm = StreamingUtils.readTLObject(stream, context, TLInlineBotSwitchPm.class);
         }
-        results = (TLVector<TLAbsBotInlineResult>) StreamingUtils.readTLVector(stream, context);
+        results = StreamingUtils.readTLVector(stream, context, TLAbsBotInlineResult.class);
     }
 
     @Override
     public String toString() {
-        return "messages.botResults#1170b0a3";
+        return "messages.botResults#256709a6";
     }
 }

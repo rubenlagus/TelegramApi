@@ -20,7 +20,8 @@ public class TLStickerSet extends TLObject {
     private static final int FLAG_INSTALLED      = 0x00000001; // 0
     private static final int FLAG_ARCHIVED       = 0x00000002; // 1
     private static final int FLAG_OFFICIAL       = 0x00000004; // 2
-    
+    private static final int FLAG_MASK           = 0x00000008; // 3
+
     private int flags;
     private long id;
     private long accessHash;
@@ -68,6 +69,10 @@ public class TLStickerSet extends TLObject {
 
     public boolean isOffcial() {
         return (flags & FLAG_OFFICIAL) != 0;
+    }
+
+    public boolean isMask() {
+        return (flags & FLAG_MASK) != 0;
     }
 
     @Override

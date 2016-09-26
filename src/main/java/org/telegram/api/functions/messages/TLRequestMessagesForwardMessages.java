@@ -29,6 +29,8 @@ public class TLRequestMessagesForwardMessages extends TLMethod<TLAbsUpdates> {
     private static final int FLAG_BROADCAST        = 0x00000010; // 4
     private static final int FLAG_SILENT           = 0x00000020; // 5
     private static final int FLAG_BACKGROUND       = 0x00000040; // 6
+    private static final int FLAG_UNUSED7          = 0x00000080; // 7
+    private static final int FLAG_WITH_MY_SCORE    = 0x00000100; // 8
 
     private int flags;
     private TLAbsInputPeer fromPeer;
@@ -107,6 +109,38 @@ public class TLRequestMessagesForwardMessages extends TLMethod<TLAbsUpdates> {
      */
     public void setId(TLIntVector value) {
         this.id = value;
+    }
+
+    public void enableBroadcast(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_BROADCAST;
+        } else {
+            this.flags &= ~FLAG_BROADCAST;
+        }
+    }
+
+    public void enableSilent(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_SILENT;
+        } else {
+            this.flags &= ~FLAG_SILENT;
+        }
+    }
+
+    public void enableBackground(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_BACKGROUND;
+        } else {
+            this.flags &= ~FLAG_BACKGROUND;
+        }
+    }
+
+    public void enableWithMyScore(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_WITH_MY_SCORE;
+        } else {
+            this.flags &= ~FLAG_WITH_MY_SCORE;
+        }
     }
 
     public void serializeBody(OutputStream stream)

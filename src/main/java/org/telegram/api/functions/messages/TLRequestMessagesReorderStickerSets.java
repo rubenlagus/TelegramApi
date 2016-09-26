@@ -34,8 +34,11 @@ public class TLRequestMessagesReorderStickerSets extends TLMethod<TLBool> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x9fcfbc30;
+    public static final int CLASS_ID = 0x78337739;
 
+    private static final int FLAG_MASKS    = 0x00000001; // 0
+
+    private int flags;
     private TLLongVector order;
 
     /**
@@ -69,17 +72,27 @@ public class TLRequestMessagesReorderStickerSets extends TLMethod<TLBool> {
         this.order = order;
     }
 
+    public void enableMasks(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_MASKS;
+        } else {
+            this.flags &= ~FLAG_MASKS;
+        }
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeTLVector(this.order, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         this.order = StreamingUtils.readTLLongVector(stream, context);
     }
 
     public String toString() {
-        return "messages.reorderStickerSets#9fcfbc30";
+        return "messages.reorderStickerSets#78337739";
     }
 }

@@ -1,7 +1,6 @@
 package org.telegram.api.input.chat.photo;
 
 import org.telegram.api.input.file.TLAbsInputFile;
-import org.telegram.api.input.photo.crop.TLAbsInputPhotoCrop;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 
@@ -16,16 +15,12 @@ public class TLInputChatUploadedPhoto extends TLAbsInputChatPhoto {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x94254732;
+    public static final int CLASS_ID = 0x927c55b4;
 
-    /**
-     * The Crop.
-     */
-    protected TLAbsInputPhotoCrop crop;
     /**
      * The File.
      */
-    protected TLAbsInputFile file;
+    private TLAbsInputFile file;
 
     /**
      * Instantiates a new TL input chat uploaded photo.
@@ -36,24 +31,6 @@ public class TLInputChatUploadedPhoto extends TLAbsInputChatPhoto {
 
     public int getClassId() {
         return CLASS_ID;
-    }
-
-    /**
-     * Gets crop.
-     *
-     * @return the crop
-     */
-    public TLAbsInputPhotoCrop getCrop() {
-        return this.crop;
-    }
-
-    /**
-     * Sets crop.
-     *
-     * @param crop the crop
-     */
-    public void setCrop(TLAbsInputPhotoCrop crop) {
-        this.crop = crop;
     }
 
     /**
@@ -77,16 +54,14 @@ public class TLInputChatUploadedPhoto extends TLAbsInputChatPhoto {
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeTLObject(this.file, stream);
-        StreamingUtils.writeTLObject(this.crop, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.file = ((TLAbsInputFile) StreamingUtils.readTLObject(stream, context));
-        this.crop = ((TLAbsInputPhotoCrop) StreamingUtils.readTLObject(stream, context));
+        this.file = StreamingUtils.readTLObject(stream, context, TLAbsInputFile.class);
     }
 
     public String toString() {
-        return "inputChatUploadedPhoto#94254732";
+        return "inputChatUploadedPhoto#927c55b4";
     }
 }

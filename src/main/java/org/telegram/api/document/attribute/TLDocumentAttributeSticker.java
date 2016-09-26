@@ -8,6 +8,7 @@
 package org.telegram.api.document.attribute;
 
 import org.telegram.api.input.sticker.set.TLAbsInputStickerSet;
+import org.telegram.api.sticker.TLMaskCoords;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 
@@ -25,10 +26,15 @@ public class TLDocumentAttributeSticker extends TLAbsDocumentAttribute {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x3a556302;
+    public static final int CLASS_ID = 0x6319d612;
 
+    private static final int FLAG_COORDS    = 0x00000001; // 0
+    private static final int FLAG_MASK      = 0x00000002; // 1
+
+    private int flags;
     private String alt; ///< Alternate text for the sticker
     private TLAbsInputStickerSet stickerset;
+    private TLMaskCoords maskCoords;
     /**
      * Instantiates a new TL document attribute sticker.
      */
@@ -63,16 +69,32 @@ public class TLDocumentAttributeSticker extends TLAbsDocumentAttribute {
         this.stickerset = stickerset;
     }
 
+    public TLMaskCoords getMaskCoords() {
+        return maskCoords;
+    }
+
+    public boolean isMask() {
+        return (flags & FLAG_MASK) != 0;
+    }
+
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
-        StreamingUtils.writeTLString(this.alt, stream);
-        StreamingUtils.writeTLObject(this.stickerset, stream);
+        StreamingUtils.writeInt(flags, stream);
+        StreamingUtils.writeTLString(alt, stream);
+        StreamingUtils.writeTLObject(stickerset, stream);
+        if ((flags & FLAG_COORDS) != 0) {
+            StreamingUtils.writeTLObject(stickerset, stream);
+        }
     }
 
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
-        this.alt = StreamingUtils.readTLString(stream);
-        this.stickerset = (TLAbsInputStickerSet) StreamingUtils.readTLObject(stream, context);
+        flags = StreamingUtils.readInt(stream);
+        alt = StreamingUtils.readTLString(stream);
+        stickerset = StreamingUtils.readTLObject(stream, context, TLAbsInputStickerSet.class);
+        if ((flags & FLAG_COORDS) != 0) {
+            maskCoords = StreamingUtils.readTLObject(stream, context, TLMaskCoords.class);
+        }
     }
 
     @Override
@@ -82,6 +104,6 @@ public class TLDocumentAttributeSticker extends TLAbsDocumentAttribute {
 
     @Override
     public String toString() {
-        return "documentAttributeSticker#3a556302";
+        return "documentAttributeSticker#6319d612";
     }
 }

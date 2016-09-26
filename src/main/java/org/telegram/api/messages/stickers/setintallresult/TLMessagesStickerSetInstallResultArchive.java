@@ -1,6 +1,6 @@
 package org.telegram.api.messages.stickers.setintallresult;
 
-import org.telegram.api.sticker.TLStickerSetCovered;
+import org.telegram.api.sticker.stickersetconvered.TLAbsStickerSetCovered;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLVector;
@@ -18,7 +18,7 @@ import java.io.OutputStream;
 public class TLMessagesStickerSetInstallResultArchive extends TLAbsMessagesStickerSetInstallResult {
     public static final int CLASS_ID = 0x35e410a8;
 
-    private TLVector<TLStickerSetCovered> sets;
+    private TLVector<TLAbsStickerSetCovered> sets;
 
     public TLMessagesStickerSetInstallResultArchive() {
         super();
@@ -29,7 +29,7 @@ public class TLMessagesStickerSetInstallResultArchive extends TLAbsMessagesStick
         return CLASS_ID;
     }
 
-    public TLVector<TLStickerSetCovered> getSets() {
+    public TLVector<TLAbsStickerSetCovered> getSets() {
         return sets;
     }
 
@@ -40,7 +40,7 @@ public class TLMessagesStickerSetInstallResultArchive extends TLAbsMessagesStick
 
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
-        sets = StreamingUtils.readTLVector(stream, context, TLStickerSetCovered.class);
+        sets = StreamingUtils.readTLVector(stream, context, TLAbsStickerSetCovered.class);
     }
 
     @Override

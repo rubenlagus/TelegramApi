@@ -16,8 +16,11 @@ public class TLPhoto extends TLAbsPhoto {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xcded42fe;
+    public static final int CLASS_ID = 0x9288dd29 ;
 
+    private static final int FLAG_STICKERS = 0x00000001; // 0
+
+    private int flags;
     private long id;
     private long accessHash;
     private int date;
@@ -107,9 +110,13 @@ public class TLPhoto extends TLAbsPhoto {
         this.sizes = sizes;
     }
 
+    public boolean hasStickers() {
+        return (flags & FLAG_STICKERS) != 0;
+    }
     @Override
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeLong(this.id, stream);
         StreamingUtils.writeLong(this.accessHash, stream);
         StreamingUtils.writeInt(this.date, stream);
@@ -119,14 +126,15 @@ public class TLPhoto extends TLAbsPhoto {
     @Override
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         this.id = StreamingUtils.readLong(stream);
         this.accessHash = StreamingUtils.readLong(stream);
         this.date = StreamingUtils.readInt(stream);
-        this.sizes = (TLVector<TLAbsPhotoSize>) StreamingUtils.readTLVector(stream, context);
+        this.sizes = StreamingUtils.readTLVector(stream, context, TLAbsPhotoSize.class);
     }
 
     @Override
     public String toString() {
-        return "photos.photo#cded42fe";
+        return "photo#9288dd29";
     }
 }

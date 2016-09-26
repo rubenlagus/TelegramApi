@@ -8,6 +8,7 @@ import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * The type TL request messages get chats.
@@ -17,6 +18,10 @@ public class TLRequestMessagesClearRecentStickers extends TLMethod<TLBool> {
      * The constant CLASS_ID.
      */
     public static final int CLASS_ID = 0xab02e5d2;
+
+    private static final int FLAG_ATTACHED = 0x00000001; // 0
+
+    private int flags;
 
     /**
      * Instantiates a new TL request messages get chats.
@@ -39,6 +44,24 @@ public class TLRequestMessagesClearRecentStickers extends TLMethod<TLBool> {
             return (TLBool) res;
         }
         throw new IOException("Incorrect response type. Expected " + TLBool.class.getName() + ", got: " + res.getClass().getCanonicalName());
+    }
+
+    public void enableAttached(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_ATTACHED;
+        } else {
+            this.flags &= ~FLAG_ATTACHED;
+        }
+    }
+
+    @Override
+    public void serializeBody(OutputStream stream) throws IOException {
+        StreamingUtils.writeInt(flags, stream);
+    }
+
+    @Override
+    public void deserializeBody(InputStream stream, TLContext context) throws IOException {
+        flags = StreamingUtils.readInt(stream);
     }
 
     public String toString() {

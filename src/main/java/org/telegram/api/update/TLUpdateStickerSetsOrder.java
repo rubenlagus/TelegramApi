@@ -32,8 +32,11 @@ public class TLUpdateStickerSetsOrder extends TLAbsUpdate {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xf0dfb451;
+    public static final int CLASS_ID = 0xbb2d201;
 
+    private static final int FLAG_MASKS = 0x00000001; // 0
+
+    private int flags;
     private TLLongVector order;
 
     /**
@@ -55,17 +58,23 @@ public class TLUpdateStickerSetsOrder extends TLAbsUpdate {
         this.order = order;
     }
 
+    public boolean isMask() {
+        return (flags & FLAG_MASKS) != 0;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeTLVector(this.order, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         this.order = StreamingUtils.readTLLongVector(stream, context);
     }
 
     public String toString() {
-        return "updateStickerSetsOrder#f0dfb451";
+        return "updateStickerSetsOrder#bb2d201";
     }
 }

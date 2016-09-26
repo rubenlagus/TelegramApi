@@ -109,6 +109,7 @@ import org.telegram.api.document.TLDocumentEmpty;
 import org.telegram.api.document.attribute.TLDocumentAttributeAnimated;
 import org.telegram.api.document.attribute.TLDocumentAttributeAudio;
 import org.telegram.api.document.attribute.TLDocumentAttributeFilename;
+import org.telegram.api.document.attribute.TLDocumentAttributeHasStickers;
 import org.telegram.api.document.attribute.TLDocumentAttributeImageSize;
 import org.telegram.api.document.attribute.TLDocumentAttributeSticker;
 import org.telegram.api.document.attribute.TLDocumentAttributeVideo;
@@ -162,6 +163,7 @@ import org.telegram.api.functions.auth.TLRequestAuthBindTempAuthKey;
 import org.telegram.api.functions.auth.TLRequestAuthCancelCode;
 import org.telegram.api.functions.auth.TLRequestAuthCheckPassword;
 import org.telegram.api.functions.auth.TLRequestAuthCheckPhone;
+import org.telegram.api.functions.auth.TLRequestAuthDropTempAuthKeys;
 import org.telegram.api.functions.auth.TLRequestAuthExportAuthorization;
 import org.telegram.api.functions.auth.TLRequestAuthImportAuthorization;
 import org.telegram.api.functions.auth.TLRequestAuthImportBotAuthorization;
@@ -242,6 +244,7 @@ import org.telegram.api.functions.messages.TLRequestMessagesForwardMessages;
 import org.telegram.api.functions.messages.TLRequestMessagesGetAllDrafts;
 import org.telegram.api.functions.messages.TLRequestMessagesGetAllStickers;
 import org.telegram.api.functions.messages.TLRequestMessagesGetArchivedStickers;
+import org.telegram.api.functions.messages.TLRequestMessagesGetAttachedStickers;
 import org.telegram.api.functions.messages.TLRequestMessagesGetBotCallbackAnswer;
 import org.telegram.api.functions.messages.TLRequestMessagesGetChats;
 import org.telegram.api.functions.messages.TLRequestMessagesGetDhConfig;
@@ -249,8 +252,11 @@ import org.telegram.api.functions.messages.TLRequestMessagesGetDialogs;
 import org.telegram.api.functions.messages.TLRequestMessagesGetDocumentByHash;
 import org.telegram.api.functions.messages.TLRequestMessagesGetFeaturedStickers;
 import org.telegram.api.functions.messages.TLRequestMessagesGetFullChat;
+import org.telegram.api.functions.messages.TLRequestMessagesGetGameHighScores;
 import org.telegram.api.functions.messages.TLRequestMessagesGetHistory;
 import org.telegram.api.functions.messages.TLRequestMessagesGetInlineBotResults;
+import org.telegram.api.functions.messages.TLRequestMessagesGetInlineGameHighScores;
+import org.telegram.api.functions.messages.TLRequestMessagesGetMaskStickers;
 import org.telegram.api.functions.messages.TLRequestMessagesGetMessageEditData;
 import org.telegram.api.functions.messages.TLRequestMessagesGetMessages;
 import org.telegram.api.functions.messages.TLRequestMessagesGetMessagesViews;
@@ -258,9 +264,7 @@ import org.telegram.api.functions.messages.TLRequestMessagesGetPeerDialogs;
 import org.telegram.api.functions.messages.TLRequestMessagesGetPeerSettings;
 import org.telegram.api.functions.messages.TLRequestMessagesGetRecentStickers;
 import org.telegram.api.functions.messages.TLRequestMessagesGetSavedGifs;
-import org.telegram.api.functions.messages.TLRequestMessagesGetStickers;
 import org.telegram.api.functions.messages.TLRequestMessagesGetStickersSet;
-import org.telegram.api.functions.messages.TLRequestMessagesGetUnusedStickers;
 import org.telegram.api.functions.messages.TLRequestMessagesGetWebPagePreview;
 import org.telegram.api.functions.messages.TLRequestMessagesHideReportSpam;
 import org.telegram.api.functions.messages.TLRequestMessagesImportChatInvite;
@@ -281,7 +285,6 @@ import org.telegram.api.functions.messages.TLRequestMessagesSaveRecentStickers;
 import org.telegram.api.functions.messages.TLRequestMessagesSearch;
 import org.telegram.api.functions.messages.TLRequestMessagesSearchGifs;
 import org.telegram.api.functions.messages.TLRequestMessagesSearchGlobal;
-import org.telegram.api.functions.messages.TLRequestMessagesSendBroadcast;
 import org.telegram.api.functions.messages.TLRequestMessagesSendEncrypted;
 import org.telegram.api.functions.messages.TLRequestMessagesSendEncryptedFile;
 import org.telegram.api.functions.messages.TLRequestMessagesSendEncryptedService;
@@ -290,6 +293,7 @@ import org.telegram.api.functions.messages.TLRequestMessagesSendMedia;
 import org.telegram.api.functions.messages.TLRequestMessagesSendMessage;
 import org.telegram.api.functions.messages.TLRequestMessagesSetBotCallbackAnswer;
 import org.telegram.api.functions.messages.TLRequestMessagesSetEncryptedTyping;
+import org.telegram.api.functions.messages.TLRequestMessagesSetGameScore;
 import org.telegram.api.functions.messages.TLRequestMessagesSetInlineBotResults;
 import org.telegram.api.functions.messages.TLRequestMessagesSetTyping;
 import org.telegram.api.functions.messages.TLRequestMessagesStartBot;
@@ -386,8 +390,6 @@ import org.telegram.api.input.peer.notify.events.TLInputPeerNotifyEventsAll;
 import org.telegram.api.input.peer.notify.events.TLInputPeerNotifyEventsEmpty;
 import org.telegram.api.input.photo.TLInputPhoto;
 import org.telegram.api.input.photo.TLInputPhotoEmpty;
-import org.telegram.api.input.photo.crop.TLInputPhotoCrop;
-import org.telegram.api.input.photo.crop.TLInputPhotoCropAuto;
 import org.telegram.api.input.privacy.inputprivacykey.TLInputPrivacyKeyChatInvite;
 import org.telegram.api.input.privacy.inputprivacykey.TLInputPrivacyKeyStatusTimestamp;
 import org.telegram.api.input.privacy.inputprivacyrule.TLInputPrivacyValueAllowAll;
@@ -400,6 +402,8 @@ import org.telegram.api.input.reportspamreason.TLReportSpamReasonOther;
 import org.telegram.api.input.reportspamreason.TLReportSpamReasonPornography;
 import org.telegram.api.input.reportspamreason.TLReportSpamReasonSpam;
 import org.telegram.api.input.reportspamreason.TLReportSpamReasonViolence;
+import org.telegram.api.input.sticker.media.TLInputStickeredMediaDocument;
+import org.telegram.api.input.sticker.media.TLInputStickeredMediaPhoto;
 import org.telegram.api.input.sticker.set.TLInputStickerSetEmpty;
 import org.telegram.api.input.sticker.set.TLInputStickerSetId;
 import org.telegram.api.input.sticker.set.TLInputStickerSetShortName;
@@ -409,6 +413,7 @@ import org.telegram.api.input.user.TLInputUserSelf;
 import org.telegram.api.keyboard.TLKeyboardButtonRow;
 import org.telegram.api.keyboard.button.TLKeyboardButton;
 import org.telegram.api.keyboard.button.TLKeyboardButtonCallback;
+import org.telegram.api.keyboard.button.TLKeyboardButtonGame;
 import org.telegram.api.keyboard.button.TLKeyboardButtonRequestGeoLocation;
 import org.telegram.api.keyboard.button.TLKeyboardButtonRequestPhone;
 import org.telegram.api.keyboard.button.TLKeyboardButtonRequestSwitchInline;
@@ -433,6 +438,7 @@ import org.telegram.api.message.action.TLMessageActionChatEditPhoto;
 import org.telegram.api.message.action.TLMessageActionChatEditTitle;
 import org.telegram.api.message.action.TLMessageActionChatJoinedByLink;
 import org.telegram.api.message.action.TLMessageActionEmpty;
+import org.telegram.api.message.action.TLMessageActionGameScore;
 import org.telegram.api.message.action.TLMessageActionHistoryClear;
 import org.telegram.api.message.action.TLMessageActionMigrateTo;
 import org.telegram.api.message.action.TLMessageActionPinMessage;
@@ -467,6 +473,7 @@ import org.telegram.api.messages.TLMessagesBotCallbackAnswer;
 import org.telegram.api.messages.TLMessagesChatFull;
 import org.telegram.api.messages.TLMessagesChats;
 import org.telegram.api.messages.TLMessagesEditData;
+import org.telegram.api.messages.TLMessagesHighScores;
 import org.telegram.api.messages.TLMessagesPeerDialogs;
 import org.telegram.api.messages.TLMessagesSlice;
 import org.telegram.api.messages.dhconfig.TLDhConfig;
@@ -479,9 +486,9 @@ import org.telegram.api.messages.sentencrypted.TLSentEncryptedFile;
 import org.telegram.api.messages.sentencrypted.TLSentEncryptedMessage;
 import org.telegram.api.messages.stickers.TLAllStickers;
 import org.telegram.api.messages.stickers.TLAllStickersNotModified;
+import org.telegram.api.messages.stickers.TLMessagesStickerSet;
 import org.telegram.api.messages.stickers.TLStickers;
 import org.telegram.api.messages.stickers.TLStickersNotModified;
-import org.telegram.api.messages.stickers.TLMessagesStickerSet;
 import org.telegram.api.messages.stickers.featured.TLMessagesFeaturedStickers;
 import org.telegram.api.messages.stickers.featured.TLMessagesFeaturedStickersNotModified;
 import org.telegram.api.messages.stickers.recent.TLMessagesRecentStickers;
@@ -526,9 +533,11 @@ import org.telegram.api.sendmessage.action.TLSendMessageUploadAudioAction;
 import org.telegram.api.sendmessage.action.TLSendMessageUploadDocumentAction;
 import org.telegram.api.sendmessage.action.TLSendMessageUploadPhotoAction;
 import org.telegram.api.sendmessage.action.TLSendMessageUploadVideoAction;
-import org.telegram.api.sticker.TLStickerSetCovered;
+import org.telegram.api.sticker.TLMaskCoords;
 import org.telegram.api.sticker.pack.TLStickerPack;
 import org.telegram.api.sticker.set.TLStickerSet;
+import org.telegram.api.sticker.stickersetconvered.TLStickerSetCovered;
+import org.telegram.api.sticker.stickersetconvered.TLStickerSetMultiCovered;
 import org.telegram.api.storage.file.TLFileGif;
 import org.telegram.api.storage.file.TLFileJpeg;
 import org.telegram.api.storage.file.TLFileMov;
@@ -630,10 +639,13 @@ import org.telegram.api.wallpaper.TLWallPaperSolid;
 import org.telegram.api.webpage.TLWebPage;
 import org.telegram.api.webpage.TLWebPageEmpty;
 import org.telegram.api.webpage.TLWebPagePending;
+import org.telegram.tl.TLBoolFalse;
+import org.telegram.tl.TLBoolTrue;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLError;
 import org.telegram.tl.TLNull;
 import org.telegram.tl.TLTrue;
+import org.telegram.tl.TLVector;
 
 /**
  * The type TL api context.
@@ -643,6 +655,9 @@ public class TLApiContext extends TLContext {
     protected void init() {
         registerClass(TLNull.CLASS_ID, TLNull.class);
         registerClass(TLError.CLASS_ID, TLError.class);
+        registerClass(TLBoolFalse.CLASS_ID, TLBoolFalse.class);
+        registerClass(TLBoolTrue.CLASS_ID, TLBoolTrue.class);
+        registerClass(TLVector.CLASS_ID, TLVector.class);
         registerClass(TLUserEmpty.CLASS_ID, TLUserEmpty.class);
         registerClass(TLInputNotifyPeer.CLASS_ID, TLInputNotifyPeer.class);
         registerClass(TLInputNotifyUsers.CLASS_ID, TLInputNotifyUsers.class);
@@ -668,8 +683,6 @@ public class TLApiContext extends TLContext {
         registerClass(TLInputPhotoEmpty.CLASS_ID, TLInputPhotoEmpty.class);
         registerClass(TLInputPhoto.CLASS_ID, TLInputPhoto.class);
         registerClass(TLCheckedPhone.CLASS_ID, TLCheckedPhone.class);
-        registerClass(TLInputPhotoCropAuto.CLASS_ID, TLInputPhotoCropAuto.class);
-        registerClass(TLInputPhotoCrop.CLASS_ID, TLInputPhotoCrop.class);
         registerClass(TLDecryptedMessageMediaEmpty.CLASS_ID, TLDecryptedMessageMediaEmpty.class);
         registerClass(TLDecryptedMessageMediaPhoto.CLASS_ID, TLDecryptedMessageMediaPhoto.class);
         registerClass(TLDecryptedMessageMediaVideo.CLASS_ID, TLDecryptedMessageMediaVideo.class);
@@ -682,7 +695,7 @@ public class TLApiContext extends TLContext {
         registerClass(TLWallPaperSolid.CLASS_ID, TLWallPaperSolid.class);
         registerClass(TLDcOption.CLASS_ID, TLDcOption.class);
         registerClass(TLContactBlocked.CLASS_ID, TLContactBlocked.class);
-        registerClass(-TLChatEmpty.CLASS_ID, TLChatEmpty.class);
+        registerClass(TLChatEmpty.CLASS_ID, TLChatEmpty.class);
         registerClass(TLChat.CLASS_ID, TLChat.class);
         registerClass(TLChatForbidden.CLASS_ID, TLChatForbidden.class);
         registerClass(TLGeoChat.CLASS_ID, TLGeoChat.class);
@@ -908,7 +921,6 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestMessagesReceivedQueue.CLASS_ID, TLRequestMessagesReceivedQueue.class);
         registerClass(TLRequestMessagesRequestEncryption.CLASS_ID, TLRequestMessagesRequestEncryption.class);
         registerClass(TLRequestMessagesSearch.CLASS_ID, TLRequestMessagesSearch.class);
-        registerClass(TLRequestMessagesSendBroadcast.CLASS_ID, TLRequestMessagesSendBroadcast.class);
         registerClass(TLRequestMessagesSendEncrypted.CLASS_ID, TLRequestMessagesSendEncrypted.class);
         registerClass(TLRequestMessagesSendEncryptedFile.CLASS_ID, TLRequestMessagesSendEncryptedFile.class);
         registerClass(TLRequestMessagesSendEncryptedService.CLASS_ID, TLRequestMessagesSendEncryptedService.class);
@@ -965,6 +977,8 @@ public class TLApiContext extends TLContext {
         addApiLayer51();
         // api layer 55
         addApiLayer55();
+        // api layer 56
+        addApiLayer56();
     }
 
     private void addApiLayer19() {
@@ -1057,7 +1071,6 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestAuthBindTempAuthKey.CLASS_ID, TLRequestAuthBindTempAuthKey.class);
         registerClass(TLRequestContactsImportCard.CLASS_ID, TLRequestContactsImportCard.class);
         registerClass(TLRequestContactsExportCard.CLASS_ID, TLRequestContactsExportCard.class);
-        registerClass(TLRequestMessagesGetStickers.CLASS_ID, TLRequestMessagesGetStickers.class);
     }
 
     private void addApiLayer28() {
@@ -1304,7 +1317,6 @@ public class TLApiContext extends TLContext {
         registerClass(TLMessagesRecentStickersNotModified.CLASS_ID, TLMessagesRecentStickersNotModified.class);
         registerClass(TLMessagesStickerSetInstallResultArchive.CLASS_ID, TLMessagesStickerSetInstallResultArchive.class);
         registerClass(TLMessagesStickerSetInstallResultSuccess.CLASS_ID, TLMessagesStickerSetInstallResultSuccess.class);
-        registerClass(TLStickerSetCovered.CLASS_ID, TLStickerSetCovered.class);
         registerClass(TLTopPeer.CLASS_ID, TLTopPeer.class);
         registerClass(TLTopPeerCategoryBotsInline.CLASS_ID, TLTopPeerCategoryBotsInline.class);
         registerClass(TLTopPeerCategoryBotsPM.CLASS_ID, TLTopPeerCategoryBotsPM.class);
@@ -1331,7 +1343,25 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestMessagesSaveRecentStickers.CLASS_ID, TLRequestMessagesSaveRecentStickers.class);
         registerClass(TLRequestMessagesClearRecentStickers.CLASS_ID, TLRequestMessagesClearRecentStickers.class);
         registerClass(TLRequestMessagesGetArchivedStickers.CLASS_ID, TLRequestMessagesGetArchivedStickers.class);
-        registerClass(TLRequestMessagesGetUnusedStickers.CLASS_ID, TLRequestMessagesGetUnusedStickers.class);
         registerClass(TLRequestChannelsGetAdminedPublicChannels.CLASS_ID, TLRequestChannelsGetAdminedPublicChannels.class);
+    }
+
+    private void addApiLayer56() {
+        registerClass(TLMessageActionGameScore.CLASS_ID, TLMessageActionGameScore.class);
+        registerClass(TLDocumentAttributeHasStickers.CLASS_ID, TLDocumentAttributeHasStickers.class);
+        registerClass(TLKeyboardButtonGame.CLASS_ID, TLKeyboardButtonGame.class);
+        registerClass(TLStickerSetCovered.CLASS_ID, TLStickerSetCovered.class);
+        registerClass(TLStickerSetMultiCovered.CLASS_ID, TLStickerSetMultiCovered.class);
+        registerClass(TLMaskCoords.CLASS_ID, TLMaskCoords.class);
+        registerClass(TLInputStickeredMediaPhoto.CLASS_ID, TLInputStickeredMediaPhoto.class);
+        registerClass(TLInputStickeredMediaDocument.CLASS_ID, TLInputStickeredMediaDocument.class);
+        registerClass(TLHighScore.CLASS_ID, TLHighScore.class);
+        registerClass(TLMessagesHighScores.CLASS_ID, TLMessagesHighScores.class);
+        registerClass(TLRequestAuthDropTempAuthKeys.CLASS_ID, TLRequestAuthDropTempAuthKeys.class);
+        registerClass(TLRequestMessagesSetGameScore.CLASS_ID, TLRequestMessagesSetGameScore.class);
+        registerClass(TLRequestMessagesGetGameHighScores.CLASS_ID, TLRequestMessagesGetGameHighScores.class);
+        registerClass(TLRequestMessagesGetInlineGameHighScores.CLASS_ID, TLRequestMessagesGetInlineGameHighScores.class);
+        registerClass(TLRequestMessagesGetMaskStickers.CLASS_ID, TLRequestMessagesGetMaskStickers.class);
+        registerClass(TLRequestMessagesGetAttachedStickers.CLASS_ID, TLRequestMessagesGetAttachedStickers.class);
     }
 }
