@@ -19,7 +19,7 @@ public class TLRequestMessagesSetGameScore extends TLMethod<TLAbsUpdates> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xdfbc7c1f;
+    public static final int CLASS_ID = 0x8ef8ecc0;
 
     private static final int FLAG_EDITMESSAGE    = 0x00000001; // 0
 
@@ -27,7 +27,6 @@ public class TLRequestMessagesSetGameScore extends TLMethod<TLAbsUpdates> {
     private TLAbsInputPeer peer;
     private int id;
     private TLAbsInputUser userId;
-    private int gameId;
     private int score;
 
     /**
@@ -75,14 +74,6 @@ public class TLRequestMessagesSetGameScore extends TLMethod<TLAbsUpdates> {
         this.userId = userId;
     }
 
-    public int getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
-    }
-
     public int getScore() {
         return score;
     }
@@ -105,7 +96,6 @@ public class TLRequestMessagesSetGameScore extends TLMethod<TLAbsUpdates> {
         StreamingUtils.writeTLObject(this.peer, stream);
         StreamingUtils.writeInt(id, stream);
         StreamingUtils.writeTLObject(this.userId, stream);
-        StreamingUtils.writeInt(gameId, stream);
         StreamingUtils.writeInt(score, stream);
     }
 
@@ -115,11 +105,10 @@ public class TLRequestMessagesSetGameScore extends TLMethod<TLAbsUpdates> {
         peer = StreamingUtils.readTLObject(stream, context, TLAbsInputPeer.class);
         id = StreamingUtils.readInt(stream);
         userId = StreamingUtils.readTLObject(stream, context, TLAbsInputUser.class);
-        gameId = StreamingUtils.readInt(stream);
         score = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "messages.setGameScore#dfbc7c1f";
+        return "messages.setGameScore#8ef8ecc0";
     }
 }

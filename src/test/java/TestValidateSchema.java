@@ -21,12 +21,14 @@ import java.util.List;
 
 public class TestValidateSchema {
     private static List<Integer> tlObjects;
+    private static List<Integer> tlSecretObjects;
 
     private TLApiContext context;
 
     @BeforeClass
     public static void setUpClass() {
         tlObjects = new ArrayList<>();
+        tlSecretObjects = new ArrayList<>();
         try {
             InputStream is = TestValidateSchema.class.getResourceAsStream("schema.json");
             String jsonTxt = IOUtils.toString(is);
@@ -35,9 +37,20 @@ public class TestValidateSchema {
             for (int i = 0; i < constructors.length(); i++) {
                 tlObjects.add(constructors.getJSONObject(i).getInt("id"));
             }
-            JSONArray methods = json.getJSONArray("constructors");
+            JSONArray methods = json.getJSONArray("methods");
             for (int i = 0; i < methods.length(); i++) {
                 tlObjects.add(methods.getJSONObject(i).getInt("id"));
+            }
+            is = TestValidateSchema.class.getResourceAsStream("secretschema.json");
+            jsonTxt = IOUtils.toString(is);
+            json = new JSONObject(jsonTxt);
+            constructors = json.getJSONArray("constructors");
+            for (int i = 0; i < constructors.length(); i++) {
+                tlSecretObjects.add(constructors.getJSONObject(i).getInt("id"));
+            }
+            methods = json.getJSONArray("methods");
+            for (int i = 0; i < methods.length(); i++) {
+                tlSecretObjects.add(methods.getJSONObject(i).getInt("id"));
             }
         } catch (IOException e) {
             Assert.fail("Failed to find resource file");
@@ -52,6 +65,7 @@ public class TestValidateSchema {
     @Test
     public void TestShemaIsLoaded() {
         Assert.assertFalse("Failed to load schema", tlObjects.isEmpty());
+        Assert.assertFalse("Failed to load schema", tlSecretObjects.isEmpty());
     }
 
     @Test
@@ -59,6 +73,17 @@ public class TestValidateSchema {
         for (Integer id : tlObjects) {
             Assert.assertTrue("Failed to load object " + id + "(" + Integer.toHexString(id) + ")",
                     context.isSupportedObject(id));
+        }
+    }
+
+    @Test
+    public void TestAllObjectsAndMethodsAreInShema() {
+        List<Integer> objects = new ArrayList<>();
+        objects.addAll(tlObjects);
+        objects.addAll(tlSecretObjects);
+        for (Integer id : context.getRegisteredClassIds()) {
+            Assert.assertTrue("Failed to load find " + id + "(" + Integer.toHexString(id) + ")",
+                    objects.contains(id));
         }
     }
 }

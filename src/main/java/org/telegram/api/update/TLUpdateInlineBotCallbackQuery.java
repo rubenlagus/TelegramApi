@@ -33,7 +33,7 @@ public class TLUpdateInlineBotCallbackQuery extends TLAbsUpdate {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x4f2f45d1;
+    public static final int CLASS_ID = 0xf9d27a5a;
 
     private static final int FLAG_DATA    = 0x00000001; // 0
     private static final int FLAG_GAMEID  = 0x00000002; // 1
@@ -44,7 +44,7 @@ public class TLUpdateInlineBotCallbackQuery extends TLAbsUpdate {
     private TLInputBotInlineMessageId msgId;
     private long chatInstance;
     private TLBytes data;
-    private int gameId;
+    private String gameShortName;
 
     /**
      * Instantiates a new TL update channel group
@@ -77,8 +77,8 @@ public class TLUpdateInlineBotCallbackQuery extends TLAbsUpdate {
         return chatInstance;
     }
 
-    public int getGameId() {
-        return gameId;
+    public String getGameShortName() {
+        return gameShortName;
     }
 
     public void serializeBody(OutputStream stream)
@@ -92,7 +92,7 @@ public class TLUpdateInlineBotCallbackQuery extends TLAbsUpdate {
             StreamingUtils.writeTLBytes(data, stream);
         }
         if ((flags & FLAG_GAMEID) != 0) {
-            StreamingUtils.writeInt(gameId, stream);
+            StreamingUtils.writeTLString(gameShortName, stream);
         }
     }
 
@@ -107,11 +107,11 @@ public class TLUpdateInlineBotCallbackQuery extends TLAbsUpdate {
             data = StreamingUtils.readTLBytes(stream, context);
         }
         if ((flags & FLAG_GAMEID) != 0) {
-            gameId = StreamingUtils.readInt(stream);
+            gameShortName = StreamingUtils.readTLString(stream);
         }
     }
 
     public String toString() {
-        return "updateInlineBotCallbackQuery#4f2f45d1";
+        return "updateInlineBotCallbackQuery#f9d27a5a";
     }
 }

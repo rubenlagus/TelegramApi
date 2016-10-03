@@ -19,16 +19,15 @@ public class TLRequestMessagesGetBotCallbackAnswer extends TLMethod<TLMessagesBo
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x6c996518;
+    public static final int CLASS_ID = 0x810a9fec;
 
     private static final int FLAG_DATA            = 0x00000001; // 0
-    private static final int FLAG_GAMEID          = 0x00000002; // 1
+    private static final int FLAG_GAME          = 0x00000002; // 1
 
     private int flags;
     private TLAbsInputPeer peer;
     private int msgId;
     private TLBytes data;
-    private int gameId;
 
     /**
      * Instantiates a new TL request channel edit admin
@@ -77,13 +76,14 @@ public class TLRequestMessagesGetBotCallbackAnswer extends TLMethod<TLMessagesBo
         this.data = data;
     }
 
-    public int getGameId() {
-        return gameId;
+    public void enableGame(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_GAME;
+        } else {
+            this.flags &= ~FLAG_GAME;
+        }
     }
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
-    }
 
     @Override
     public void serializeBody(OutputStream stream)
@@ -93,9 +93,6 @@ public class TLRequestMessagesGetBotCallbackAnswer extends TLMethod<TLMessagesBo
         StreamingUtils.writeInt(msgId, stream);
         if ((flags & FLAG_DATA) != 0) {
             StreamingUtils.writeTLBytes(data, stream);
-        }
-        if ((flags & FLAG_GAMEID) != 0) {
-            StreamingUtils.writeInt(gameId, stream);
         }
     }
 
@@ -108,12 +105,9 @@ public class TLRequestMessagesGetBotCallbackAnswer extends TLMethod<TLMessagesBo
         if ((flags & FLAG_DATA) != 0) {
             data = StreamingUtils.readTLBytes(stream, context);
         }
-        if ((flags & FLAG_GAMEID) != 0) {
-            gameId = StreamingUtils.readInt(stream);
-        }
     }
 
     public String toString() {
-        return "messages.getBotCallbackAnswer#6c996518";
+        return "messages.getBotCallbackAnswer#810a9fec";
     }
 }

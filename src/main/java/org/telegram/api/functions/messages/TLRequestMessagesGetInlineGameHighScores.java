@@ -19,11 +19,10 @@ public class TLRequestMessagesGetInlineGameHighScores extends TLMethod<TLMessage
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xe2d0cd52;
+    public static final int CLASS_ID = 0xf635e1b;
 
     private TLInputBotInlineMessageId id;
     private TLAbsInputUser userId;
-    private int gameId;
 
     /**
      * Instantiates a new TL request messages accept encryption.
@@ -62,29 +61,19 @@ public class TLRequestMessagesGetInlineGameHighScores extends TLMethod<TLMessage
         this.userId = userId;
     }
 
-    public int getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
-    }
-
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeTLObject(id, stream);
         StreamingUtils.writeTLObject(userId, stream);
-        StreamingUtils.writeInt(gameId, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
         id = StreamingUtils.readTLObject(stream, context, TLInputBotInlineMessageId.class);
         userId = StreamingUtils.readTLObject(stream, context, TLAbsInputUser.class);
-        gameId = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "messages.getInlineGameHighScores#e2d0cd52";
+        return "messages.getInlineGameHighScores#f635e1b";
     }
 }

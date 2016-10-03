@@ -17,7 +17,7 @@ public class TLRequestMessagesClearRecentStickers extends TLMethod<TLBool> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xab02e5d2;
+    public static final int CLASS_ID = 0x8999602d;
 
     private static final int FLAG_ATTACHED = 0x00000001; // 0
 
@@ -65,6 +65,6 @@ public class TLRequestMessagesClearRecentStickers extends TLMethod<TLBool> {
     }
 
     public String toString() {
-        return "messages.clearRecentStickers#ab02e5d2";
+        return "messages.clearRecentStickers#8999602d";
     }
 }

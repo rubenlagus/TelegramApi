@@ -14,9 +14,9 @@ public class TLMessageActionGameScore extends TLAbsMessageAction {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x3a14cfa5;
+    public static final int CLASS_ID = 0x92a72876;
 
-    private int gameId;
+    private long gameId;
     private int score;
 
     /**
@@ -26,11 +26,11 @@ public class TLMessageActionGameScore extends TLAbsMessageAction {
         super();
     }
 
-    public int getGameId() {
+    public long getGameId() {
         return gameId;
     }
 
-    public void setGameId(int gameId) {
+    public void setGameId(long gameId) {
         this.gameId = gameId;
     }
 
@@ -49,18 +49,18 @@ public class TLMessageActionGameScore extends TLAbsMessageAction {
 
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
-        StreamingUtils.writeInt(gameId, stream);
+        StreamingUtils.writeLong(gameId, stream);
         StreamingUtils.writeInt(score, stream);
     }
 
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
-        gameId = StreamingUtils.readInt(stream);
+        gameId = StreamingUtils.readLong(stream);
         score = StreamingUtils.readInt(stream);
     }
 
     @Override
     public String toString() {
-        return "messageActionGameScore#3a14cfa5";
+        return "messageActionGameScore#92a72876";
     }
 }

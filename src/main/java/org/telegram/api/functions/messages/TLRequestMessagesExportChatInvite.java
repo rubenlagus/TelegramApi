@@ -17,7 +17,7 @@ public class TLRequestMessagesExportChatInvite extends TLMethod<TLChatInviteExpo
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xc26902ba;
+    public static final int CLASS_ID = 0x7d885289;
 
     private int chatId;
 

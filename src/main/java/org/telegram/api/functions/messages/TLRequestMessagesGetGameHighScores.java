@@ -19,12 +19,11 @@ public class TLRequestMessagesGetGameHighScores extends TLMethod<TLMessagesHighS
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x88c09476;
+    public static final int CLASS_ID = 0xe822649d;
 
     private TLAbsInputPeer peer;
     private int id;
     private TLAbsInputUser userId;
-    private int gameId;
 
     /**
      * Instantiates a new TL request messages accept encryption.
@@ -71,20 +70,11 @@ public class TLRequestMessagesGetGameHighScores extends TLMethod<TLMessagesHighS
         this.userId = userId;
     }
 
-    public int getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
-    }
-
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeTLObject(this.peer, stream);
         StreamingUtils.writeInt(id, stream);
         StreamingUtils.writeTLObject(this.userId, stream);
-        StreamingUtils.writeInt(gameId, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
@@ -92,10 +82,9 @@ public class TLRequestMessagesGetGameHighScores extends TLMethod<TLMessagesHighS
         peer = StreamingUtils.readTLObject(stream, context, TLAbsInputPeer.class);
         id = StreamingUtils.readInt(stream);
         userId = StreamingUtils.readTLObject(stream, context, TLAbsInputUser.class);
-        gameId = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "messages.getGameHighScores#88c09476";
+        return "messages.getGameHighScores#e822649d";
     }
 }

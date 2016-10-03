@@ -48,7 +48,6 @@ import org.telegram.api.chat.TLChat;
 import org.telegram.api.chat.TLChatEmpty;
 import org.telegram.api.chat.TLChatForbidden;
 import org.telegram.api.chat.TLChatFull;
-import org.telegram.api.chat.TLGeoChat;
 import org.telegram.api.chat.channel.TLChannel;
 import org.telegram.api.chat.channel.TLChannelForbidden;
 import org.telegram.api.chat.channel.TLChannelFull;
@@ -199,6 +198,7 @@ import org.telegram.api.functions.channels.TLRequestChannelsKickFromChannel;
 import org.telegram.api.functions.channels.TLRequestChannelsLeaveChannel;
 import org.telegram.api.functions.channels.TLRequestChannelsReadHistory;
 import org.telegram.api.functions.channels.TLRequestChannelsReportSpam;
+import org.telegram.api.functions.channels.TLRequestChannelsToggleInvites;
 import org.telegram.api.functions.channels.TLRequestChannelsToggleSignatures;
 import org.telegram.api.functions.channels.TLRequestChannelsUpdatePinnedMessage;
 import org.telegram.api.functions.channels.TLRequestChannelsUpdateUsername;
@@ -295,6 +295,7 @@ import org.telegram.api.functions.messages.TLRequestMessagesSetBotCallbackAnswer
 import org.telegram.api.functions.messages.TLRequestMessagesSetEncryptedTyping;
 import org.telegram.api.functions.messages.TLRequestMessagesSetGameScore;
 import org.telegram.api.functions.messages.TLRequestMessagesSetInlineBotResults;
+import org.telegram.api.functions.messages.TLRequestMessagesSetInlineGameScore;
 import org.telegram.api.functions.messages.TLRequestMessagesSetTyping;
 import org.telegram.api.functions.messages.TLRequestMessagesStartBot;
 import org.telegram.api.functions.messages.TLRequestMessagesToggleChatAdmins;
@@ -311,6 +312,7 @@ import org.telegram.api.functions.upload.TLRequestUploadSaveBigFilePart;
 import org.telegram.api.functions.upload.TLRequestUploadSaveFilePart;
 import org.telegram.api.functions.users.TLRequestUsersGetFullUser;
 import org.telegram.api.functions.users.TLRequestUsersGetUsers;
+import org.telegram.api.game.TLGame;
 import org.telegram.api.geo.point.TLGeoPoint;
 import org.telegram.api.geo.point.TLGeoPointEmpty;
 import org.telegram.api.help.TLAppUpdate;
@@ -321,9 +323,9 @@ import org.telegram.api.help.TLTermsOfService;
 import org.telegram.api.help.changelog.TLAppChangelog;
 import org.telegram.api.help.changelog.TLAppChangelogEmpty;
 import org.telegram.api.input.TLInputAppEvent;
-import org.telegram.api.input.TLInputGeoChat;
 import org.telegram.api.input.TLInputPhoneContact;
 import org.telegram.api.input.bot.TLInputBotInlineMessageId;
+import org.telegram.api.input.bot.inlinemessage.TLInputBotInlineMessageGame;
 import org.telegram.api.input.bot.inlinemessage.TLInputBotInlineMessageMediaAuto;
 import org.telegram.api.input.bot.inlinemessage.TLInputBotInlineMessageMediaContact;
 import org.telegram.api.input.bot.inlinemessage.TLInputBotInlineMessageMediaGeo;
@@ -331,6 +333,7 @@ import org.telegram.api.input.bot.inlinemessage.TLInputBotInlineMessageMediaVenu
 import org.telegram.api.input.bot.inlinemessage.TLInputBotInlineMessageText;
 import org.telegram.api.input.bot.inlineresult.TLInputBotInlineResult;
 import org.telegram.api.input.bot.inlineresult.TLInputBotInlineResultDocument;
+import org.telegram.api.input.bot.inlineresult.TLInputBotInlineResultGame;
 import org.telegram.api.input.bot.inlineresult.TLInputBotInlineResultPhoto;
 import org.telegram.api.input.chat.TLInputChannel;
 import org.telegram.api.input.chat.TLInputChannelEmpty;
@@ -349,12 +352,15 @@ import org.telegram.api.input.file.TLInputFile;
 import org.telegram.api.input.file.TLInputFileBig;
 import org.telegram.api.input.filelocation.TLInputDocumentFileLocation;
 import org.telegram.api.input.filelocation.TLInputFileLocation;
+import org.telegram.api.input.game.TLInputGameId;
+import org.telegram.api.input.game.TLInputGameShortName;
 import org.telegram.api.input.geopoint.TLInputGeoPoint;
 import org.telegram.api.input.geopoint.TLInputGeoPointEmpty;
 import org.telegram.api.input.media.TLInputMediaContact;
 import org.telegram.api.input.media.TLInputMediaDocument;
 import org.telegram.api.input.media.TLInputMediaDocumentExternal;
 import org.telegram.api.input.media.TLInputMediaEmpty;
+import org.telegram.api.input.media.TLInputMediaGame;
 import org.telegram.api.input.media.TLInputMediaGeoPoint;
 import org.telegram.api.input.media.TLInputMediaGifExternal;
 import org.telegram.api.input.media.TLInputMediaPhoto;
@@ -377,7 +383,6 @@ import org.telegram.api.input.messages.filter.TLMessagesFilterVideo;
 import org.telegram.api.input.messages.filter.TLMessagesFilterVoice;
 import org.telegram.api.input.notify.TLInputNotifyAll;
 import org.telegram.api.input.notify.TLInputNotifyChats;
-import org.telegram.api.input.notify.TLInputNotifyGeoChatPeer;
 import org.telegram.api.input.notify.TLInputNotifyPeer;
 import org.telegram.api.input.notify.TLInputNotifyUsers;
 import org.telegram.api.input.peer.TLInputPeerChannel;
@@ -457,6 +462,7 @@ import org.telegram.api.message.entity.TLMessageEntityUrl;
 import org.telegram.api.message.media.TLMessageMediaContact;
 import org.telegram.api.message.media.TLMessageMediaDocument;
 import org.telegram.api.message.media.TLMessageMediaEmpty;
+import org.telegram.api.message.media.TLMessageMediaGame;
 import org.telegram.api.message.media.TLMessageMediaGeo;
 import org.telegram.api.message.media.TLMessageMediaPhoto;
 import org.telegram.api.message.media.TLMessageMediaUnsupported;
@@ -525,6 +531,7 @@ import org.telegram.api.privacy.privacyrule.TLPrivacyValueDisallowContacts;
 import org.telegram.api.privacy.privacyrule.TLPrivacyValueDisallowUsers;
 import org.telegram.api.sendmessage.action.TLSendMessageCancelAction;
 import org.telegram.api.sendmessage.action.TLSendMessageChooseContactAction;
+import org.telegram.api.sendmessage.action.TLSendMessageGamePlayAction;
 import org.telegram.api.sendmessage.action.TLSendMessageGeoLocationAction;
 import org.telegram.api.sendmessage.action.TLSendMessageRecordAudioAction;
 import org.telegram.api.sendmessage.action.TLSendMessageRecordVideoAction;
@@ -663,7 +670,6 @@ public class TLApiContext extends TLContext {
         registerClass(TLInputNotifyUsers.CLASS_ID, TLInputNotifyUsers.class);
         registerClass(TLInputNotifyChats.CLASS_ID, TLInputNotifyChats.class);
         registerClass(TLInputNotifyAll.CLASS_ID, TLInputNotifyAll.class);
-        registerClass(TLInputNotifyGeoChatPeer.CLASS_ID, TLInputNotifyGeoChatPeer.class);
         registerClass(TLFile.CLASS_ID, TLFile.class);
         registerClass(TLDecryptedMessage.CLASS_ID, TLDecryptedMessage.class);
         registerClass(TLDecryptedMessageService.CLASS_ID, TLDecryptedMessageService.class);
@@ -698,7 +704,6 @@ public class TLApiContext extends TLContext {
         registerClass(TLChatEmpty.CLASS_ID, TLChatEmpty.class);
         registerClass(TLChat.CLASS_ID, TLChat.class);
         registerClass(TLChatForbidden.CLASS_ID, TLChatForbidden.class);
-        registerClass(TLGeoChat.CLASS_ID, TLGeoChat.class);
         registerClass(TLChatFull.CLASS_ID, TLChatFull.class);
         registerClass(TLPhotoSizeEmpty.CLASS_ID, TLPhotoSizeEmpty.class);
         registerClass(TLPhotoSize.CLASS_ID, TLPhotoSize.class);
@@ -721,7 +726,6 @@ public class TLApiContext extends TLContext {
         registerClass(TLInputFileBig.CLASS_ID, TLInputFileBig.class);
         registerClass(TLMessages.CLASS_ID, TLMessages.class);
         registerClass(TLMessagesSlice.CLASS_ID, TLMessagesSlice.class);
-        registerClass(TLInputGeoChat.CLASS_ID, TLInputGeoChat.class);
         registerClass(TLMessageEmpty.CLASS_ID, TLMessageEmpty.class);
         registerClass(TLMessage.CLASS_ID, TLMessage.class);
         registerClass(TLMessageService.CLASS_ID, TLMessageService.class);
@@ -768,7 +772,6 @@ public class TLApiContext extends TLContext {
         registerClass(TLUserProfilePhotoEmpty.CLASS_ID, TLUserProfilePhotoEmpty.class);
         registerClass(TLUserProfilePhoto.CLASS_ID, TLUserProfilePhoto.class);
         registerClass(TLMessagesChatFull.CLASS_ID, TLMessagesChatFull.class);
-        registerClass(org.telegram.api.messages.message.TLMessageEmpty.CLASS_ID, org.telegram.api.messages.message.TLMessageEmpty.class);
         registerClass(TLSentCode.CLASS_ID, TLSentCode.class);
         registerClass(TLChatParticipant.CLASS_ID, TLChatParticipant.class);
         registerClass(TLMessageMediaEmpty.CLASS_ID, TLMessageMediaEmpty.class);
@@ -955,6 +958,7 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestAccountUpdateUsername.CLASS_ID, TLRequestAccountUpdateUsername.class);
         registerClass(TLRequestAccountCheckUsername.CLASS_ID, TLRequestAccountCheckUsername.class);
         registerClass(TLRequestPhotosDeletePhotos.CLASS_ID, TLRequestPhotosDeletePhotos.class);
+        registerClass(TLRequestChannelsToggleInvites.CLASS_ID, TLRequestChannelsToggleInvites.class);
         // InvokeWithLayer
         registerClass(TLRequestInvokeWithLayer.CLASS_ID, TLRequestInvokeWithLayer.class);
         // Layer 19
@@ -979,6 +983,8 @@ public class TLApiContext extends TLContext {
         addApiLayer55();
         // api layer 56
         addApiLayer56();
+        // api layer 57
+        addApiLayer57();
     }
 
     private void addApiLayer19() {
@@ -1363,5 +1369,17 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestMessagesGetInlineGameHighScores.CLASS_ID, TLRequestMessagesGetInlineGameHighScores.class);
         registerClass(TLRequestMessagesGetMaskStickers.CLASS_ID, TLRequestMessagesGetMaskStickers.class);
         registerClass(TLRequestMessagesGetAttachedStickers.CLASS_ID, TLRequestMessagesGetAttachedStickers.class);
+    }
+
+    private void addApiLayer57() {
+        registerClass(TLInputMediaGame.CLASS_ID, TLInputMediaGame.class);
+        registerClass(TLMessageMediaGame.CLASS_ID, TLMessageMediaGame.class);
+        registerClass(TLSendMessageGamePlayAction.CLASS_ID, TLSendMessageGamePlayAction.class);
+        registerClass(TLInputBotInlineMessageGame.CLASS_ID, TLInputBotInlineMessageGame.class);
+        registerClass(TLInputBotInlineResultGame.CLASS_ID, TLInputBotInlineResultGame.class);
+        registerClass(TLGame.CLASS_ID, TLGame.class);
+        registerClass(TLInputGameId.CLASS_ID, TLInputGameId.class);
+        registerClass(TLInputGameShortName.CLASS_ID, TLInputGameShortName.class);
+        registerClass(TLRequestMessagesSetInlineGameScore.CLASS_ID, TLRequestMessagesSetInlineGameScore.class);
     }
 }

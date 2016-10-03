@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -199,6 +200,10 @@ public abstract class TLContext {
 
     public TLBytes allocateBytes(int size) {
         return new TLBytes(new byte[size], 0, size);
+    }
+
+    public Set<Integer> getRegisteredClassIds() {
+        return registeredClasses.keySet();
     }
 
     public void releaseBytes(TLBytes unused) {

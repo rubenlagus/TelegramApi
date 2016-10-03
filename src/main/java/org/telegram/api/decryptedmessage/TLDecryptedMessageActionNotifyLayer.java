@@ -16,7 +16,7 @@ public class TLDecryptedMessageActionNotifyLayer extends TLDecryptedMessageActio
      */
     public static final int CLASS_ID = 0xf3048883;
 
-    private int layer = 22;
+    private int layer = 23;
 
     /**
      * Instantiates a new TL decrypted message action notify layer.

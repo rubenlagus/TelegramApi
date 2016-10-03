@@ -8,22 +8,22 @@
 package org.telegram.api.sendmessage.action;
 
 /**
- * The type TL send message choose contact action.
+ * The type TLSendMessageGamePlayAction.
  * @author Ruben Bermudez
  * @version 2.0
- * @brief TLSendMessageChooseContactAction
+ * @brief TLSendMessageGamePlayAction
  * @date 12 /11/14
  */
-public class TLSendMessageChooseContactAction extends TLAbsSendMessageAction {
+public class TLSendMessageGamePlayAction extends TLAbsSendMessageAction {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x628cbc6f;
+    public static final int CLASS_ID = 0xdd6a8f48;
 
     /**
      * Instantiates a new TL send message choose contact action.
      */
-    public TLSendMessageChooseContactAction() {
+    public TLSendMessageGamePlayAction() {
         super();
     }
 
@@ -33,6 +33,6 @@ public class TLSendMessageChooseContactAction extends TLAbsSendMessageAction {
     }
 
     public String toString() {
-        return "sendMessageChooseContactAction#628cbc6f";
+        return "sendMessageGamePlayAction#dd6a8f48";
     }
 }

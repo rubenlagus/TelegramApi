@@ -6759,7 +6759,7 @@
       "type":"messages.BotCallbackAnswer"
     },
     {
-      "id":"1274652832",
+      "id":"-415938591",
       "predicate":"updateBotCallbackQuery",
       "params":[
         {
@@ -6791,8 +6791,8 @@
           "type":"flags.0?bytes"
         },
         {
-          "name":"game_id",
-          "type":"flags.1?int"
+          "name":"game_short_name",
+          "type":"flags.1?string"
         }
       ],
       "type":"Update"
@@ -7110,7 +7110,7 @@
       "type":"InputBotInlineMessageID"
     },
     {
-      "id":"1328498129",
+      "id":"-103646630",
       "predicate":"updateInlineBotCallbackQuery",
       "params":[
         {
@@ -7138,8 +7138,8 @@
           "type":"flags.0?bytes"
         },
         {
-          "name":"game_id",
-          "type":"flags.1?int"
+          "name":"game_short_name",
+          "type":"flags.1?string"
         }
       ],
       "type":"Update"
@@ -7572,44 +7572,6 @@
       "type":"InputMedia"
     },
     {
-      "id":"687616356",
-      "predicate":"keyboardButtonGame",
-      "params":[
-        {
-          "name":"text",
-          "type":"string"
-        },
-        {
-          "name":"game_title",
-          "type":"string"
-        },
-        {
-          "name":"game_id",
-          "type":"int"
-        },
-        {
-          "name":"start_param",
-          "type":"string"
-        }
-      ],
-      "type":"KeyboardButton"
-    },
-    {
-      "id":"974442405",
-      "predicate":"messageActionGameScore",
-      "params":[
-        {
-          "name":"game_id",
-          "type":"int"
-        },
-        {
-          "name":"score",
-          "type":"int"
-        }
-      ],
-      "type":"MessageAction"
-    },
-    {
       "id":"872932635",
       "predicate":"stickerSetMultiCovered",
       "params":[
@@ -7676,6 +7638,165 @@
         }
       ],
       "type":"InputStickeredMedia"
+    },
+    {
+      "id":"-1107729093",
+      "predicate":"game",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        },
+        {
+          "name":"short_name",
+          "type":"string"
+        },
+        {
+          "name":"title",
+          "type":"string"
+        },
+        {
+          "name":"description",
+          "type":"string"
+        },
+        {
+          "name":"photo",
+          "type":"Photo"
+        },
+        {
+          "name":"document",
+          "type":"flags.0?Document"
+        }
+      ],
+      "type":"Game"
+    },
+    {
+      "id":"1336154098",
+      "predicate":"inputBotInlineResultGame",
+      "params":[
+        {
+          "name":"id",
+          "type":"string"
+        },
+        {
+          "name":"short_name",
+          "type":"string"
+        },
+        {
+          "name":"send_message",
+          "type":"InputBotInlineMessage"
+        }
+      ],
+      "type":"InputBotInlineResult"
+    },
+    {
+      "id":"1262639204",
+      "predicate":"inputBotInlineMessageGame",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"reply_markup",
+          "type":"flags.2?ReplyMarkup"
+        }
+      ],
+      "type":"InputBotInlineMessage"
+    },
+    {
+      "id":"-580219064",
+      "predicate":"sendMessageGamePlayAction",
+      "params":[
+
+      ],
+      "type":"SendMessageAction"
+    },
+    {
+      "id":"-38694904",
+      "predicate":"messageMediaGame",
+      "params":[
+        {
+          "name":"game",
+          "type":"Game"
+        }
+      ],
+      "type":"MessageMedia"
+    },
+    {
+      "id":"-750828557",
+      "predicate":"inputMediaGame",
+      "params":[
+        {
+          "name":"id",
+          "type":"InputGame"
+        }
+      ],
+      "type":"InputMedia"
+    },
+    {
+      "id":"53231223",
+      "predicate":"inputGameID",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        }
+      ],
+      "type":"InputGame"
+    },
+    {
+      "id":"-1020139510",
+      "predicate":"inputGameShortName",
+      "params":[
+        {
+          "name":"bot_id",
+          "type":"InputUser"
+        },
+        {
+          "name":"short_name",
+          "type":"string"
+        }
+      ],
+      "type":"InputGame"
+    },
+    {
+      "id":"1358175439",
+      "predicate":"keyboardButtonGame",
+      "params":[
+        {
+          "name":"text",
+          "type":"string"
+        }
+      ],
+      "type":"KeyboardButton"
+    },
+    {
+      "id":"-1834538890",
+      "predicate":"messageActionGameScore",
+      "params":[
+        {
+          "name":"game_id",
+          "type":"long"
+        },
+        {
+          "name":"score",
+          "type":"int"
+        }
+      ],
+      "type":"MessageAction"
     },
     {
       "id":"1493171408",
@@ -10286,12 +10407,16 @@
       "type":"Bool"
     },
     {
-      "id":"1821992216",
+      "id":"-2130010132",
       "method":"messages.getBotCallbackAnswer",
       "params":[
         {
           "name":"flags",
           "type":"#"
+        },
+        {
+          "name":"game",
+          "type":"flags.1?true"
         },
         {
           "name":"peer",
@@ -10304,10 +10429,6 @@
         {
           "name":"data",
           "type":"flags.0?bytes"
-        },
-        {
-          "name":"game_id",
-          "type":"flags.1?int"
         }
       ],
       "type":"messages.BotCallbackAnswer"
@@ -10596,114 +10717,6 @@
       "type":"messages.Chats"
     },
     {
-      "id":"-541295585",
-      "method":"messages.setGameScore",
-      "params":[
-        {
-          "name":"flags",
-          "type":"#"
-        },
-        {
-          "name":"edit_message",
-          "type":"flags.0?true"
-        },
-        {
-          "name":"peer",
-          "type":"InputPeer"
-        },
-        {
-          "name":"id",
-          "type":"int"
-        },
-        {
-          "name":"user_id",
-          "type":"InputUser"
-        },
-        {
-          "name":"game_id",
-          "type":"int"
-        },
-        {
-          "name":"score",
-          "type":"int"
-        }
-      ],
-      "type":"Updates"
-    },
-    {
-      "id":"1425572593",
-      "method":"messages.setInlineGameScore",
-      "params":[
-        {
-          "name":"flags",
-          "type":"#"
-        },
-        {
-          "name":"edit_message",
-          "type":"flags.0?true"
-        },
-        {
-          "name":"id",
-          "type":"InputBotInlineMessageID"
-        },
-        {
-          "name":"user_id",
-          "type":"InputUser"
-        },
-        {
-          "name":"game_id",
-          "type":"int"
-        },
-        {
-          "name":"score",
-          "type":"int"
-        }
-      ],
-      "type":"Bool"
-    },
-    {
-      "id":"-2000645002",
-      "method":"messages.getGameHighScores",
-      "params":[
-        {
-          "name":"peer",
-          "type":"InputPeer"
-        },
-        {
-          "name":"id",
-          "type":"int"
-        },
-        {
-          "name":"user_id",
-          "type":"InputUser"
-        },
-        {
-          "name":"game_id",
-          "type":"int"
-        }
-      ],
-      "type":"messages.HighScores"
-    },
-    {
-      "id":"-489632430",
-      "method":"messages.getInlineGameHighScores",
-      "params":[
-        {
-          "name":"id",
-          "type":"InputBotInlineMessageID"
-        },
-        {
-          "name":"user_id",
-          "type":"InputUser"
-        },
-        {
-          "name":"game_id",
-          "type":"int"
-        }
-      ],
-      "type":"messages.HighScores"
-    },
-    {
       "id":"1706608543",
       "method":"messages.getMaskStickers",
       "params":[
@@ -10735,6 +10748,98 @@
         }
       ],
       "type":"Bool"
+    },
+    {
+      "id":"-1896289088",
+      "method":"messages.setGameScore",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"edit_message",
+          "type":"flags.0?true"
+        },
+        {
+          "name":"peer",
+          "type":"InputPeer"
+        },
+        {
+          "name":"id",
+          "type":"int"
+        },
+        {
+          "name":"user_id",
+          "type":"InputUser"
+        },
+        {
+          "name":"score",
+          "type":"int"
+        }
+      ],
+      "type":"Updates"
+    },
+    {
+      "id":"363700068",
+      "method":"messages.setInlineGameScore",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"edit_message",
+          "type":"flags.0?true"
+        },
+        {
+          "name":"id",
+          "type":"InputBotInlineMessageID"
+        },
+        {
+          "name":"user_id",
+          "type":"InputUser"
+        },
+        {
+          "name":"score",
+          "type":"int"
+        }
+      ],
+      "type":"Bool"
+    },
+    {
+      "id":"-400399203",
+      "method":"messages.getGameHighScores",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPeer"
+        },
+        {
+          "name":"id",
+          "type":"int"
+        },
+        {
+          "name":"user_id",
+          "type":"InputUser"
+        }
+      ],
+      "type":"messages.HighScores"
+    },
+    {
+      "id":"258170395",
+      "method":"messages.getInlineGameHighScores",
+      "params":[
+        {
+          "name":"id",
+          "type":"InputBotInlineMessageID"
+        },
+        {
+          "name":"user_id",
+          "type":"InputUser"
+        }
+      ],
+      "type":"messages.HighScores"
     }
   ]
 }
