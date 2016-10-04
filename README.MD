@@ -1,5 +1,5 @@
 #  Telegram API 
-[![Jitpack](https://jitpack.io/v/rubenlagus/TelegramBots.svg)](https://jitpack.io/#rubenlagus/TelegramApi)
+[![Jitpack](https://jitpack.io/v/rubenlagus/TelegramApi.svg)](https://jitpack.io/#rubenlagus/TelegramApi)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.telegram/telegramapi/badge.svg)](http://mvnrepository.com/artifact/org.telegram/telegramapi)
 
 Java library that implements Telegram API to create Telegram Clients
@@ -24,8 +24,8 @@ Just add the library to your project with one of these options:
     </dependency>
 ```
 
-  2. Using Jitpack from [here](https://jitpack.io/#rubenlagus/TelegramBots)
-  3. Download the jar(including all dependencies) from [here](https://github.com/rubenlagus/TelegramBots/releases)
+  2. Using Jitpack from [here](https://jitpack.io/#rubenlagus/TelegramApi)
+  3. Download the jar(including all dependencies) from [here](https://github.com/rubenlagus/TelegramApi/releases)
 
     
 ## Sample bots
