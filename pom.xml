@@ -6,11 +6,39 @@
     <packaging>jar</packaging>
     <groupId>org.telegram</groupId>
     <artifactId>telegramapi</artifactId>
-    <version>56.0-SNAPSHOT</version>
+    <version>57.0-SNAPSHOT</version>
 
     <name>Telegram Api</name>
-    <url>https://github.com/rubenlagus/Deepthought</url>
-    <description>Library to create Telegram Clients</description>
+    <url>https://github.com/rubenlagus/TelegramApi</url>
+    <description>Java library to create Telegram Clients</description>
+
+    <issueManagement>
+        <url>https://github.com/rubenlagus/TelegramApi/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/rubenlagus/TelegramApi</url>
+        <connection>scm:git:git://github.com/rubenlagus/TelegramApi.git</connection>
+        <developerConnection>scm:git:git@github.com:rubenlagus/TelegramApi.git</developerConnection>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <email>rberlopez@gmail.com</email>
+            <name>Ruben Bermudez</name>
+            <url>https://github.com/rubenlagus</url>
+            <id>rubenlagus</id>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,19 +56,6 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>Maven Repository Switchboard</name>
-            <layout>default</layout>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>
-        <repository>
-            <id>xuggle repo</id>
-            <url>http://xuggle.googlecode.com/svn/trunk/repo/share/java/</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
