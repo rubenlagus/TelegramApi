@@ -22,7 +22,7 @@ public class TLRequestPhotosGetUserPhotos extends TLMethod<TLAbsPhotos> {
 
     private TLAbsInputUser userId;
     private int offset;
-    private int maxId;
+    private long maxId;
     private int limit;
 
     /**
@@ -89,7 +89,7 @@ public class TLRequestPhotosGetUserPhotos extends TLMethod<TLAbsPhotos> {
      *
      * @return the max id
      */
-    public int getMaxId() {
+    public long getMaxId() {
         return this.maxId;
     }
 
@@ -98,7 +98,7 @@ public class TLRequestPhotosGetUserPhotos extends TLMethod<TLAbsPhotos> {
      *
      * @param value the value
      */
-    public void setMaxId(int value) {
+    public void setMaxId(long value) {
         this.maxId = value;
     }
 
@@ -124,7 +124,7 @@ public class TLRequestPhotosGetUserPhotos extends TLMethod<TLAbsPhotos> {
             throws IOException {
         StreamingUtils.writeTLObject(this.userId, stream);
         StreamingUtils.writeInt(this.offset, stream);
-        StreamingUtils.writeInt(this.maxId, stream);
+        StreamingUtils.writeLong(this.maxId, stream);
         StreamingUtils.writeInt(this.limit, stream);
     }
 
@@ -132,7 +132,7 @@ public class TLRequestPhotosGetUserPhotos extends TLMethod<TLAbsPhotos> {
             throws IOException {
         this.userId = ((TLAbsInputUser) StreamingUtils.readTLObject(stream, context));
         this.offset = StreamingUtils.readInt(stream);
-        this.maxId = StreamingUtils.readInt(stream);
+        this.maxId = StreamingUtils.readLong(stream);
         this.limit = StreamingUtils.readInt(stream);
     }
 
