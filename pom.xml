@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <groupId>org.telegram</groupId>
     <artifactId>telegramapi</artifactId>
-    <version>57.0</version>
+    <version>57.1</version>
 
     <name>Telegram Api</name>
     <url>https://github.com/rubenlagus/TelegramApi</url>
