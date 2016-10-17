@@ -97,7 +97,7 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     private final IDifferencesHandler differencesHandler;
     private final DatabaseManager databaseManager;
 
-    UpdatesHandlerBase(IKernelComm kernelComm, IDifferenceParametersService differenceParametersService, DatabaseManager databaseManager) {
+    protected UpdatesHandlerBase(IKernelComm kernelComm, IDifferenceParametersService differenceParametersService, DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
         this.differenceParametersService = differenceParametersService;
         differencesHandler = new DifferencesHandler(kernelComm, differenceParametersService, this);
