@@ -1491,7 +1491,7 @@
       "type":"ReportReason"
     },
     {
-      "id":"1496513539",
+      "id":"253890367",
       "predicate":"userFull",
       "params":[
         {
@@ -1501,6 +1501,10 @@
         {
           "name":"blocked",
           "type":"flags.0?true"
+        },
+        {
+          "name":"phone_calls_available",
+          "type":"flags.4?true"
         },
         {
           "name":"user",
@@ -1525,6 +1529,10 @@
         {
           "name":"bot_info",
           "type":"flags.3?BotInfo"
+        },
+        {
+          "name":"common_chats_count",
+          "type":"int"
         }
       ],
       "type":"UserFull"
@@ -2083,29 +2091,6 @@
       "type":"Update"
     },
     {
-      "id":"-1895411046",
-      "predicate":"updateNewAuthorization",
-      "params":[
-        {
-          "name":"auth_key_id",
-          "type":"long"
-        },
-        {
-          "name":"date",
-          "type":"int"
-        },
-        {
-          "name":"device",
-          "type":"string"
-        },
-        {
-          "name":"location",
-          "type":"string"
-        }
-      ],
-      "type":"Update"
-    },
-    {
       "id":"-1519637954",
       "predicate":"updates.state",
       "params":[
@@ -2532,12 +2517,16 @@
       "type":"DcOption"
     },
     {
-      "id":"-1704251862",
+      "id":"-1233953423",
       "predicate":"config",
       "params":[
         {
           "name":"flags",
           "type":"#"
+        },
+        {
+          "name":"phonecalls_enabled",
+          "type":"flags.1?true"
         },
         {
           "name":"date",
@@ -2626,6 +2615,22 @@
         {
           "name":"tmp_sessions",
           "type":"flags.0?int"
+        },
+        {
+          "name":"call_receive_timeout_ms",
+          "type":"int"
+        },
+        {
+          "name":"call_ring_timeout_ms",
+          "type":"int"
+        },
+        {
+          "name":"call_connect_timeout_ms",
+          "type":"int"
+        },
+        {
+          "name":"call_packet_timeout_ms",
+          "type":"int"
         },
         {
           "name":"disabled_features",
@@ -3593,9 +3598,21 @@
       "type":"contacts.Found"
     },
     {
-      "id":"942527460",
+      "id":"-337352679",
       "predicate":"updateServiceNotification",
       "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"popup",
+          "type":"flags.0?true"
+        },
+        {
+          "name":"inbox_date",
+          "type":"flags.1?int"
+        },
         {
           "name":"type",
           "type":"string"
@@ -3609,8 +3626,8 @@
           "type":"MessageMedia"
         },
         {
-          "name":"popup",
-          "type":"Bool"
+          "name":"entities",
+          "type":"Vector<MessageEntity>"
         }
       ],
       "type":"Update"
@@ -4145,7 +4162,7 @@
       "type":"WebPage"
     },
     {
-      "id":"-897446185",
+      "id":"1594340540",
       "predicate":"webPage",
       "params":[
         {
@@ -4163,6 +4180,10 @@
         {
           "name":"display_url",
           "type":"string"
+        },
+        {
+          "name":"hash",
+          "type":"int"
         },
         {
           "name":"type",
@@ -4211,6 +4232,10 @@
         {
           "name":"document",
           "type":"flags.9?Document"
+        },
+        {
+          "name":"cached_page",
+          "type":"flags.10?Page"
         }
       ],
       "type":"WebPage"
@@ -4918,12 +4943,20 @@
       "type":"help.AppChangelog"
     },
     {
-      "id":"1181279933",
+      "id":"705920636",
       "predicate":"help.appChangelog",
       "params":[
         {
-          "name":"text",
+          "name":"message",
           "type":"string"
+        },
+        {
+          "name":"media",
+          "type":"MessageMedia"
+        },
+        {
+          "name":"entities",
+          "type":"Vector<MessageEntity>"
         }
       ],
       "type":"help.AppChangelog"
@@ -6373,7 +6406,7 @@
       "type":"BotInlineResult"
     },
     {
-      "id":"627509670",
+      "id":"-858565059",
       "predicate":"messages.botResults",
       "params":[
         {
@@ -6399,6 +6432,10 @@
         {
           "name":"results",
           "type":"Vector<BotInlineResult>"
+        },
+        {
+          "name":"cache_time",
+          "type":"int"
         }
       ],
       "type":"messages.BotResults"
@@ -6732,7 +6769,7 @@
       "type":"ReplyMarkup"
     },
     {
-      "id":"-1324486149",
+      "id":"911761060",
       "predicate":"messages.botCallbackAnswer",
       "params":[
         {
@@ -6754,6 +6791,10 @@
         {
           "name":"url",
           "type":"flags.2?string"
+        },
+        {
+          "name":"cache_time",
+          "type":"int"
         }
       ],
       "type":"messages.BotCallbackAnswer"
@@ -7713,14 +7754,6 @@
       "type":"InputBotInlineMessage"
     },
     {
-      "id":"-580219064",
-      "predicate":"sendMessageGamePlayAction",
-      "params":[
-
-      ],
-      "type":"SendMessageAction"
-    },
-    {
       "id":"-38694904",
       "predicate":"messageMediaGame",
       "params":[
@@ -7831,6 +7864,807 @@
         }
       ],
       "type":"messages.HighScores"
+    },
+    {
+      "id":"1258196845",
+      "predicate":"updates.differenceTooLong",
+      "params":[
+        {
+          "name":"pts",
+          "type":"int"
+        }
+      ],
+      "type":"updates.Difference"
+    },
+    {
+      "id":"1081547008",
+      "predicate":"updateChannelWebPage",
+      "params":[
+        {
+          "name":"channel_id",
+          "type":"int"
+        },
+        {
+          "name":"webpage",
+          "type":"WebPage"
+        },
+        {
+          "name":"pts",
+          "type":"int"
+        },
+        {
+          "name":"pts_count",
+          "type":"int"
+        }
+      ],
+      "type":"Update"
+    },
+    {
+      "id":"-1663561404",
+      "predicate":"messages.chatsSlice",
+      "params":[
+        {
+          "name":"count",
+          "type":"int"
+        },
+        {
+          "name":"chats",
+          "type":"Vector<Chat>"
+        }
+      ],
+      "type":"messages.Chats"
+    },
+    {
+      "id":"-599948721",
+      "predicate":"textEmpty",
+      "params":[
+
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"1950782688",
+      "predicate":"textPlain",
+      "params":[
+        {
+          "name":"text",
+          "type":"string"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"1730456516",
+      "predicate":"textBold",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"-653089380",
+      "predicate":"textItalic",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"-1054465340",
+      "predicate":"textUnderline",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"-1678197867",
+      "predicate":"textStrike",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"1816074681",
+      "predicate":"textFixed",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"1009288385",
+      "predicate":"textUrl",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        },
+        {
+          "name":"url",
+          "type":"string"
+        },
+        {
+          "name":"webpage_id",
+          "type":"long"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"-564523562",
+      "predicate":"textEmail",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        },
+        {
+          "name":"email",
+          "type":"string"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"2120376535",
+      "predicate":"textConcat",
+      "params":[
+        {
+          "name":"texts",
+          "type":"Vector<RichText>"
+        }
+      ],
+      "type":"RichText"
+    },
+    {
+      "id":"324435594",
+      "predicate":"pageBlockUnsupported",
+      "params":[
+
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"1890305021",
+      "predicate":"pageBlockTitle",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-1879401953",
+      "predicate":"pageBlockSubtitle",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"1029399794",
+      "predicate":"pageBlockAuthorDate",
+      "params":[
+        {
+          "name":"author",
+          "type":"string"
+        },
+        {
+          "name":"published_date",
+          "type":"int"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-1076861716",
+      "predicate":"pageBlockHeader",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-248793375",
+      "predicate":"pageBlockSubheader",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"1182402406",
+      "predicate":"pageBlockParagraph",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-1066346178",
+      "predicate":"pageBlockPreformatted",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        },
+        {
+          "name":"language",
+          "type":"string"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"1216809369",
+      "predicate":"pageBlockFooter",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-618614392",
+      "predicate":"pageBlockDivider",
+      "params":[
+
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-837994576",
+      "predicate":"pageBlockAnchor",
+      "params":[
+        {
+          "name":"name",
+          "type":"string"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"978896884",
+      "predicate":"pageBlockList",
+      "params":[
+        {
+          "name":"ordered",
+          "type":"Bool"
+        },
+        {
+          "name":"items",
+          "type":"Vector<RichText>"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"641563686",
+      "predicate":"pageBlockBlockquote",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        },
+        {
+          "name":"caption",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"1329878739",
+      "predicate":"pageBlockPullquote",
+      "params":[
+        {
+          "name":"text",
+          "type":"RichText"
+        },
+        {
+          "name":"caption",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-372860542",
+      "predicate":"pageBlockPhoto",
+      "params":[
+        {
+          "name":"photo_id",
+          "type":"long"
+        },
+        {
+          "name":"caption",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-640214938",
+      "predicate":"pageBlockVideo",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"autoplay",
+          "type":"flags.0?true"
+        },
+        {
+          "name":"loop",
+          "type":"flags.1?true"
+        },
+        {
+          "name":"video_id",
+          "type":"long"
+        },
+        {
+          "name":"caption",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"972174080",
+      "predicate":"pageBlockCover",
+      "params":[
+        {
+          "name":"cover",
+          "type":"PageBlock"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-650782469",
+      "predicate":"pageBlockEmbed",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"full_width",
+          "type":"flags.0?true"
+        },
+        {
+          "name":"allow_scrolling",
+          "type":"flags.3?true"
+        },
+        {
+          "name":"url",
+          "type":"flags.1?string"
+        },
+        {
+          "name":"html",
+          "type":"flags.2?string"
+        },
+        {
+          "name":"w",
+          "type":"int"
+        },
+        {
+          "name":"h",
+          "type":"int"
+        },
+        {
+          "name":"caption",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"690781161",
+      "predicate":"pageBlockEmbedPost",
+      "params":[
+        {
+          "name":"url",
+          "type":"string"
+        },
+        {
+          "name":"webpage_id",
+          "type":"long"
+        },
+        {
+          "name":"author_photo_id",
+          "type":"long"
+        },
+        {
+          "name":"author",
+          "type":"string"
+        },
+        {
+          "name":"date",
+          "type":"int"
+        },
+        {
+          "name":"blocks",
+          "type":"Vector<PageBlock>"
+        },
+        {
+          "name":"caption",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"145955919",
+      "predicate":"pageBlockCollage",
+      "params":[
+        {
+          "name":"items",
+          "type":"Vector<PageBlock>"
+        },
+        {
+          "name":"caption",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"319588707",
+      "predicate":"pageBlockSlideshow",
+      "params":[
+        {
+          "name":"items",
+          "type":"Vector<PageBlock>"
+        },
+        {
+          "name":"caption",
+          "type":"RichText"
+        }
+      ],
+      "type":"PageBlock"
+    },
+    {
+      "id":"-1913754556",
+      "predicate":"pagePart",
+      "params":[
+        {
+          "name":"blocks",
+          "type":"Vector<PageBlock>"
+        },
+        {
+          "name":"photos",
+          "type":"Vector<Photo>"
+        },
+        {
+          "name":"videos",
+          "type":"Vector<Document>"
+        }
+      ],
+      "type":"Page"
+    },
+    {
+      "id":"-677274263",
+      "predicate":"pageFull",
+      "params":[
+        {
+          "name":"blocks",
+          "type":"Vector<PageBlock>"
+        },
+        {
+          "name":"photos",
+          "type":"Vector<Photo>"
+        },
+        {
+          "name":"videos",
+          "type":"Vector<Document>"
+        }
+      ],
+      "type":"Page"
+    },
+    {
+      "id":"-2054908813",
+      "predicate":"webPageNotModified",
+      "params":[
+
+      ],
+      "type":"WebPage"
+    },
+    {
+      "id":"506920429",
+      "predicate":"inputPhoneCall",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        }
+      ],
+      "type":"InputPhoneCall"
+    },
+    {
+      "id":"1399245077",
+      "predicate":"phoneCallEmpty",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"462375633",
+      "predicate":"phoneCallWaiting",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        },
+        {
+          "name":"date",
+          "type":"int"
+        },
+        {
+          "name":"admin_id",
+          "type":"int"
+        },
+        {
+          "name":"participant_id",
+          "type":"int"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        },
+        {
+          "name":"receive_date",
+          "type":"flags.0?int"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"1816431336",
+      "predicate":"phoneCallRequested",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        },
+        {
+          "name":"date",
+          "type":"int"
+        },
+        {
+          "name":"admin_id",
+          "type":"int"
+        },
+        {
+          "name":"participant_id",
+          "type":"int"
+        },
+        {
+          "name":"g_a",
+          "type":"bytes"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"-1660057",
+      "predicate":"phoneCall",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        },
+        {
+          "name":"date",
+          "type":"int"
+        },
+        {
+          "name":"admin_id",
+          "type":"int"
+        },
+        {
+          "name":"participant_id",
+          "type":"int"
+        },
+        {
+          "name":"g_a_or_b",
+          "type":"bytes"
+        },
+        {
+          "name":"key_fingerprint",
+          "type":"long"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        },
+        {
+          "name":"connection",
+          "type":"PhoneConnection"
+        },
+        {
+          "name":"alternative_connections",
+          "type":"Vector<PhoneConnection>"
+        },
+        {
+          "name":"start_date",
+          "type":"int"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"-868794179",
+      "predicate":"phoneCallDiscarded",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"1802768841",
+      "predicate":"phoneConnection",
+      "params":[
+        {
+          "name":"ip",
+          "type":"string"
+        },
+        {
+          "name":"ipv6",
+          "type":"string"
+        },
+        {
+          "name":"port",
+          "type":"int"
+        },
+        {
+          "name":"peer_tag",
+          "type":"bytes"
+        }
+      ],
+      "type":"PhoneConnection"
+    },
+    {
+      "id":"-1564789301",
+      "predicate":"phoneCallProtocol",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"udp_p2p",
+          "type":"flags.0?true"
+        },
+        {
+          "name":"udp_reflector",
+          "type":"flags.1?true"
+        },
+        {
+          "name":"min_layer",
+          "type":"int"
+        },
+        {
+          "name":"max_layer",
+          "type":"int"
+        }
+      ],
+      "type":"PhoneCallProtocol"
+    },
+    {
+      "id":"-1425052898",
+      "predicate":"updatePhoneCall",
+      "params":[
+        {
+          "name":"phone_call",
+          "type":"PhoneCall"
+        }
+      ],
+      "type":"Update"
+    },
+    {
+      "id":"-326966976",
+      "predicate":"phone.phoneCall",
+      "params":[
+        {
+          "name":"phone_call",
+          "type":"PhoneCall"
+        },
+        {
+          "name":"users",
+          "type":"Vector<User>"
+        }
+      ],
+      "type":"phone.PhoneCall"
+    },
+    {
+      "id":"-88417185",
+      "predicate":"inputPrivacyKeyPhoneCall",
+      "params":[
+
+      ],
+      "type":"InputPrivacyKey"
+    },
+    {
+      "id":"1030105979",
+      "predicate":"privacyKeyPhoneCall",
+      "params":[
+
+      ],
+      "type":"PrivacyKey"
+    },
+    {
+      "id":"-580219064",
+      "predicate":"sendMessageGamePlayAction",
+      "params":[
+
+      ],
+      "type":"SendMessageAction"
     }
   ],
   "methods":[
@@ -8750,12 +9584,20 @@
       "type":"updates.State"
     },
     {
-      "id":"168039573",
+      "id":"630429265",
       "method":"updates.getDifference",
       "params":[
         {
+          "name":"flags",
+          "type":"#"
+        },
+        {
           "name":"pts",
           "type":"int"
+        },
+        {
+          "name":"pts_total_limit",
+          "type":"flags.0?int"
         },
         {
           "name":"date",
@@ -9089,6 +9931,17 @@
         }
       ],
       "type":"Vector<long>"
+    },
+    {
+      "id":"1259113487",
+      "method":"messages.reportEncryptedSpam",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputEncryptedChat"
+        }
+      ],
+      "type":"Bool"
     },
     {
       "id":"-562337987",
@@ -9933,9 +10786,17 @@
       "type":"Updates"
     },
     {
-      "id":"-1154295872",
+      "id":"51854712",
       "method":"updates.getChannelDifference",
       "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"force",
+          "type":"flags.0?true"
+        },
         {
           "name":"channel",
           "type":"InputChannel"
@@ -10434,7 +11295,7 @@
       "type":"messages.BotCallbackAnswer"
     },
     {
-      "id":"-920136629",
+      "id":"-712043766",
       "method":"messages.setBotCallbackAnswer",
       "params":[
         {
@@ -10456,6 +11317,10 @@
         {
           "name":"url",
           "type":"flags.2?string"
+        },
+        {
+          "name":"cache_time",
+          "type":"int"
         }
       ],
       "type":"Bool"
@@ -10762,6 +11627,10 @@
           "type":"flags.0?true"
         },
         {
+          "name":"force",
+          "type":"flags.1?true"
+        },
+        {
           "name":"peer",
           "type":"InputPeer"
         },
@@ -10791,6 +11660,10 @@
         {
           "name":"edit_message",
           "type":"flags.0?true"
+        },
+        {
+          "name":"force",
+          "type":"flags.1?true"
         },
         {
           "name":"id",
@@ -10840,6 +11713,134 @@
         }
       ],
       "type":"messages.HighScores"
+    },
+    {
+      "id":"218777796",
+      "method":"messages.getCommonChats",
+      "params":[
+        {
+          "name":"user_id",
+          "type":"InputUser"
+        },
+        {
+          "name":"max_id",
+          "type":"int"
+        },
+        {
+          "name":"limit",
+          "type":"int"
+        }
+      ],
+      "type":"messages.Chats"
+    },
+    {
+      "id":"-341307408",
+      "method":"messages.getAllChats",
+      "params":[
+        {
+          "name":"except_ids",
+          "type":"Vector<int>"
+        }
+      ],
+      "type":"messages.Chats"
+    },
+    {
+      "id":"-333262899",
+      "method":"help.setBotUpdatesStatus",
+      "params":[
+        {
+          "name":"pending_updates_count",
+          "type":"int"
+        },
+        {
+          "name":"message",
+          "type":"string"
+        }
+      ],
+      "type":"Bool"
+    },
+    {
+      "id":"852135825",
+      "method":"messages.getWebPage",
+      "params":[
+        {
+          "name":"url",
+          "type":"string"
+        },
+        {
+          "name":"hash",
+          "type":"int"
+        }
+      ],
+      "type":"WebPage"
+    },
+    {
+      "id":"-1541757468",
+      "method":"phone.requestCall",
+      "params":[
+        {
+          "name":"user_id",
+          "type":"InputUser"
+        },
+        {
+          "name":"random_id",
+          "type":"int"
+        },
+        {
+          "name":"g_a",
+          "type":"bytes"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        }
+      ],
+      "type":"phone.PhoneCall"
+    },
+    {
+      "id":"571411232",
+      "method":"phone.acceptCall",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        },
+        {
+          "name":"g_b",
+          "type":"bytes"
+        },
+        {
+          "name":"key_fingerprint",
+          "type":"long"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        }
+      ],
+      "type":"phone.PhoneCall"
+    },
+    {
+      "id":"1165922961",
+      "method":"phone.discardCall",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        }
+      ],
+      "type":"Bool"
+    },
+    {
+      "id":"399855457",
+      "method":"phone.receivedCall",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        }
+      ],
+      "type":"Bool"
     }
   ]
 }

@@ -8,6 +8,7 @@
 package org.telegram.api.webpage;
 
 import org.telegram.api.document.TLAbsDocument;
+import org.telegram.api.page.TLAbsPage;
 import org.telegram.api.photo.TLAbsPhoto;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
@@ -27,7 +28,7 @@ public class TLWebPage extends TLAbsWebPage {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xca820ed7;
+    public static final int CLASS_ID = 0x5f07b4bc;
 
     private static final int FLAG_TYPE               = 0x00000001; // 0
     private static final int FLAG_SITENAME           = 0x00000002; // 1
@@ -39,11 +40,13 @@ public class TLWebPage extends TLAbsWebPage {
     private static final int FLAG_DURATION           = 0x00000080; // 7
     private static final int FLAG_AUTHOR             = 0x00000100; // 8
     private static final int FLAG_DOCUMENT           = 0x00000200; // 9
+    private static final int FLAG_CACHED             = 0x00000400; // 10
 
     private int flags;
     private long id;
     private String url;
     private String display_url;
+    private int hash;
     private String type;
     private String site_name;
     private String title;
@@ -56,6 +59,7 @@ public class TLWebPage extends TLAbsWebPage {
     private int duration;
     private String author;
     private TLAbsDocument document;
+    private TLAbsPage cachedPage;
 
     /**
      * Instantiates a new TL web page.
@@ -69,142 +73,76 @@ public class TLWebPage extends TLAbsWebPage {
         return CLASS_ID;
     }
 
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
-    public long getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public int getFlags() {
         return flags;
     }
 
-    public void setFlags(int flags) {
-        this.flags = flags;
+    public long getId() {
+        return id;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getDisplay_url() {
         return display_url;
     }
 
-    public void setDisplay_url(String display_url) {
-        this.display_url = display_url;
+    public int getHash() {
+        return hash;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getSite_name() {
         return site_name;
-    }
-
-    public void setSite_name(String site_name) {
-        this.site_name = site_name;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public TLAbsPhoto getPhoto() {
         return photo;
     }
 
-    public void setPhoto(TLAbsPhoto photo) {
-        this.photo = photo;
-    }
-
     public String getEmbed_url() {
         return embed_url;
-    }
-
-    public void setEmbed_url(String embed_url) {
-        this.embed_url = embed_url;
     }
 
     public String getEmbed_type() {
         return embed_type;
     }
 
-    public void setEmbed_type(String embed_type) {
-        this.embed_type = embed_type;
-    }
-
     public int getEmbed_width() {
         return embed_width;
-    }
-
-    public void setEmbed_width(int embed_width) {
-        this.embed_width = embed_width;
     }
 
     public int getEmbed_height() {
         return embed_height;
     }
 
-    public void setEmbed_height(int embed_height) {
-        this.embed_height = embed_height;
-    }
-
     public int getDuration() {
         return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public TLAbsDocument getDocument() {
         return document;
     }
 
-    public void setDocument(TLAbsDocument document) {
-        this.document = document;
+    public TLAbsPage getCachedPage() {
+        return cachedPage;
     }
 
     @Override
@@ -214,6 +152,7 @@ public class TLWebPage extends TLAbsWebPage {
         StreamingUtils.writeLong(this.id, stream);
         StreamingUtils.writeTLString(this.url, stream);
         StreamingUtils.writeTLString(this.display_url, stream);
+        StreamingUtils.writeInt(this.hash, stream);
         if ((this.flags & FLAG_TYPE) != 0) {
             StreamingUtils.writeTLString(this.type, stream);
         }
@@ -246,6 +185,9 @@ public class TLWebPage extends TLAbsWebPage {
         if ((this.flags & FLAG_DOCUMENT) != 0) {
             StreamingUtils.writeTLObject(this.document, stream);
         }
+        if ((flags & FLAG_CACHED) != 0) {
+            StreamingUtils.writeTLObject(this.cachedPage, stream);
+        }
     }
 
     @Override
@@ -255,6 +197,7 @@ public class TLWebPage extends TLAbsWebPage {
         this.id = StreamingUtils.readLong(stream);
         this.url = StreamingUtils.readTLString(stream);
         this.display_url = StreamingUtils.readTLString(stream);
+        this.hash = StreamingUtils.readInt(stream);
         if ((this.flags & FLAG_TYPE) != 0) {
             this.type = StreamingUtils.readTLString(stream);
         }
@@ -287,10 +230,13 @@ public class TLWebPage extends TLAbsWebPage {
         if ((this.flags & FLAG_DOCUMENT) != 0) {
             this.document = (TLAbsDocument) StreamingUtils.readTLObject(stream, context);
         }
+        if ((flags & FLAG_CACHED) != 0) {
+            cachedPage = StreamingUtils.readTLObject(stream, context, TLAbsPage.class);
+        }
     }
 
     @Override
     public String toString() {
-        return "webpage.TLWebPage#ca820ed7";
+        return "webPage#5f07b4bc";
     }
 }

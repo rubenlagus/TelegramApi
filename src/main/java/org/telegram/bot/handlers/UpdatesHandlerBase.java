@@ -9,57 +9,7 @@ import org.telegram.api.notify.peer.TLAbsNotifyPeer;
 import org.telegram.api.notify.peer.TLNotifyPeer;
 import org.telegram.api.peer.TLAbsPeer;
 import org.telegram.api.peer.TLPeerUser;
-import org.telegram.api.update.TLAbsUpdate;
-import org.telegram.api.update.TLFakeUpdate;
-import org.telegram.api.update.TLUpdateBotCallbackQuery;
-import org.telegram.api.update.TLUpdateBotInlineQuery;
-import org.telegram.api.update.TLUpdateBotInlineSend;
-import org.telegram.api.update.TLUpdateChannel;
-import org.telegram.api.update.TLUpdateChannelMessageViews;
-import org.telegram.api.update.TLUpdateChannelNewMessage;
-import org.telegram.api.update.TLUpdateChannelPinnedMessage;
-import org.telegram.api.update.TLUpdateChannelTooLong;
-import org.telegram.api.update.TLUpdateChatAdmin;
-import org.telegram.api.update.TLUpdateChatParticipantAdd;
-import org.telegram.api.update.TLUpdateChatParticipantAdmin;
-import org.telegram.api.update.TLUpdateChatParticipantDelete;
-import org.telegram.api.update.TLUpdateChatParticipants;
-import org.telegram.api.update.TLUpdateChatUserTyping;
-import org.telegram.api.update.TLUpdateConfig;
-import org.telegram.api.update.TLUpdateContactLink;
-import org.telegram.api.update.TLUpdateContactRegistered;
-import org.telegram.api.update.TLUpdateDcOptions;
-import org.telegram.api.update.TLUpdateDeleteChannelMessages;
-import org.telegram.api.update.TLUpdateDeleteMessages;
-import org.telegram.api.update.TLUpdateDraftMessage;
-import org.telegram.api.update.TLUpdateEditChannelMessage;
-import org.telegram.api.update.TLUpdateEditMessage;
-import org.telegram.api.update.TLUpdateInlineBotCallbackQuery;
-import org.telegram.api.update.TLUpdateMessageId;
-import org.telegram.api.update.TLUpdateNewAuthorization;
-import org.telegram.api.update.TLUpdateNewMessage;
-import org.telegram.api.update.TLUpdateNewStickerSet;
-import org.telegram.api.update.TLUpdateNotifySettings;
-import org.telegram.api.update.TLUpdatePrivacy;
-import org.telegram.api.update.TLUpdatePtsChanged;
-import org.telegram.api.update.TLUpdateReadChannelInbox;
-import org.telegram.api.update.TLUpdateReadChannelOutbox;
-import org.telegram.api.update.TLUpdateReadFeaturedStickers;
-import org.telegram.api.update.TLUpdateReadMessagesContents;
-import org.telegram.api.update.TLUpdateReadMessagesInbox;
-import org.telegram.api.update.TLUpdateReadMessagesOutbox;
-import org.telegram.api.update.TLUpdateRecentStickers;
-import org.telegram.api.update.TLUpdateSavedGifs;
-import org.telegram.api.update.TLUpdateServiceNotification;
-import org.telegram.api.update.TLUpdateStickerSets;
-import org.telegram.api.update.TLUpdateStickerSetsOrder;
-import org.telegram.api.update.TLUpdateUserBlocked;
-import org.telegram.api.update.TLUpdateUserName;
-import org.telegram.api.update.TLUpdateUserPhone;
-import org.telegram.api.update.TLUpdateUserPhoto;
-import org.telegram.api.update.TLUpdateUserStatus;
-import org.telegram.api.update.TLUpdateUserTyping;
-import org.telegram.api.update.TLUpdateWebPage;
+import org.telegram.api.update.*;
 import org.telegram.api.update.encrypted.TLUpdateEncryptedChatTyping;
 import org.telegram.api.update.encrypted.TLUpdateEncryptedMessagesRead;
 import org.telegram.api.update.encrypted.TLUpdateEncryption;
@@ -160,8 +110,6 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
                 onTLUpdateEditChannelMessage((TLUpdateEditChannelMessage) update, updateWrapper.isGettingDifferences());
             } else if (update instanceof TLUpdateMessageId) {
                 onTLUpdateMessageId((TLUpdateMessageId) update);
-            } else if (update instanceof TLUpdateNewAuthorization) {
-                onTLUpdateNewAuthorization((TLUpdateNewAuthorization) update);
             } else if (update instanceof TLUpdateNewStickerSet) {
                 onTLUpdateNewStickerSet((TLUpdateNewStickerSet) update);
             } else if (update instanceof TLUpdateNotifySettings) {
@@ -226,6 +174,10 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
                 onTLUpdateReadFeaturedStickers((TLUpdateReadFeaturedStickers) update);
             } else if (update instanceof TLUpdateRecentStickers) {
                 onTLUpdateRecentStickers((TLUpdateRecentStickers) update);
+            } else if (update instanceof TLUpdateChannelWebPage) {
+                onTLUpdateChannelWebPage((TLUpdateChannelWebPage) update, updateWrapper.isGettingDifferences());
+            } else if (update instanceof TLUpdatePhoneCall) {
+                onTLUpdatePhoneCall((TLUpdatePhoneCall) update);
             } else {
                 BotLogger.debug(LOGTAG, "Unsupported TLAbsUpdate: " + update.toString());
             }
@@ -306,6 +258,20 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
 
     private void onTLUpdateShortSentMessage(TLUpdateShortSentMessage update) {
         onTLUpdateShortSentMessageCustom(update);
+    }
+
+    private void onTLUpdatePhoneCall(TLUpdatePhoneCall update) {
+        onTLUpdatePhoneCallCustom(update);
+    }
+
+    private void onTLUpdateChannelWebPage(TLUpdateChannelWebPage update, boolean gettingDifferences) {
+        if (isChatMissing(update.getChannelId())) {
+            if (!gettingDifferences) {
+                differencesHandler.getDifferences();
+            }
+        } else {
+            onTLUpdateChannelWebPageCustom(update);
+        }
     }
 
     private void onTLUpdateChatParticipants(TLUpdateChatParticipants update, boolean gettingDifferences) {
@@ -515,10 +481,6 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
 
     private void onTLUpdateMessageId(TLUpdateMessageId update) {
         onTLUpdateMessageIdCustom(update);
-    }
-
-    private void onTLUpdateNewAuthorization(TLUpdateNewAuthorization update) {
-        onTLUpdateNewAuthorizationCustom(update);
     }
 
     private void onTLUpdateNewStickerSet(TLUpdateNewStickerSet update) {
@@ -892,7 +854,6 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     protected abstract void onTLUpdateDeleteMessagesCustom(TLUpdateDeleteMessages update);
     protected abstract void onTLUpdateEditChannelMessageCustom(TLUpdateEditChannelMessage update);
     protected abstract void onTLUpdateMessageIdCustom(TLUpdateMessageId update);
-    protected abstract void onTLUpdateNewAuthorizationCustom(TLUpdateNewAuthorization update);
     protected abstract void onTLUpdateNewStickerSetCustom(TLUpdateNewStickerSet update);
     protected abstract void onTLUpdateNotifySettingsCustom(TLUpdateNotifySettings update);
     protected abstract void onTLUpdatePrivacyCustom(TLUpdatePrivacy update);
@@ -931,4 +892,6 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     protected abstract void onTLUpdateReadChannelOutboxCustom(TLUpdateReadChannelOutbox update);
     protected abstract void onTLUpdateReadFeaturedStickersCustom(TLUpdateReadFeaturedStickers update);
     protected abstract void onTLUpdateRecentStickersCustom(TLUpdateRecentStickers update);
+    protected abstract void onTLUpdateChannelWebPageCustom(TLUpdateChannelWebPage update);
+    protected abstract void onTLUpdatePhoneCallCustom(TLUpdatePhoneCall update);
 }

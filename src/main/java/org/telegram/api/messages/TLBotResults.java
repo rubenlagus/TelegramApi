@@ -30,11 +30,9 @@ import java.io.OutputStream;
 /**
  * @author Ruben Bermudez
  * @version 1.0
- * @brief TODO
- * @date 13 of February of 2016
  */
 public class TLBotResults extends TLObject {
-    public static final int CLASS_ID = 0x256709a6;
+    public static final int CLASS_ID = 0xccd3563d;
 
     private static final int FLAG_GALLERY     = 0x00000001; // 0
     private static final int FLAG_NEXT_OFFSET = 0x00000002; // 1
@@ -45,6 +43,7 @@ public class TLBotResults extends TLObject {
     private String nextOffset;
     private TLVector<TLAbsBotInlineResult> results;
     private TLInlineBotSwitchPm switchPm;
+    private int cacheTime;
 
     public TLBotResults() {
         super();
@@ -70,6 +69,14 @@ public class TLBotResults extends TLObject {
         return switchPm;
     }
 
+    public int getCacheTime() {
+        return cacheTime;
+    }
+
+    public boolean isGallery() {
+        return (flags & FLAG_GALLERY) != 0;
+    }
+
     @Override
     public int getClassId() {
         return CLASS_ID;
@@ -86,6 +93,7 @@ public class TLBotResults extends TLObject {
             StreamingUtils.writeTLObject(switchPm, stream);
         }
         StreamingUtils.writeTLVector(results, stream);
+        StreamingUtils.writeInt(cacheTime, stream);
     }
 
     @Override
@@ -99,10 +107,11 @@ public class TLBotResults extends TLObject {
             switchPm = StreamingUtils.readTLObject(stream, context, TLInlineBotSwitchPm.class);
         }
         results = StreamingUtils.readTLVector(stream, context, TLAbsBotInlineResult.class);
+        cacheTime = StreamingUtils.readInt(stream);
     }
 
     @Override
     public String toString() {
-        return "messages.botResults#256709a6";
+        return "messages.botResults#ccd3563d";
     }
 }

@@ -73,6 +73,6 @@ public class TLRequestMessagesGetWebPagePreview extends TLMethod<TLAbsMessageMed
     }
 
     public String toString() {
-        return "account.getWebPreview#25223e24";
+        return "messages.getWebPagePreview#25223e24";
     }
 }

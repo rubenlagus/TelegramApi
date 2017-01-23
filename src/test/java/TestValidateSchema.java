@@ -65,6 +65,10 @@ public class TestValidateSchema {
     @Test
     public void TestShemaIsLoaded() {
         Assert.assertFalse("Failed to load schema", tlObjects.isEmpty());
+    }
+
+    @Test
+    public void TestSecretShemaIsLoaded() {
         Assert.assertFalse("Failed to load schema", tlSecretObjects.isEmpty());
     }
 
@@ -77,7 +81,7 @@ public class TestValidateSchema {
     }
 
     @Test
-    public void TestAllObjectsAndMethodsAreInShema() {
+    public void TestAllObjectsAndMethodsAreInSchema() {
         List<Integer> objects = new ArrayList<>();
         objects.addAll(tlObjects);
         objects.addAll(tlSecretObjects);

@@ -1,6 +1,6 @@
 package org.telegram.api.functions.channels;
 
-import org.telegram.api.messages.TLMessagesChats;
+import org.telegram.api.messages.chats.TLMessagesChats;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLMethod;

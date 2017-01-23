@@ -17,7 +17,7 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xc927d44b;
+    public static final int CLASS_ID = 0xd58f130a;
 
     private static final int FLAG_MESSAGE = 0x00000001; // 0
     private static final int FLAG_ALERT   = 0x00000002; // 1
@@ -27,6 +27,7 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
     private long queryId;
     private String message;
     private String url;
+    private int cacheTime;
 
     /**
      * Instantiates a new TL request channel edit admin
@@ -55,12 +56,24 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
         return flags;
     }
 
+    public void setFlags(int flags) {
+        this.flags = flags;
+    }
+
     public long getQueryId() {
         return queryId;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public int getCacheTime() {
+        return cacheTime;
+    }
+
+    public void setCacheTime(int cacheTime) {
+        this.cacheTime = cacheTime;
     }
 
     public boolean hasAlert() {
@@ -100,6 +113,7 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
         if ((flags & FLAG_URL) != 0) {
             StreamingUtils.writeTLString(url, stream);
         }
+        StreamingUtils.writeInt(cacheTime, stream);
     }
 
     @Override
@@ -113,9 +127,10 @@ public class TLRequestMessagesSetBotCallbackAnswer extends TLMethod<TLBool> {
         if ((flags & FLAG_URL) != 0) {
             url = StreamingUtils.readTLString(stream);
         }
+        cacheTime = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "messages.setBotCallbackAnswer#c927d44b";
+        return "messages.setBotCallbackAnswer#d58f130a";
     }
 }

@@ -22,6 +22,7 @@ public class TLRequestMessagesSetGameScore extends TLMethod<TLAbsUpdates> {
     public static final int CLASS_ID = 0x8ef8ecc0;
 
     private static final int FLAG_EDITMESSAGE    = 0x00000001; // 0
+    private static final int FLAG_FORCE          = 0x00000002; // 1
 
     private int flags;
     private TLAbsInputPeer peer;
@@ -87,6 +88,14 @@ public class TLRequestMessagesSetGameScore extends TLMethod<TLAbsUpdates> {
             this.flags |= FLAG_EDITMESSAGE;
         } else {
             this.flags &= ~FLAG_EDITMESSAGE;
+        }
+    }
+
+    public void enableForce(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_FORCE;
+        } else {
+            this.flags &= ~FLAG_FORCE;
         }
     }
 

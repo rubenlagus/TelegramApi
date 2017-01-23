@@ -19,12 +19,13 @@ public class TLUserFull extends TLObject {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x5932fc03;
+    public static final int CLASS_ID = 0xf220f3f;
 
     private static final int FLAG_BLOCKED         = 0x00000001; // 0
     private static final int FLAG_ABOUT           = 0x00000002; // 1
     private static final int FLAG_PROFILE_PHOTO   = 0x00000004; // 2
     private static final int FLAG_BOT_INFO        = 0x00000008; // 3
+    private static final int FLAG_CALLS_AVAILABLE = 0x00000010; // 4
 
     private int flags;
     private TLAbsUser user;
@@ -33,6 +34,7 @@ public class TLUserFull extends TLObject {
     private TLAbsPhoto profilePhoto;
     private TLAbsPeerNotifySettings notifySettings;
     private TLBotInfo botInfo;
+    private int commonChatsCount;
 
     /**
      * Instantiates a new TL user full.
@@ -45,92 +47,44 @@ public class TLUserFull extends TLObject {
         return CLASS_ID;
     }
 
-    /**
-     * Gets user.
-     *
-     * @return the user
-     */
+    public int getFlags() {
+        return flags;
+    }
+
     public TLAbsUser getUser() {
-        return this.user;
-    }
-
-    /**
-     * Sets user.
-     *
-     * @param value the value
-     */
-    public void setUser(TLAbsUser value) {
-        this.user = value;
-    }
-
-    /**
-     * Gets link.
-     *
-     * @return the link
-     */
-    public TLContactsLink getLink() {
-        return this.link;
-    }
-
-    /**
-     * Sets link.
-     *
-     * @param value the value
-     */
-    public void setLink(TLContactsLink value) {
-        this.link = value;
-    }
-
-    /**
-     * Gets profile photo.
-     *
-     * @return the profile photo
-     */
-    public TLAbsPhoto getProfilePhoto() {
-        return this.profilePhoto;
-    }
-
-    /**
-     * Sets profile photo.
-     *
-     * @param value the value
-     */
-    public void setProfilePhoto(TLAbsPhoto value) {
-        this.profilePhoto = value;
-    }
-
-    /**
-     * Gets notify settings.
-     *
-     * @return the notify settings
-     */
-    public TLAbsPeerNotifySettings getNotifySettings() {
-        return this.notifySettings;
-    }
-
-    /**
-     * Sets notify settings.
-     *
-     * @param value the value
-     */
-    public void setNotifySettings(TLAbsPeerNotifySettings value) {
-        this.notifySettings = value;
+        return user;
     }
 
     public String getAbout() {
         return about;
     }
 
-    public void setAbout(String about) {
-        this.about = about;
+    public TLContactsLink getLink() {
+        return link;
+    }
+
+    public TLAbsPhoto getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public TLAbsPeerNotifySettings getNotifySettings() {
+        return notifySettings;
     }
 
     public TLBotInfo getBotInfo() {
-        return this.botInfo;
+        return botInfo;
     }
 
-    public void setBotInfo(TLBotInfo botInfo) {
-        this.botInfo = botInfo;
+    public int getCommonChatsCount() {
+        return commonChatsCount;
+    }
+
+    public boolean isBlocked() {
+        return (flags & FLAG_BLOCKED) != 0;
+    }
+
+    public boolean hasPhoneCallsAvailable() {
+        return (flags & FLAG_CALLS_AVAILABLE) != 0;
     }
 
     public void serializeBody(OutputStream stream)
@@ -148,6 +102,7 @@ public class TLUserFull extends TLObject {
         if ((flags & FLAG_BOT_INFO) != 0) {
             StreamingUtils.writeTLObject(this.botInfo, stream);
         }
+        StreamingUtils.writeInt(commonChatsCount, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
@@ -165,9 +120,10 @@ public class TLUserFull extends TLObject {
         if ((flags & FLAG_BOT_INFO) != 0) {
             botInfo = (TLBotInfo) StreamingUtils.readTLObject(stream, context);
         }
+        commonChatsCount = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "userFull#5932fc03";
+        return "userFull#f220f3f";
     }
 }

@@ -1,9 +1,10 @@
 package org.telegram.api.update;
 
+import org.telegram.api.message.entity.TLAbsMessageEntity;
 import org.telegram.api.message.media.TLAbsMessageMedia;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
-import org.telegram.tl.TLIntVector;
+import org.telegram.tl.TLVector;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,12 +17,17 @@ public class TLUpdateServiceNotification extends TLAbsUpdate {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x382dd3e4;
+    public static final int CLASS_ID = 0xebe46819;
 
+    private static final int FLAG_POPUP          = 0x00000001; // 0
+    private static final int FLAG_INBOX_DATE     = 0x00000002; // 1
+
+    private int flags;
+    private int inboxDate;
     private String type;
-    private boolean popup;
+    private String message;
     private TLAbsMessageMedia media;
-    private TLIntVector messages;
+    private TLVector<TLAbsMessageEntity> entities;
 
     /**
      * Instantiates a new TL update service notification.
@@ -34,96 +40,56 @@ public class TLUpdateServiceNotification extends TLAbsUpdate {
         return CLASS_ID;
     }
 
-    /**
-     * Gets type.
-     *
-     * @return the type
-     */
+    public int getFlags() {
+        return flags;
+    }
+
     public String getType() {
-        return this.type;
+        return type;
     }
 
-    /**
-     * Sets type.
-     *
-     * @param type the type
-     */
-    public void setType(String type) {
-        this.type = type;
+    public String getMessage() {
+        return message;
     }
 
-    /**
-     * Is popup.
-     *
-     * @return the boolean
-     */
-    public boolean isPopup() {
-        return this.popup;
-    }
-
-    /**
-     * Sets popup.
-     *
-     * @param popup the popup
-     */
-    public void setPopup(boolean popup) {
-        this.popup = popup;
-    }
-
-    /**
-     * Gets media.
-     *
-     * @return the media
-     */
     public TLAbsMessageMedia getMedia() {
-        return this.media;
+        return media;
     }
 
-    /**
-     * Sets media.
-     *
-     * @param media the media
-     */
-    public void setMedia(TLAbsMessageMedia media) {
-        this.media = media;
+    public TLVector<TLAbsMessageEntity> getEntities() {
+        return entities;
     }
 
-    /**
-     * Gets messages.
-     *
-     * @return the messages
-     */
-    public TLIntVector getMessages() {
-        return this.messages;
-    }
-
-    /**
-     * Sets messages.
-     *
-     * @param messages the messages
-     */
-    public void setMessages(TLIntVector messages) {
-        this.messages = messages;
+    public boolean isPopup() {
+        return (flags & FLAG_POPUP) != 0;
     }
 
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
+        if ((flags & FLAG_INBOX_DATE) != 0) {
+            StreamingUtils.writeInt(inboxDate, stream);
+        }
         StreamingUtils.writeTLString(this.type, stream);
-        StreamingUtils.writeTLVector(this.messages, stream);
+        StreamingUtils.writeTLString(this.message, stream);
         StreamingUtils.writeTLObject(this.media, stream);
-        StreamingUtils.writeTLBool(this.popup, stream);
+        StreamingUtils.writeTLVector(this.entities, stream);
 
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
+        if ((flags & FLAG_INBOX_DATE) != 0) {
+            inboxDate = StreamingUtils.readInt(stream);
+        }
         this.type = StreamingUtils.readTLString(stream);
-        this.messages = StreamingUtils.readTLIntVector(stream, context);
-        this.media = (TLAbsMessageMedia) StreamingUtils.readTLObject(stream, context);
-        this.popup = StreamingUtils.readTLBool(stream);
+        this.message = StreamingUtils.readTLString(stream);
+        this.media = StreamingUtils.readTLObject(stream, context, TLAbsMessageMedia.class);
+        this.entities = StreamingUtils.readTLVector(stream, context, TLAbsMessageEntity.class);
     }
 
     public String toString() {
-        return "updateServiceNotification#382dd3e4";
+        return "updateServiceNotification#ebe46819";
     }
 }

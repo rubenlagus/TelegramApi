@@ -32,7 +32,7 @@ public class TLVector<T> extends TLObject implements List<T> {
     public static final int CLASS_ID = 0x1cb5c415;
 
     private Class destClass = TLObject.class;
-    private ArrayList<T> items = new ArrayList<T>();
+    private ArrayList<T> items = new ArrayList<>();
 
     @Override
     public int getClassId() {

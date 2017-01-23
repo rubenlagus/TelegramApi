@@ -12,7 +12,7 @@ import java.io.OutputStream;
  * The type TL messages.
  */
 public class TLMessagesBotCallbackAnswer extends TLObject {
-    public static final int CLASS_ID = 0xb10df1fb;
+    public static final int CLASS_ID = 0x36585ea4;
 
     private static final int FLAG_MESSAGE   = 0x00000001; // 0
     private static final int FLAG_ALERT     = 0x00000002; // 1
@@ -22,6 +22,7 @@ public class TLMessagesBotCallbackAnswer extends TLObject {
     private int flags;
     private String message;
     private String url;
+    private int cacheTime;
 
     public TLMessagesBotCallbackAnswer() {
         super();
@@ -38,6 +39,10 @@ public class TLMessagesBotCallbackAnswer extends TLObject {
 
     public String getUrl() {
         return url;
+    }
+
+    public int getCacheTime() {
+        return cacheTime;
     }
 
     public boolean hasAlert() {
@@ -61,6 +66,7 @@ public class TLMessagesBotCallbackAnswer extends TLObject {
         if ((flags & FLAG_URL) != 0) {
             StreamingUtils.writeTLString(url, stream);
         }
+        StreamingUtils.writeInt(cacheTime, stream);
     }
 
     @Override
@@ -72,10 +78,11 @@ public class TLMessagesBotCallbackAnswer extends TLObject {
         if ((flags & FLAG_URL) != 0) {
             url = StreamingUtils.readTLString(stream);
         }
+        cacheTime = StreamingUtils.readInt(stream);
     }
 
     @Override
     public String toString() {
-        return "messages.botCallbackAnswer#b10df1fb";
+        return "messages.botCallbackAnswer#36585ea4";
     }
 }

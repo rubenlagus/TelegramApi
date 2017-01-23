@@ -17,9 +17,10 @@ public class TLConfig extends TLObject {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x9a6b2e2a;
+    public static final int CLASS_ID = 0xb6735d71;
 
-    private static final int FLAG_TMP_SESSIONS       = 0x00000001; // 0
+    private static final int FLAG_TMP_SESSIONS         = 0x00000001; // 0
+    private static final int FLAG_PHONE_CALLS_ENABLED  = 0x00000002; // 1
 
     private int flags;
     private int date;
@@ -44,6 +45,10 @@ public class TLConfig extends TLObject {
     private int ratingEDecay;
     private int stickersRecentLimit;
     private int tmpSessions;
+    private int callReceiveTimeoutMs;
+    private int callRingTimeoutMs;
+    private int callConnectTimeoutMs;
+    private int callPacketTimeoutMs;
     private TLVector<TLDisabledFeature> disabledFeatures = new TLVector<>();
 
     /**
@@ -153,6 +158,10 @@ public class TLConfig extends TLObject {
         return (flags & FLAG_TMP_SESSIONS) != 0;
     }
 
+    public boolean hasPhoneCalls() {
+        return (flags & FLAG_PHONE_CALLS_ENABLED) != 0;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeInt(flags, stream);
@@ -180,6 +189,10 @@ public class TLConfig extends TLObject {
         if ((flags & FLAG_TMP_SESSIONS) != 0) {
             StreamingUtils.writeInt(this.tmpSessions, stream);
         }
+        StreamingUtils.writeInt(this.callReceiveTimeoutMs, stream);
+        StreamingUtils.writeInt(this.callRingTimeoutMs, stream);
+        StreamingUtils.writeInt(this.callConnectTimeoutMs, stream);
+        StreamingUtils.writeInt(this.callPacketTimeoutMs, stream);
         StreamingUtils.writeTLVector(this.disabledFeatures, stream);
     }
 
@@ -190,7 +203,7 @@ public class TLConfig extends TLObject {
         this.expires = StreamingUtils.readInt(stream);
         this.testMode = StreamingUtils.readTLBool(stream);
         this.thisDc = StreamingUtils.readInt(stream);
-        this.dcOptions = (TLVector<TLDcOption>) StreamingUtils.readTLVector(stream, context);
+        this.dcOptions = StreamingUtils.readTLVector(stream, context, TLDcOption.class);
         this.chatSizeMax = StreamingUtils.readInt(stream);
         this.megaGroupSizeMax = StreamingUtils.readInt(stream);
         this.forwardedCountMax = StreamingUtils.readInt(stream);
@@ -210,10 +223,14 @@ public class TLConfig extends TLObject {
         if ((flags & FLAG_TMP_SESSIONS) != 0) {
             this.tmpSessions = StreamingUtils.readInt(stream);
         }
-        this.disabledFeatures = (TLVector<TLDisabledFeature>) StreamingUtils.readTLVector(stream, context);
+        this.callReceiveTimeoutMs = StreamingUtils.readInt(stream);
+        this.callRingTimeoutMs = StreamingUtils.readInt(stream);
+        this.callConnectTimeoutMs = StreamingUtils.readInt(stream);
+        this.callPacketTimeoutMs = StreamingUtils.readInt(stream);
+        this.disabledFeatures = StreamingUtils.readTLVector(stream, context, TLDisabledFeature.class);
     }
 
     public String toString() {
-        return "config#9a6b2e2a";
+        return "config#b6735d71";
     }
 }

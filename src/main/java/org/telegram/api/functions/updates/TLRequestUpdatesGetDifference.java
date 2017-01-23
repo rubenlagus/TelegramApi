@@ -10,22 +10,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * The type TL request updates get difference.
- */
 public class TLRequestUpdatesGetDifference extends TLMethod<TLAbsDifference> {
-    /**
-     * The constant CLASS_ID.
-     */
-    public static final int CLASS_ID = 0xa041495;
+    public static final int CLASS_ID = 0x25939651;
 
+    private static final int FLAG_PTS_TOTAL_LIMIT    = 0x00000001; // 0
+
+    private int flags;
     private int pts;
+    private int ptsTotalLimit;
     private int date;
     private int qts;
 
-    /**
-     * Instantiates a new TL request updates get difference.
-     */
+
     public TLRequestUpdatesGetDifference() {
         super();
     }
@@ -41,78 +37,78 @@ public class TLRequestUpdatesGetDifference extends TLMethod<TLAbsDifference> {
             throw new IOException("Unable to parse response");
         if ((res instanceof TLAbsDifference))
             return (TLAbsDifference) res;
-        throw new IOException("Incorrect response type. Expected org.telegram.api.updates.difference.TLAbsDifference, got: " + res.getClass().getCanonicalName());
+        throw new IOException("Incorrect response type. Expected " + TLAbsDifference.class.getCanonicalName() +
+                ", got: " + res.getClass().getCanonicalName());
     }
 
-    /**
-     * Gets pts.
-     *
-     * @return the pts
-     */
+    public int getFlags() {
+        return flags;
+    }
+
     public int getPts() {
-        return this.pts;
+        return pts;
     }
 
-    /**
-     * Sets pts.
-     *
-     * @param value the value
-     */
-    public void setPts(int value) {
-        this.pts = value;
+    public void setPts(int pts) {
+        this.pts = pts;
     }
 
-    /**
-     * Gets date.
-     *
-     * @return the date
-     */
+    public int getPtsTotalLimit() {
+        return ptsTotalLimit;
+    }
+
+    public void setPtsTotalLimit(int ptsTotalLimit) {
+        this.ptsTotalLimit = ptsTotalLimit > 0 ? ptsTotalLimit : 0;
+        setPtsTotalLimit(ptsTotalLimit > 0);
+    }
+
     public int getDate() {
-        return this.date;
+        return date;
     }
 
-    /**
-     * Sets date.
-     *
-     * @param value the value
-     */
-    public void setDate(int value) {
-        this.date = value;
+    public void setDate(int date) {
+        this.date = date;
     }
 
-    /**
-     * Gets qts.
-     *
-     * @return the qts
-     */
     public int getQts() {
-        return this.qts;
+        return qts;
     }
 
-    /**
-     * Sets qts.
-     *
-     * @param value the value
-     */
-    public void setQts(int value) {
-        this.qts = value;
+    public void setQts(int qts) {
+        this.qts = qts;
+    }
+
+    private void setPtsTotalLimit(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_PTS_TOTAL_LIMIT;
+        } else {
+            this.flags &= ~FLAG_PTS_TOTAL_LIMIT;
+        }
     }
 
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(this.flags, stream);
         StreamingUtils.writeInt(this.pts, stream);
+        if ((flags & FLAG_PTS_TOTAL_LIMIT) != 0) {
+            StreamingUtils.writeInt(this.ptsTotalLimit, stream);
+        }
         StreamingUtils.writeInt(this.date, stream);
         StreamingUtils.writeInt(this.qts, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        this.flags = StreamingUtils.readInt(stream);
         this.pts = StreamingUtils.readInt(stream);
+        if ((flags & FLAG_PTS_TOTAL_LIMIT) != 0) {
+            this.ptsTotalLimit = StreamingUtils.readInt(stream);
+        }
         this.date = StreamingUtils.readInt(stream);
         this.qts = StreamingUtils.readInt(stream);
     }
 
     public String toString() {
-        return "updates.getDifference#a041495";
+        return "updates.getDifference#25939651";
     }
 }

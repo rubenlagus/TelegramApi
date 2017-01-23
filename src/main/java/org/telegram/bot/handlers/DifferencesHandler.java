@@ -19,6 +19,7 @@ import org.telegram.api.updates.channel.differences.TLUpdatesChannelDifferencesT
 import org.telegram.api.updates.difference.TLAbsDifference;
 import org.telegram.api.updates.difference.TLDifference;
 import org.telegram.api.updates.difference.TLDifferenceSlice;
+import org.telegram.api.updates.difference.TLDifferenceTooLong;
 import org.telegram.api.user.TLAbsUser;
 import org.telegram.bot.handlers.interfaces.IDifferencesHandler;
 import org.telegram.bot.handlers.interfaces.IUpdatesHandler;
@@ -168,6 +169,10 @@ public class DifferencesHandler implements IDifferencesHandler {
         } else if (absDifference instanceof TLDifference) {
             updatesState = ((TLDifference) absDifference).getState();
             handleDifferences(absDifference, updatesState);
+        } else if (absDifference instanceof TLDifferenceTooLong) {
+            TLUpdatesState state = new TLUpdatesState();
+            state.setPts(((TLDifferenceTooLong) absDifference).getPts());
+            updateStateModification(state, true);
         }
     }
 

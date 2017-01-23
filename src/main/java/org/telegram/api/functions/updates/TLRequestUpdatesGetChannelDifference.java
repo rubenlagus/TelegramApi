@@ -12,23 +12,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * The type TL request updates get channel difference.
- */
 public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesChannelDifferences> {
-    /**
-     * The constant CLASS_ID.
-     */
-    public static final int CLASS_ID = 0xbb32d7c0;
+    public static final int CLASS_ID = 0x3173d78;
 
+    private static final int FLAG_FORCE    = 0x00000001; // 0
+
+    private int flags;
     private TLAbsInputChannel channel;
     private TLAbsChannelMessagesFilter filter;
     private int pts;
     private int limit;
 
-    /**
-     * Instantiates a new TL request updates get channel difference.
-     */
     public TLRequestUpdatesGetChannelDifference() {
         super();
     }
@@ -49,22 +43,16 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
         throw new IOException("Incorrect response type. Expected " + TLAbsUpdatesChannelDifferences.class.getName() + ", got: " + res.getClass().getCanonicalName());
     }
 
-    /**
-     * Gets pts.
-     *
-     * @return the pts
-     */
-    public int getPts() {
-        return this.pts;
+    public int getFlags() {
+        return flags;
     }
 
-    /**
-     * Sets pts.
-     *
-     * @param value the value
-     */
-    public void setPts(int value) {
-        this.pts = value;
+    public int getPts() {
+        return pts;
+    }
+
+    public void setPts(int pts) {
+        this.pts = pts;
     }
 
     public TLAbsInputChannel getChannel() {
@@ -91,8 +79,18 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
         this.limit = limit;
     }
 
+    public void setForce(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_FORCE;
+        } else {
+            this.flags &= ~FLAG_FORCE;
+        }
+    }
+
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(this.flags, stream);
         StreamingUtils.writeTLObject(this.channel, stream);
         StreamingUtils.writeTLObject(this.filter, stream);
         StreamingUtils.writeInt(this.pts, stream);
@@ -101,6 +99,7 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        this.flags = StreamingUtils.readInt(stream);
         this.channel = StreamingUtils.readTLObject(stream, context, TLAbsInputChannel.class);
         this.filter = StreamingUtils.readTLObject(stream, context, TLAbsChannelMessagesFilter.class);
         this.pts = StreamingUtils.readInt(stream);
@@ -108,6 +107,6 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
     }
 
     public String toString() {
-        return "updates.getChannelDifference#bb32d7c0";
+        return "updates.getChannelDifference#3173d78";
     }
 }
