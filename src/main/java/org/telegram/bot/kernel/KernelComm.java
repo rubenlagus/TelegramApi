@@ -271,12 +271,20 @@ public class KernelComm implements IKernelComm {
         });
     }
 
-    private void sendMessageInternal(@NotNull IUser user, @Nullable String message, @Nullable Integer replayToMsg, boolean enableWebPreview, boolean parseMarkdown) throws RpcException {
+    private void sendMessageInternal(@NotNull IUser user, @Nullable String message, @Nullable Integer replayToMsg,
+                                     @Nullable TLVector<TLAbsMessageEntity> entities,
+                                     boolean enableWebPreview, boolean parseMarkdown) throws RpcException {
         boolean canSend = false;
         final TLRequestMessagesSendMessage request = new TLRequestMessagesSendMessage();
         request.setPeer(TLFactory.createTLInputPeer(user, null));
 
         if ((message != null) && !message.isEmpty()) {
+            if (parseMarkdown) {
+                if (entities == null) {
+                    entities = new TLVector<>();
+                }
+                message = readEntities(message, entities);
+            }
             request.setMessage(message);
             canSend = true;
         }
@@ -290,11 +298,8 @@ public class KernelComm implements IKernelComm {
             request.disableWebPreview();
         }
 
-        if (parseMarkdown && (message != null)) {
-            final TLVector<TLAbsMessageEntity> entities = new TLVector<>();
-            message = readEntities(message, entities);
+        if (entities != null && !entities.isEmpty()) {
             request.setEntities(entities);
-            request.setMessage(message);
         }
 
         if (canSend) {
@@ -303,12 +308,20 @@ public class KernelComm implements IKernelComm {
         }
     }
 
-    private void sendMessageInternalAsync(@NotNull IUser user, @Nullable String message, @Nullable Integer replayToMsg, boolean enableWebPreview, boolean parseMarkdown, TelegramFunctionCallback<TLAbsUpdates> callback) {
+    private void sendMessageInternalAsync(@NotNull IUser user, @Nullable String message, @Nullable Integer replayToMsg,
+                                          @Nullable TLVector<TLAbsMessageEntity> entities,
+                                          boolean enableWebPreview, boolean parseMarkdown, TelegramFunctionCallback<TLAbsUpdates> callback) {
         boolean canSend = false;
         final TLRequestMessagesSendMessage request = new TLRequestMessagesSendMessage();
         request.setPeer(TLFactory.createTLInputPeer(user, null));
 
         if ((message != null) && !message.isEmpty()) {
+            if (parseMarkdown) {
+                if (entities == null) {
+                    entities = new TLVector<>();
+                }
+                message = readEntities(message, entities);
+            }
             request.setMessage(message);
             canSend = true;
         }
@@ -322,11 +335,8 @@ public class KernelComm implements IKernelComm {
             request.disableWebPreview();
         }
 
-        if (parseMarkdown && (message != null)) {
-            final TLVector<TLAbsMessageEntity> entities = new TLVector<>();
-            message = readEntities(message, entities);
+        if (entities != null && !entities.isEmpty()) {
             request.setEntities(entities);
-            request.setMessage(message);
         }
 
         if (canSend) {
@@ -338,12 +348,20 @@ public class KernelComm implements IKernelComm {
         }
     }
 
-    private void sendMessageGroupInternal(@NotNull Chat group, @Nullable String message, @Nullable Integer replayToMsg, boolean enableWebPreview, boolean parseMarkdown) throws RpcException {
+    private void sendMessageGroupInternal(@NotNull Chat group, @Nullable String message, @Nullable Integer replayToMsg,
+                                          @Nullable TLVector<TLAbsMessageEntity> entities,
+                                          boolean enableWebPreview, boolean parseMarkdown) throws RpcException {
         boolean canSend = false;
         final TLRequestMessagesSendMessage request = new TLRequestMessagesSendMessage();
         request.setPeer(TLFactory.createTLInputPeer(null, group));
 
         if ((message != null) && !message.isEmpty()) {
+            if (parseMarkdown) {
+                if (entities == null) {
+                    entities = new TLVector<>();
+                }
+                message = readEntities(message, entities);
+            }
             request.setMessage(message);
             canSend = true;
         }
@@ -358,11 +376,8 @@ public class KernelComm implements IKernelComm {
             request.disableWebPreview();
         }
 
-        if (parseMarkdown && (message != null)) {
-            final TLVector<TLAbsMessageEntity> entities = new TLVector<>();
-            message = readEntities(message, entities);
+        if (entities != null && !entities.isEmpty()) {
             request.setEntities(entities);
-            request.setMessage(message);
         }
 
         if (canSend) {
@@ -371,11 +386,21 @@ public class KernelComm implements IKernelComm {
         }
     }
 
-    private void sendMessageChannelInternal(@NotNull Chat channel, @Nullable String message, @Nullable Integer replayToMsg, boolean enableWebPreview, boolean parseMarkdown, boolean asAdmin) throws RpcException {
+    private void sendMessageChannelInternal(@NotNull Chat channel, @Nullable String message, @Nullable Integer replayToMsg,
+                                            @Nullable TLVector<TLAbsMessageEntity> entities,
+                                            boolean enableWebPreview, boolean parseMarkdown, boolean asAdmin)
+            throws RpcException {
+
         boolean canSend = false;
         final TLRequestMessagesSendMessage request = new TLRequestMessagesSendMessage();
 
         if ((message != null) && !message.isEmpty()) {
+            if (parseMarkdown) {
+                if (entities == null) {
+                    entities = new TLVector<>();
+                }
+                message = readEntities(message, entities);
+            }
             request.setMessage(message);
             canSend = true;
         }
@@ -393,11 +418,8 @@ public class KernelComm implements IKernelComm {
             request.disableWebPreview();
         }
 
-        if (parseMarkdown && (message != null)) {
-            final TLVector<TLAbsMessageEntity> entities = new TLVector<>();
-            message = readEntities(message, entities);
+        if (entities != null && !entities.isEmpty()) {
             request.setEntities(entities);
-            request.setMessage(message);
         }
 
         if (canSend) {
@@ -425,12 +447,17 @@ public class KernelComm implements IKernelComm {
 
     @Override
     public void sendMessage(@NotNull IUser user, @NotNull String message) throws RpcException {
-        sendMessageInternal(user, message, null, false, false);
+        sendMessageInternal(user, message, null,null, false, false);
     }
 
     @Override
     public void sendMessage(@NotNull IUser user, @NotNull String message, @NotNull Boolean hasWebPreview) throws RpcException {
-        sendMessageInternal(user, message, null, hasWebPreview, false);
+        sendMessageInternal(user, message, null, null,hasWebPreview, false);
+    }
+
+    @Override
+    public void sendMessage(@NotNull IUser user, @Nullable String message, @Nullable Integer replayToMsg, @Nullable TLVector<TLAbsMessageEntity> entities, boolean enableWebPreview, boolean parseMarkdown) throws RpcException {
+        sendMessageInternal(user, message, replayToMsg, entities, enableWebPreview, parseMarkdown);
     }
 
     /**
@@ -447,7 +474,7 @@ public class KernelComm implements IKernelComm {
         if (callback == null) {
             callback = getDefaultSendMessageCallback(user);
         }
-        sendMessageInternalAsync(user, message, null, hasWebPreview, false, callback);
+        sendMessageInternalAsync(user, message, null, null,hasWebPreview, false, callback);
     }
 
     /**
@@ -463,12 +490,20 @@ public class KernelComm implements IKernelComm {
         if (callback == null) {
             callback = getDefaultSendMessageCallback(user);
         }
-        sendMessageInternalAsync(user, message, null, true, false, callback);
+        sendMessageInternalAsync(user, message, null, null, true, false, callback);
     }
 
     @Override
     public void sendMessageAsReply(@NotNull IUser user, @NotNull String message, @NotNull Integer replayToMsg) throws RpcException {
-        sendMessageInternal(user, message, replayToMsg, true, false);
+        sendMessageInternal(user, message, replayToMsg, null, true, false);
+    }
+
+    @Override
+    public void sendMessageAsync(@NotNull IUser user, @Nullable String message, @Nullable Integer replayToMsg, @Nullable TLVector<TLAbsMessageEntity> entities, boolean enableWebPreview, boolean parseMarkdown, TelegramFunctionCallback<TLAbsUpdates> callback) {
+        if (callback == null) {
+            callback = getDefaultSendMessageCallback(user);
+        }
+        sendMessageInternalAsync(user, message, replayToMsg, entities, enableWebPreview, parseMarkdown, callback);
     }
 
     /**
@@ -486,17 +521,22 @@ public class KernelComm implements IKernelComm {
             callback = getDefaultSendMessageCallback(user);
         }
 
-        sendMessageInternalAsync(user, message, replayToMsg, true, false, callback);
+        sendMessageInternalAsync(user, message, replayToMsg, null,true, false, callback);
     }
 
     @Override
     public void sendMessageWithMarkdown(@NotNull IUser user, @NotNull String message) throws RpcException {
-        sendMessageInternal(user, message, null, true, true);
+        sendMessageInternal(user, message, null, null,true, true);
+    }
+
+    @Override
+    public void sendMessageWithEntities(@NotNull IUser user, @NotNull String message, @NotNull TLVector<TLAbsMessageEntity> entities) throws RpcException {
+        sendMessageInternal(user, message, null, entities,true, true);
     }
 
     @Override
     public void sendMessageWithoutPreview(@NotNull IUser user, @NotNull String message) throws RpcException {
-        sendMessageInternal(user, message, null, false, false);
+        sendMessageInternal(user, message, null, null,false, false);
     }
 
     /**
@@ -512,38 +552,65 @@ public class KernelComm implements IKernelComm {
         if (callback == null) {
             callback = getDefaultSendMessageCallback(user);
         }
-        sendMessageInternalAsync(user, message, null, false, false, callback);
+        sendMessageInternalAsync(user, message, null, null, false, false, callback);
+    }
+
+    @Override
+    public void sendMessageWithEntitiesAsync(@NotNull IUser user, @NotNull String message, @NotNull TLVector<TLAbsMessageEntity> entities, TelegramFunctionCallback<TLAbsUpdates> callback) {
+        if (callback == null) {
+            callback = getDefaultSendMessageCallback(user);
+        }
+        sendMessageInternalAsync(user, message, null, entities, false, false, callback);
     }
 
     @Override
     public void sendGroupMessage(@NotNull Chat group, @NotNull String message) throws RpcException {
-        sendMessageGroupInternal(group, message, null, true, false);
+        sendMessageGroupInternal(group, message, null, null, true, false);
+    }
+
+    @Override
+    public void sendGroupMessage(@NotNull Chat group, @Nullable String message, @Nullable Integer replayToMsg, @Nullable TLVector<TLAbsMessageEntity> entities, boolean enableWebPreview, boolean parseMarkdown) throws RpcException {
+        sendMessageGroupInternal(group, message, replayToMsg, entities, enableWebPreview, parseMarkdown);
     }
 
     @Override
     public void sendGroupMessageWithMarkdown(@NotNull Chat group, @NotNull String message) throws RpcException {
-        sendMessageGroupInternal(group, message, null, true, true);
+        sendMessageGroupInternal(group, message, null, null, true, true);
+    }
+
+    @Override
+    public void sendGroupMessageWithEntities(@NotNull Chat group, @NotNull String message, @NotNull TLVector<TLAbsMessageEntity> entities) throws RpcException {
+        sendMessageGroupInternal(group, message, null, entities, true, true);
     }
 
     @Override
     public void sendGroupMessageWithoutPreview(@NotNull Chat group, @NotNull String message) throws RpcException {
-        sendMessageGroupInternal(group, message, null, false, false);
+        sendMessageGroupInternal(group, message, null, null, false, false);
     }
 
     @Override
     public void sendChannelMessage(@NotNull Chat channel, @NotNull String message, boolean asAdmin) throws RpcException {
-        sendMessageChannelInternal(channel, message, null, true, false, asAdmin);
+        sendMessageChannelInternal(channel, message, null,null, true, false, asAdmin);
+    }
+
+    @Override
+    public void sendChannelMessage(@NotNull Chat channel, @Nullable String message, @Nullable Integer replayToMsg, @Nullable TLVector<TLAbsMessageEntity> entities, boolean enableWebPreview, boolean parseMarkdown, boolean asAdmin) throws RpcException {
+        sendMessageChannelInternal(channel, message, replayToMsg,entities, enableWebPreview, parseMarkdown, asAdmin);
     }
 
     @Override
     public void sendChannelMessageWithMarkdown(@NotNull Chat channel, @NotNull String message, boolean asAdmin) throws RpcException {
-        sendMessageChannelInternal(channel, message, null, true, true, asAdmin);
+        sendMessageChannelInternal(channel, message, null, null, true, true, asAdmin);
     }
 
     @Override
-    public void sendChannelMessageWithoutPreview(@NotNull Chat channel, @NotNull String message, boolean asAdmin) throws RpcException
-    {
-        sendMessageChannelInternal(channel, message, null, false, false, asAdmin);
+    public void sendChannelMessageWithEntities(@NotNull Chat channel, @NotNull String message, @NotNull TLVector<TLAbsMessageEntity> entities, boolean asAdmin) throws RpcException {
+        sendMessageChannelInternal(channel, message, null, entities, true, true, asAdmin);
+    }
+
+    @Override
+    public void sendChannelMessageWithoutPreview(@NotNull Chat channel, @NotNull String message, boolean asAdmin) throws RpcException {
+        sendMessageChannelInternal(channel, message, null, null, false, false, asAdmin);
     }
 
     @Override

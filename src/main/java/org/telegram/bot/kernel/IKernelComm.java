@@ -7,6 +7,7 @@ import org.telegram.api.engine.TelegramApi;
 import org.telegram.api.engine.file.Downloader;
 import org.telegram.api.engine.file.Uploader;
 import org.telegram.api.input.media.TLAbsInputMedia;
+import org.telegram.api.message.entity.TLAbsMessageEntity;
 import org.telegram.api.updates.TLAbsUpdates;
 import org.telegram.bot.TelegramFunctionCallback;
 import org.telegram.bot.services.NotificationsService;
@@ -14,6 +15,7 @@ import org.telegram.bot.structure.Chat;
 import org.telegram.bot.structure.IUser;
 import org.telegram.tl.TLMethod;
 import org.telegram.tl.TLObject;
+import org.telegram.tl.TLVector;
 
 import java.util.concurrent.ExecutionException;
 
@@ -40,11 +42,23 @@ public interface IKernelComm extends NotificationsService.NotificationObserver {
 
     void sendMessageWithMarkdown(@NotNull IUser user, @NotNull String message) throws RpcException;
 
+    void sendMessageWithEntities(@NotNull IUser user, @NotNull String message, @NotNull TLVector<TLAbsMessageEntity> entities) throws RpcException;
+
     void sendMessage(@NotNull IUser user, @NotNull String message, @NotNull Boolean hasWebPreview) throws RpcException;
+
+    void sendMessage(@NotNull IUser user, @Nullable String message, @Nullable Integer replayToMsg,
+                     @Nullable TLVector<TLAbsMessageEntity> entities,
+                     boolean enableWebPreview, boolean parseMarkdown) throws RpcException;
 
     void sendMessageAsync(@NotNull IUser user, @NotNull String message, @NotNull Boolean hasWebPreview, @Nullable TelegramFunctionCallback<TLAbsUpdates> callback);
 
     void sendMessageAsync(@NotNull IUser user, @NotNull String message, TelegramFunctionCallback<TLAbsUpdates> callback);
+
+    void sendMessageAsync(@NotNull IUser user, @Nullable String message, @Nullable Integer replayToMsg,
+                          @Nullable TLVector<TLAbsMessageEntity> entities,
+                          boolean enableWebPreview, boolean parseMarkdown, TelegramFunctionCallback<TLAbsUpdates> callback);
+
+    void sendMessageWithEntitiesAsync(@NotNull IUser user, @NotNull String message, @NotNull TLVector<TLAbsMessageEntity> entities, TelegramFunctionCallback<TLAbsUpdates> callback);
 
     void sendMessageAsReply(@NotNull IUser user, @NotNull String message, @NotNull Integer replayToMsg) throws RpcException;
 
@@ -56,13 +70,25 @@ public interface IKernelComm extends NotificationsService.NotificationObserver {
 
     void sendGroupMessage(@NotNull Chat group, @NotNull String message) throws RpcException;
 
+    void sendGroupMessage(@NotNull Chat group, @Nullable String message, @Nullable Integer replayToMsg,
+                          @Nullable TLVector<TLAbsMessageEntity> entities,
+                          boolean enableWebPreview, boolean parseMarkdown) throws RpcException;
+
     void sendGroupMessageWithMarkdown(@NotNull Chat group, @NotNull String message) throws RpcException;
+
+    void sendGroupMessageWithEntities(@NotNull Chat group, @NotNull String message, @NotNull TLVector<TLAbsMessageEntity> entities) throws RpcException;
 
     void sendGroupMessageWithoutPreview(@NotNull Chat group, @NotNull String message) throws RpcException;
 
     void sendChannelMessage(@NotNull Chat channel, @NotNull String message, boolean asAdmin) throws RpcException;
 
+    void sendChannelMessage(@NotNull Chat channel, @Nullable String message, @Nullable Integer replayToMsg,
+                            @Nullable TLVector<TLAbsMessageEntity> entities,
+                            boolean enableWebPreview, boolean parseMarkdown, boolean asAdmin)
+            throws RpcException;
     void sendChannelMessageWithMarkdown(@NotNull Chat channel, @NotNull String message, boolean asAdmin) throws RpcException;
+
+    void sendChannelMessageWithEntities(@NotNull Chat channel, @NotNull String message, @NotNull TLVector<TLAbsMessageEntity> entities, boolean asAdmin) throws RpcException;
 
     void sendChannelMessageWithoutPreview(@NotNull Chat channel, @NotNull String message, boolean asAdmin) throws RpcException;
 
