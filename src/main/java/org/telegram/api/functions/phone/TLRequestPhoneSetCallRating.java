@@ -1,9 +1,11 @@
 package org.telegram.api.functions.phone;
 
 import org.telegram.api.input.phonecall.TLInputPhoneCall;
-import org.telegram.api.phone.call.discardreason.TLAbsPhoneCallDiscardReason;
 import org.telegram.api.updates.TLAbsUpdates;
-import org.telegram.tl.*;
+import org.telegram.tl.StreamingUtils;
+import org.telegram.tl.TLContext;
+import org.telegram.tl.TLMethod;
+import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,15 +15,15 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLRequestPhoneDiscardCall extends TLMethod<TLAbsUpdates> {
-    public static final int CLASS_ID = 0x78d413a6;
+public class TLRequestPhoneSetCallRating extends TLMethod<TLAbsUpdates> {
+    public static final int CLASS_ID = 0x1c536a34;
+
 
     private TLInputPhoneCall peer;
-    private int duration;
-    private TLAbsPhoneCallDiscardReason reason;
-    private long connectionId;
+    private int rating;
+    private String comment;
 
-    public TLRequestPhoneDiscardCall() {
+    public TLRequestPhoneSetCallRating() {
         super();
     }
 
@@ -47,28 +49,20 @@ public class TLRequestPhoneDiscardCall extends TLMethod<TLAbsUpdates> {
         this.peer = peer;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getRating() {
+        return rating;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
-    public TLAbsPhoneCallDiscardReason getReason() {
-        return reason;
+    public String getComment() {
+        return comment;
     }
 
-    public void setReason(TLAbsPhoneCallDiscardReason reason) {
-        this.reason = reason;
-    }
-
-    public long getConnectionId() {
-        return connectionId;
-    }
-
-    public void setConnectionId(long connectionId) {
-        this.connectionId = connectionId;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override
@@ -79,21 +73,19 @@ public class TLRequestPhoneDiscardCall extends TLMethod<TLAbsUpdates> {
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
         StreamingUtils.writeTLObject(peer, stream);
-        StreamingUtils.writeInt(duration, stream);
-        StreamingUtils.writeTLObject(reason, stream);
-        StreamingUtils.writeLong(connectionId, stream);
+        StreamingUtils.writeInt(rating, stream);
+        StreamingUtils.writeTLString(comment, stream);
     }
 
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
         peer = StreamingUtils.readTLObject(stream, context, TLInputPhoneCall.class);
-        duration = StreamingUtils.readInt(stream);
-        reason = StreamingUtils.readTLObject(stream, context, TLAbsPhoneCallDiscardReason.class);
-        connectionId = StreamingUtils.readLong(stream);
+        rating = StreamingUtils.readInt(stream);
+        comment = StreamingUtils.readTLString(stream);
     }
 
     @Override
     public String toString() {
-        return "phone.discardCall#78d413a6";
+        return "phone.setCallRating#1c536a34";
     }
 }

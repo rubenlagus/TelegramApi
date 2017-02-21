@@ -17,7 +17,7 @@ public class TLConfig extends TLObject {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0x3af6fb5f;
+    public static final int CLASS_ID = 0xcb601684;
 
     private static final int FLAG_TMP_SESSIONS         = 0x00000001; // 0
     private static final int FLAG_PHONE_CALLS_ENABLED  = 0x00000002; // 1
@@ -50,6 +50,7 @@ public class TLConfig extends TLObject {
     private int callRingTimeoutMs;
     private int callConnectTimeoutMs;
     private int callPacketTimeoutMs;
+    private String meUrlPrefix;
     private TLVector<TLDisabledFeature> disabledFeatures = new TLVector<>();
 
     /**
@@ -183,6 +184,10 @@ public class TLConfig extends TLObject {
         return callPacketTimeoutMs;
     }
 
+    public String getMeUrlPrefix() {
+        return meUrlPrefix;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeInt(flags, stream);
@@ -215,6 +220,7 @@ public class TLConfig extends TLObject {
         StreamingUtils.writeInt(this.callRingTimeoutMs, stream);
         StreamingUtils.writeInt(this.callConnectTimeoutMs, stream);
         StreamingUtils.writeInt(this.callPacketTimeoutMs, stream);
+        StreamingUtils.writeTLString(this.meUrlPrefix, stream);
         StreamingUtils.writeTLVector(this.disabledFeatures, stream);
     }
 
@@ -250,10 +256,11 @@ public class TLConfig extends TLObject {
         this.callRingTimeoutMs = StreamingUtils.readInt(stream);
         this.callConnectTimeoutMs = StreamingUtils.readInt(stream);
         this.callPacketTimeoutMs = StreamingUtils.readInt(stream);
+        this.meUrlPrefix = StreamingUtils.readTLString(stream);
         this.disabledFeatures = StreamingUtils.readTLVector(stream, context, TLDisabledFeature.class);
     }
 
     public String toString() {
-        return "config#3af6fb5f";
+        return "config#cb601684";
     }
 }

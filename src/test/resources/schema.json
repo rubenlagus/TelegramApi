@@ -2521,7 +2521,7 @@
       "type":"DcOption"
     },
     {
-      "id":"989264735",
+      "id":"-882895228",
       "predicate":"config",
       "params":[
         {
@@ -2639,6 +2639,10 @@
         {
           "name":"call_packet_timeout_ms",
           "type":"int"
+        },
+        {
+          "name":"me_url_prefix",
+          "type":"string"
         },
         {
           "name":"disabled_features",
@@ -12010,7 +12014,7 @@
       "type":"phone.PhoneCall"
     },
     {
-      "id":"1576783324",
+      "id":"2027164582",
       "method":"phone.discardCall",
       "params":[
         {
@@ -12030,7 +12034,7 @@
           "type":"long"
         }
       ],
-      "type":"Bool"
+      "type":"Updates"
     },
     {
       "id":"399855457",
@@ -12118,6 +12122,25 @@
         }
       ],
       "type":"Bool"
+    },
+    {
+      "id":"475228724",
+      "method":"phone.setCallRating",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        },
+        {
+          "name":"rating",
+          "type":"int"
+        },
+        {
+          "name":"comment",
+          "type":"string"
+        }
+      ],
+      "type":"Updates"
     }
   ]
 }

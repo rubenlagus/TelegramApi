@@ -85,10 +85,7 @@ import org.telegram.api.functions.channels.*;
 import org.telegram.api.functions.contacts.*;
 import org.telegram.api.functions.help.*;
 import org.telegram.api.functions.messages.*;
-import org.telegram.api.functions.phone.TLRequestPhoneAcceptCall;
-import org.telegram.api.functions.phone.TLRequestPhoneDiscardCall;
-import org.telegram.api.functions.phone.TLRequestPhoneReceivedCall;
-import org.telegram.api.functions.phone.TLRequestPhoneRequestCall;
+import org.telegram.api.functions.phone.*;
 import org.telegram.api.functions.photos.TLRequestPhotosDeletePhotos;
 import org.telegram.api.functions.photos.TLRequestPhotosGetUserPhotos;
 import org.telegram.api.functions.photos.TLRequestPhotosUpdateProfilePhoto;
@@ -602,6 +599,8 @@ public class TLApiContext extends TLContext {
         addApiLayer60();
         // api layer 62
         addApiLayer62();
+        // api layer 63
+        addApiLayer63();
     }
 
     private void addApiLayer19() {
@@ -1078,5 +1077,9 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestMessagesGetPinnedDialogs.CLASS_ID, TLRequestMessagesGetPinnedDialogs.class);
         registerClass(TLRequestBotsSendCustomRequest.CLASS_ID, TLRequestBotsSendCustomRequest.class);
         registerClass(TLRequestBotsAnswerWebhookJSONQuery.CLASS_ID, TLRequestBotsAnswerWebhookJSONQuery.class);
+    }
+
+    private void addApiLayer63() {
+        registerClass(TLRequestPhoneSetCallRating.CLASS_ID, TLRequestPhoneSetCallRating.class);
     }
 }
