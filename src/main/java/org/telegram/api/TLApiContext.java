@@ -80,29 +80,53 @@ import org.telegram.api.foundgif.TLFoundGifCached;
 import org.telegram.api.functions.*;
 import org.telegram.api.functions.account.*;
 import org.telegram.api.functions.auth.*;
+import org.telegram.api.functions.bots.TLRequestBotsSendCustomRequest;
 import org.telegram.api.functions.channels.*;
 import org.telegram.api.functions.contacts.*;
 import org.telegram.api.functions.help.*;
 import org.telegram.api.functions.messages.*;
-import org.telegram.api.functions.phone.*;
-import org.telegram.api.functions.photos.*;
-import org.telegram.api.functions.updates.*;
-import org.telegram.api.functions.upload.*;
-import org.telegram.api.functions.users.*;
+import org.telegram.api.functions.phone.TLRequestPhoneAcceptCall;
+import org.telegram.api.functions.phone.TLRequestPhoneDiscardCall;
+import org.telegram.api.functions.phone.TLRequestPhoneReceivedCall;
+import org.telegram.api.functions.phone.TLRequestPhoneRequestCall;
+import org.telegram.api.functions.photos.TLRequestPhotosDeletePhotos;
+import org.telegram.api.functions.photos.TLRequestPhotosGetUserPhotos;
+import org.telegram.api.functions.photos.TLRequestPhotosUpdateProfilePhoto;
+import org.telegram.api.functions.photos.TLRequestPhotosUploadProfilePhoto;
+import org.telegram.api.functions.updates.TLRequestUpdatesGetChannelDifference;
+import org.telegram.api.functions.updates.TLRequestUpdatesGetDifference;
+import org.telegram.api.functions.updates.TLRequestUpdatesGetState;
+import org.telegram.api.functions.upload.TLRequestUploadGetFile;
+import org.telegram.api.functions.upload.TLRequestUploadSaveBigFilePart;
+import org.telegram.api.functions.upload.TLRequestUploadSaveFilePart;
+import org.telegram.api.functions.users.TLRequestUsersGetFullUser;
+import org.telegram.api.functions.users.TLRequestUsersGetUsers;
 import org.telegram.api.game.TLGame;
-import org.telegram.api.geo.point.*;
+import org.telegram.api.geo.point.TLGeoPoint;
+import org.telegram.api.geo.point.TLGeoPointEmpty;
 import org.telegram.api.help.*;
-import org.telegram.api.help.changelog.*;
-import org.telegram.api.input.*;
-import org.telegram.api.input.bot.*;
+import org.telegram.api.help.changelog.TLAppChangelog;
+import org.telegram.api.help.changelog.TLAppChangelogEmpty;
+import org.telegram.api.input.TLInputAppEvent;
+import org.telegram.api.input.TLInputPhoneContact;
+import org.telegram.api.input.bot.TLInputBotInlineMessageId;
 import org.telegram.api.input.bot.inlinemessage.*;
-import org.telegram.api.input.bot.inlineresult.*;
-import org.telegram.api.input.chat.*;
-import org.telegram.api.input.chat.photo.*;
+import org.telegram.api.input.bot.inlineresult.TLInputBotInlineResult;
+import org.telegram.api.input.bot.inlineresult.TLInputBotInlineResultDocument;
+import org.telegram.api.input.bot.inlineresult.TLInputBotInlineResultGame;
+import org.telegram.api.input.bot.inlineresult.TLInputBotInlineResultPhoto;
+import org.telegram.api.input.chat.TLInputChannel;
+import org.telegram.api.input.chat.TLInputChannelEmpty;
+import org.telegram.api.input.chat.photo.TLInputChatPhoto;
+import org.telegram.api.input.chat.photo.TLInputChatPhotoEmpty;
+import org.telegram.api.input.chat.photo.TLInputChatUploadedPhoto;
 import org.telegram.api.input.document.TLInputDocument;
 import org.telegram.api.input.document.TLInputDocumentEmpty;
 import org.telegram.api.input.encrypted.TLInputEncryptedChat;
-import org.telegram.api.input.encrypted.file.*;
+import org.telegram.api.input.encrypted.file.TLInputEncryptedFile;
+import org.telegram.api.input.encrypted.file.TLInputEncryptedFileBigUploaded;
+import org.telegram.api.input.encrypted.file.TLInputEncryptedFileEmpty;
+import org.telegram.api.input.encrypted.file.TLInputEncryptedFileUploaded;
 import org.telegram.api.input.encrypted.file.location.TLInputEncryptedFileLocation;
 import org.telegram.api.input.file.TLInputFile;
 import org.telegram.api.input.file.TLInputFileBig;
@@ -189,6 +213,10 @@ import org.telegram.api.phone.TLPhoneCallProtocol;
 import org.telegram.api.phone.TLPhoneConnection;
 import org.telegram.api.phone.TLPhonePhoneCall;
 import org.telegram.api.phone.call.*;
+import org.telegram.api.phone.call.discardreason.TLPhoneCallDiscardReasonBusy;
+import org.telegram.api.phone.call.discardreason.TLPhoneCallDiscardReasonDisconnect;
+import org.telegram.api.phone.call.discardreason.TLPhoneCallDiscardReasonHangup;
+import org.telegram.api.phone.call.discardreason.TLPhoneCallDiscardReasonMissed;
 import org.telegram.api.photo.TLPhoto;
 import org.telegram.api.photo.TLPhotoEmpty;
 import org.telegram.api.photo.size.TLPhotoCachedSize;
@@ -572,6 +600,8 @@ public class TLApiContext extends TLContext {
         addApiLayer57();
         // api layer 60
         addApiLayer60();
+        // api layer 62
+        addApiLayer62();
     }
 
     private void addApiLayer19() {
@@ -1029,5 +1059,24 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestPhoneAcceptCall.CLASS_ID, TLRequestPhoneAcceptCall.class);
         registerClass(TLRequestPhoneDiscardCall.CLASS_ID, TLRequestPhoneDiscardCall.class);
         registerClass(TLRequestPhoneReceivedCall.CLASS_ID, TLRequestPhoneReceivedCall.class);
+    }
+
+    private void addApiLayer62() {
+        registerClass(TLMessageActionPhoneCall.CLASS_ID, TLMessageActionPhoneCall.class);
+        registerClass(TLMessagesFilterPhoneCalls.CLASS_ID, TLMessagesFilterPhoneCalls.class);
+        registerClass(TLUpdateDialogPinned.CLASS_ID, TLUpdateDialogPinned.class);
+        registerClass(TLUpdatePinnedDialogs.CLASS_ID, TLUpdatePinnedDialogs.class);
+        registerClass(TLUpdateBotWebhookJSON.CLASS_ID, TLUpdateBotWebhookJSON.class);
+        registerClass(TLUpdateBotWebhookJSONQuery.CLASS_ID, TLUpdateBotWebhookJSONQuery.class);
+        registerClass(TLPhoneCallDiscardReasonMissed.CLASS_ID, TLPhoneCallDiscardReasonMissed.class);
+        registerClass(TLPhoneCallDiscardReasonDisconnect.CLASS_ID, TLPhoneCallDiscardReasonDisconnect.class);
+        registerClass(TLPhoneCallDiscardReasonHangup.CLASS_ID, TLPhoneCallDiscardReasonHangup.class);
+        registerClass(TLPhoneCallDiscardReasonBusy.CLASS_ID, TLPhoneCallDiscardReasonBusy.class);
+        registerClass(TLDataJSON.CLASS_ID, TLDataJSON.class);
+        registerClass(TLRequestMessagesToggleDialogPin.CLASS_ID, TLRequestMessagesToggleDialogPin.class);
+        registerClass(TLRequestMessagesReorderPinnedDialogs.CLASS_ID, TLRequestMessagesReorderPinnedDialogs.class);
+        registerClass(TLRequestMessagesGetPinnedDialogs.CLASS_ID, TLRequestMessagesGetPinnedDialogs.class);
+        registerClass(TLRequestBotsSendCustomRequest.CLASS_ID, TLRequestBotsSendCustomRequest.class);
+        registerClass(TLRequestBotsAnswerWebhookJSONQuery.CLASS_ID, TLRequestBotsAnswerWebhookJSONQuery.class);
     }
 }

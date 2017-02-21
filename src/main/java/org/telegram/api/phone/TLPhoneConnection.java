@@ -14,8 +14,9 @@ import java.io.OutputStream;
  * @version 1.0
  */
 public class TLPhoneConnection extends TLObject {
-    public static final int CLASS_ID = 0x6b7411c9;
+    public static final int CLASS_ID = 0x9d4c17c0;
 
+    private long id;
     private String ip;
     private String ipv6;
     private int port;
@@ -45,6 +46,7 @@ public class TLPhoneConnection extends TLObject {
 
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
+        StreamingUtils.writeLong(id, stream);
         StreamingUtils.writeTLString(ip, stream);
         StreamingUtils.writeTLString(ipv6, stream);
         StreamingUtils.writeInt(port, stream);
@@ -53,6 +55,7 @@ public class TLPhoneConnection extends TLObject {
 
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
+        id = StreamingUtils.readLong(stream);
         ip = StreamingUtils.readTLString(stream);
         ipv6 = StreamingUtils.readTLString(stream);
         port = StreamingUtils.readInt(stream);
@@ -61,6 +64,6 @@ public class TLPhoneConnection extends TLObject {
 
     @Override
     public String toString() {
-        return "phoneConnection#6b7411c9";
+        return "phoneConnection#9d4c17c0";
     }
 }

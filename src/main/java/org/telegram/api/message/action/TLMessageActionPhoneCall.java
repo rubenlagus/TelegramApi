@@ -1,40 +1,38 @@
-package org.telegram.api.phone.call;
+package org.telegram.api.message.action;
 
 import org.telegram.api.phone.call.discardreason.TLAbsPhoneCallDiscardReason;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
-import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * @author Ruben Bermudez
- * @version 1.0
- */
-public class TLPhoneCallDiscarded extends TLObject {
-    public static final int CLASS_ID = 0x50ca4de1;
+
+public class TLMessageActionPhoneCall extends TLAbsMessageAction {
+    /**
+     * The constant CLASS_ID.
+     */
+    public static final int CLASS_ID = 0x80e11a7f;
 
     private static final int FLAG_DISCARD_REASON           = 0x00000001; // 0
     private static final int FLAG_DURATION                 = 0x00000002; // 1
 
     private int flags;
-    private long id;
+    private long callId;
     private TLAbsPhoneCallDiscardReason reason;
     private int duration;
 
-    public TLPhoneCallDiscarded() {
+    public TLMessageActionPhoneCall() {
         super();
     }
 
-    @Override
-    public int getClassId() {
-        return CLASS_ID;
+    public int getFlags() {
+        return flags;
     }
 
-    public long getId() {
-        return id;
+    public long getCallId() {
+        return callId;
     }
 
     public TLAbsPhoneCallDiscardReason getReason() {
@@ -46,9 +44,14 @@ public class TLPhoneCallDiscarded extends TLObject {
     }
 
     @Override
+    public int getClassId() {
+        return CLASS_ID;
+    }
+
+    @Override
     public void serializeBody(OutputStream stream) throws IOException {
         StreamingUtils.writeInt(flags, stream);
-        StreamingUtils.writeLong(id, stream);
+        StreamingUtils.writeLong(callId, stream);
         if ((flags & FLAG_DISCARD_REASON) != 0) {
             StreamingUtils.writeTLObject(reason, stream);
         }
@@ -60,7 +63,7 @@ public class TLPhoneCallDiscarded extends TLObject {
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
         flags = StreamingUtils.readInt(stream);
-        id = StreamingUtils.readLong(stream);
+        callId = StreamingUtils.readLong(stream);
         if ((flags & FLAG_DISCARD_REASON) != 0) {
             reason = StreamingUtils.readTLObject(stream, context, TLAbsPhoneCallDiscardReason.class);
         }
@@ -71,6 +74,6 @@ public class TLPhoneCallDiscarded extends TLObject {
 
     @Override
     public String toString() {
-        return "phoneCallDiscarded#50ca4de1";
+        return "messageActionPhoneCall#80e11a7f";
     }
 }

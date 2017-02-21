@@ -11,15 +11,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * The type TL request messages get dialogs.
- */
 public class TLRequestMessagesGetDialogs extends TLMethod<TLAbsDialogs> {
-    /**
-     * The constant CLASS_ID.
-     */
-    public static final int CLASS_ID = 0x6b47f94d;
+    public static final int CLASS_ID = 0x191ba9c5;
 
+    private static final int FLAG_EXCLUDE_PINNED      = 0x00000001; // 0
+
+    private int flags;
     private int offsetDate;
     private int offsetId;
     private TLAbsInputPeer offsetPeer;
@@ -72,26 +69,29 @@ public class TLRequestMessagesGetDialogs extends TLMethod<TLAbsDialogs> {
         this.offsetPeer = offsetPeer;
     }
 
-    /**
-     * Gets limit.
-     *
-     * @return the limit
-     */
     public int getLimit() {
         return this.limit;
     }
 
-    /**
-     * Sets limit.
-     *
-     * @param value the value
-     */
     public void setLimit(int value) {
         this.limit = value;
     }
 
+    private void excludePinned(boolean excluded) {
+        if (excluded) {
+            this.flags |= FLAG_EXCLUDE_PINNED;
+        } else {
+            this.flags &= ~FLAG_EXCLUDE_PINNED;
+        }
+    }
+
+    private boolean pinnedExcluded() {
+        return (flags & FLAG_EXCLUDE_PINNED) != 0;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(this.flags, stream);
         StreamingUtils.writeInt(this.offsetDate, stream);
         StreamingUtils.writeInt(this.offsetId, stream);
         StreamingUtils.writeTLObject(this.offsetPeer, stream);
@@ -100,6 +100,7 @@ public class TLRequestMessagesGetDialogs extends TLMethod<TLAbsDialogs> {
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        this.flags = StreamingUtils.readInt(stream);
         this.offsetDate = StreamingUtils.readInt(stream);
         this.offsetId = StreamingUtils.readInt(stream);
         this.offsetPeer = (TLAbsInputPeer) StreamingUtils.readTLObject(stream, context);
@@ -107,6 +108,6 @@ public class TLRequestMessagesGetDialogs extends TLMethod<TLAbsDialogs> {
     }
 
     public String toString() {
-        return "messages.getDialogs#6b47f94d";
+        return "messages.getDialogs#191ba9c5";
     }
 }

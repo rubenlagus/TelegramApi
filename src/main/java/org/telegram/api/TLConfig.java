@@ -17,7 +17,7 @@ public class TLConfig extends TLObject {
     /**
      * The constant CLASS_ID.
      */
-    public static final int CLASS_ID = 0xb6735d71;
+    public static final int CLASS_ID = 0x3af6fb5f;
 
     private static final int FLAG_TMP_SESSIONS         = 0x00000001; // 0
     private static final int FLAG_PHONE_CALLS_ENABLED  = 0x00000002; // 1
@@ -45,6 +45,7 @@ public class TLConfig extends TLObject {
     private int ratingEDecay;
     private int stickersRecentLimit;
     private int tmpSessions;
+    private int pinnedDialogsCountMax;
     private int callReceiveTimeoutMs;
     private int callRingTimeoutMs;
     private int callConnectTimeoutMs;
@@ -162,6 +163,26 @@ public class TLConfig extends TLObject {
         return (flags & FLAG_PHONE_CALLS_ENABLED) != 0;
     }
 
+    public int getPinnedDialogsCountMax() {
+        return pinnedDialogsCountMax;
+    }
+
+    public int getCallReceiveTimeoutMs() {
+        return callReceiveTimeoutMs;
+    }
+
+    public int getCallRingTimeoutMs() {
+        return callRingTimeoutMs;
+    }
+
+    public int getCallConnectTimeoutMs() {
+        return callConnectTimeoutMs;
+    }
+
+    public int getCallPacketTimeoutMs() {
+        return callPacketTimeoutMs;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeInt(flags, stream);
@@ -189,6 +210,7 @@ public class TLConfig extends TLObject {
         if ((flags & FLAG_TMP_SESSIONS) != 0) {
             StreamingUtils.writeInt(this.tmpSessions, stream);
         }
+        StreamingUtils.writeInt(this.pinnedDialogsCountMax, stream);
         StreamingUtils.writeInt(this.callReceiveTimeoutMs, stream);
         StreamingUtils.writeInt(this.callRingTimeoutMs, stream);
         StreamingUtils.writeInt(this.callConnectTimeoutMs, stream);
@@ -223,6 +245,7 @@ public class TLConfig extends TLObject {
         if ((flags & FLAG_TMP_SESSIONS) != 0) {
             this.tmpSessions = StreamingUtils.readInt(stream);
         }
+        this.pinnedDialogsCountMax = StreamingUtils.readInt(stream);
         this.callReceiveTimeoutMs = StreamingUtils.readInt(stream);
         this.callRingTimeoutMs = StreamingUtils.readInt(stream);
         this.callConnectTimeoutMs = StreamingUtils.readInt(stream);
@@ -231,6 +254,6 @@ public class TLConfig extends TLObject {
     }
 
     public String toString() {
-        return "config#b6735d71";
+        return "config#3af6fb5f";
     }
 }

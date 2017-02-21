@@ -178,6 +178,14 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
                 onTLUpdateChannelWebPage((TLUpdateChannelWebPage) update, updateWrapper.isGettingDifferences());
             } else if (update instanceof TLUpdatePhoneCall) {
                 onTLUpdatePhoneCall((TLUpdatePhoneCall) update);
+            } else if (update instanceof TLUpdateDialogPinned) {
+                onTLUpdateDialogPinned((TLUpdateDialogPinned) update);
+            } else if (update instanceof TLUpdatePinnedDialogs) {
+                onTLUpdatePinnedDialogs((TLUpdatePinnedDialogs) update);
+            } else if (update instanceof TLUpdateBotWebhookJSON) {
+                onTLUpdateBotWebhookJSON((TLUpdateBotWebhookJSON) update);
+            } else if (update instanceof TLUpdateBotWebhookJSONQuery) {
+                onTLUpdateBotWebhookJSONQuery((TLUpdateBotWebhookJSONQuery) update);
             } else {
                 BotLogger.debug(LOGTAG, "Unsupported TLAbsUpdate: " + update.toString());
             }
@@ -258,6 +266,22 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
 
     private void onTLUpdateShortSentMessage(TLUpdateShortSentMessage update) {
         onTLUpdateShortSentMessageCustom(update);
+    }
+
+    private void onTLUpdateDialogPinned(TLUpdateDialogPinned update) {
+        onTLUpdateDialogPinnedCustom(update);
+    }
+
+    private void onTLUpdatePinnedDialogs(TLUpdatePinnedDialogs update) {
+        onTLUpdatePinnedDialogsCustom(update);
+    }
+
+    private void onTLUpdateBotWebhookJSON(TLUpdateBotWebhookJSON update) {
+        onTLUpdateBotWebhookJSONCustom(update);
+    }
+
+    private void onTLUpdateBotWebhookJSONQuery(TLUpdateBotWebhookJSONQuery update) {
+        onTLUpdateBotWebhookJSONQueryCustom(update);
     }
 
     private void onTLUpdatePhoneCall(TLUpdatePhoneCall update) {
@@ -894,4 +918,8 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     protected abstract void onTLUpdateRecentStickersCustom(TLUpdateRecentStickers update);
     protected abstract void onTLUpdateChannelWebPageCustom(TLUpdateChannelWebPage update);
     protected abstract void onTLUpdatePhoneCallCustom(TLUpdatePhoneCall update);
+    protected abstract void onTLUpdateDialogPinnedCustom(TLUpdateDialogPinned update);
+    protected abstract void onTLUpdatePinnedDialogsCustom(TLUpdatePinnedDialogs update);
+    protected abstract void onTLUpdateBotWebhookJSONCustom(TLUpdateBotWebhookJSON update);
+    protected abstract void onTLUpdateBotWebhookJSONQueryCustom(TLUpdateBotWebhookJSONQuery update);
 }

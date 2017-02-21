@@ -11,20 +11,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * The type TL request messages delete messages.
- */
 public class TLRequestMessagesDeleteMessages extends TLMethod<TLAffectedMessages> {
-    /**
-     * The constant CLASS_ID.
-     */
-    public static final int CLASS_ID = 0xa5f18925;
+    public static final int CLASS_ID = 0xe58e95d2;
 
+    private static final int FLAG_REVOKE      = 0x00000001; // 0
+
+    private int flags;
     private TLIntVector id;
 
-    /**
-     * Instantiates a new TL request messages delete messages.
-     */
     public TLRequestMessagesDeleteMessages() {
         super();
     }
@@ -43,35 +37,40 @@ public class TLRequestMessagesDeleteMessages extends TLMethod<TLAffectedMessages
         throw new IOException("Incorrect response type. Expected org.telegram.api.messages.TLAffectedMessages, got: " + res.getClass().getCanonicalName());
     }
 
-    /**
-     * Gets id.
-     *
-     * @return the id
-     */
+
     public TLIntVector getId() {
         return this.id;
     }
 
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
     public void setId(TLIntVector id) {
         this.id = id;
     }
 
+    private void setRevoke(boolean revoke) {
+        if (revoke) {
+            this.flags |= FLAG_REVOKE;
+        } else {
+            this.flags &= ~FLAG_REVOKE;
+        }
+    }
+
+    private boolean isRevoke() {
+        return (flags & FLAG_REVOKE) != 0;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(flags, stream);
         StreamingUtils.writeTLVector(this.id, stream);
     }
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        flags = StreamingUtils.readInt(stream);
         this.id = StreamingUtils.readTLIntVector(stream, context);
     }
 
     public String toString() {
-        return "messages.deleteMessages#a5f18925";
+        return "messages.deleteMessages#e58e95d2";
     }
 }

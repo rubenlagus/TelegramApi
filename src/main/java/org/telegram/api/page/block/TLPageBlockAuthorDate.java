@@ -1,5 +1,6 @@
 package org.telegram.api.page.block;
 
+import org.telegram.api.richtext.TLAbsRichText;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLObject;
@@ -13,9 +14,9 @@ import java.io.OutputStream;
  * @version 1.0
  */
 public class TLPageBlockAuthorDate extends TLObject {
-    public static final int CLASS_ID = 0x3d5b64f2;
+    public static final int CLASS_ID = 0xbaafe5e0;
 
-    private String author;
+    private TLAbsRichText author;
     private int publishedDate;
 
     public TLPageBlockAuthorDate() {
@@ -27,7 +28,7 @@ public class TLPageBlockAuthorDate extends TLObject {
         return CLASS_ID;
     }
 
-    public String getAuthor() {
+    public TLAbsRichText getAuthor() {
         return author;
     }
 
@@ -37,18 +38,18 @@ public class TLPageBlockAuthorDate extends TLObject {
 
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
-        StreamingUtils.writeTLString(author, stream);
+        StreamingUtils.writeTLObject(author, stream);
         StreamingUtils.writeInt(publishedDate, stream);
     }
 
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
-        author = StreamingUtils.readTLString(stream);
+        author = StreamingUtils.readTLObject(stream, context, TLAbsRichText.class);
         publishedDate = StreamingUtils.readInt(stream);
     }
 
     @Override
     public String toString() {
-        return "pageBlockAuthorDate#3d5b64f2";
+        return "pageBlockAuthorDate#baafe5e0";
     }
 }

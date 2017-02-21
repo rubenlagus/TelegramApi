@@ -14,16 +14,18 @@ import java.io.OutputStream;
  * @version 1.0
  */
 public class TLPageBlockEmbed extends TLObject {
-    public static final int CLASS_ID = 0xd935d8fb;
+    public static final int CLASS_ID = 0xcde200d1;
 
     private static final int FLAG_FULL_WIDTH       = 0x00000001; // 0
     private static final int FLAG_URL              = 0x00000002; // 1
     private static final int FLAG_HTML             = 0x00000004; // 2
     private static final int FLAG_ALLOW_SCROLLING  = 0x00000008; // 3
+    private static final int FLAG_POSTER_PHOTO_ID  = 0x00000010; // 4
 
     private int flags;
     private String url;
     private String html;
+    private long posterPhotoId;
     private int w;
     private int h;
     private TLAbsRichText caption;
@@ -61,6 +63,10 @@ public class TLPageBlockEmbed extends TLObject {
         return caption;
     }
 
+    public long getPosterPhotoId() {
+        return posterPhotoId;
+    }
+
     public boolean isFullWidth() {
         return (flags & FLAG_FULL_WIDTH) != 0;
     }
@@ -78,6 +84,9 @@ public class TLPageBlockEmbed extends TLObject {
         if ((flags & FLAG_HTML) != 0) {
             StreamingUtils.writeTLString(html, stream);
         }
+        if ((flags & FLAG_POSTER_PHOTO_ID) != 0) {
+            StreamingUtils.writeLong(posterPhotoId, stream);
+        }
         StreamingUtils.writeInt(w, stream);
         StreamingUtils.writeInt(h, stream);
         StreamingUtils.writeTLObject(caption, stream);
@@ -92,6 +101,9 @@ public class TLPageBlockEmbed extends TLObject {
         if ((flags & FLAG_HTML) != 0) {
             html = StreamingUtils.readTLString(stream);
         }
+        if ((flags & FLAG_POSTER_PHOTO_ID) != 0) {
+            posterPhotoId = StreamingUtils.readLong(stream);
+        }
         w = StreamingUtils.readInt(stream);
         h = StreamingUtils.readInt(stream);
         caption = StreamingUtils.readTLObject(stream, context, TLAbsRichText.class);
@@ -99,6 +111,6 @@ public class TLPageBlockEmbed extends TLObject {
 
     @Override
     public String toString() {
-        return "pageBlockEmbed#d935d8fb";
+        return "pageBlockEmbed#cde200d1";
     }
 }

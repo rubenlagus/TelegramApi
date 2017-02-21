@@ -22,6 +22,7 @@ public class TLDialog extends TLObject {
 
     private static final int FLAG_PTS               = 0x00000001; // 0
     private static final int FLAG_DRAFT             = 0x00000002; // 1
+    private static final int FLAG_PINNED            = 0x00000004; // 2
 
     private int flags;
     private TLAbsPeer peer;
@@ -74,6 +75,10 @@ public class TLDialog extends TLObject {
 
     public TLAbsDraftMessage getDraft() {
         return draft;
+    }
+
+    public boolean isPinned() {
+        return (flags & FLAG_PINNED) != 0;
     }
 
     public void serializeBody(OutputStream stream)

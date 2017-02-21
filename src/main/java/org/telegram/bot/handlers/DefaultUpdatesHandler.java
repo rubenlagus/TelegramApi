@@ -327,4 +327,24 @@ public class DefaultUpdatesHandler extends UpdatesHandlerBase {
     protected void onTLUpdatePhoneCallCustom(TLUpdatePhoneCall update) {
 
     }
+
+    @Override
+    protected void onTLUpdateDialogPinnedCustom(TLUpdateDialogPinned update) {
+
+    }
+
+    @Override
+    protected void onTLUpdatePinnedDialogsCustom(TLUpdatePinnedDialogs update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateBotWebhookJSONCustom(TLUpdateBotWebhookJSON update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateBotWebhookJSONQueryCustom(TLUpdateBotWebhookJSONQuery update) {
+
+    }
 }
