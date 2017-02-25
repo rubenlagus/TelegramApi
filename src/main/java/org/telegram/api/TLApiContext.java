@@ -94,10 +94,7 @@ import org.telegram.api.functions.photos.TLRequestPhotosUploadProfilePhoto;
 import org.telegram.api.functions.updates.TLRequestUpdatesGetChannelDifference;
 import org.telegram.api.functions.updates.TLRequestUpdatesGetDifference;
 import org.telegram.api.functions.updates.TLRequestUpdatesGetState;
-import org.telegram.api.functions.upload.TLRequestUploadGetFile;
-import org.telegram.api.functions.upload.TLRequestUploadGetWebFile;
-import org.telegram.api.functions.upload.TLRequestUploadSaveBigFilePart;
-import org.telegram.api.functions.upload.TLRequestUploadSaveFilePart;
+import org.telegram.api.functions.upload.*;
 import org.telegram.api.functions.users.TLRequestUsersGetFullUser;
 import org.telegram.api.functions.users.TLRequestUsersGetUsers;
 import org.telegram.api.game.TLGame;
@@ -264,8 +261,11 @@ import org.telegram.api.updates.difference.TLDifference;
 import org.telegram.api.updates.difference.TLDifferenceEmpty;
 import org.telegram.api.updates.difference.TLDifferenceSlice;
 import org.telegram.api.updates.difference.TLDifferenceTooLong;
-import org.telegram.api.upload.TLFile;
 import org.telegram.api.upload.TLWebFile;
+import org.telegram.api.upload.cdn.TLCdnFile;
+import org.telegram.api.upload.cdn.TLCdnFileReuploadNeeded;
+import org.telegram.api.upload.file.TLFile;
+import org.telegram.api.upload.file.TLFileCdnRedirect;
 import org.telegram.api.user.TLUser;
 import org.telegram.api.user.TLUserEmpty;
 import org.telegram.api.user.TLUserFull;
@@ -618,6 +618,8 @@ public class TLApiContext extends TLContext {
         addApiLayer63();
         // api layer 64
         addApiLayer64();
+        // api layer 65
+        addApiLayer65();
     }
 
     private void addApiLayer19() {
@@ -1138,5 +1140,13 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestPaymentsSendPaymentForm.CLASS_ID, TLRequestPaymentsSendPaymentForm.class);
         registerClass(TLRequestPaymentsGetSavedInfo.CLASS_ID, TLRequestPaymentsGetSavedInfo.class);
         registerClass(TLRequestPaymentsClearSavedInfo.CLASS_ID, TLRequestPaymentsClearSavedInfo.class);
+    }
+
+    private void addApiLayer65() {
+        registerClass(TLFileCdnRedirect.CLASS_ID, TLFileCdnRedirect.class);
+        registerClass(TLCdnFile.CLASS_ID, TLCdnFile.class);
+        registerClass(TLCdnFileReuploadNeeded.CLASS_ID, TLCdnFileReuploadNeeded.class);
+        registerClass(TLRequestUploadGetCdnFile.CLASS_ID, TLRequestUploadGetCdnFile.class);
+        registerClass(TLRequestReuploadCdnFile.CLASS_ID, TLRequestReuploadCdnFile.class);
     }
 }

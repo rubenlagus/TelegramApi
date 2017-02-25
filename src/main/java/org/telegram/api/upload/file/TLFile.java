@@ -1,10 +1,9 @@
-package org.telegram.api.upload;
+package org.telegram.api.upload.file;
 
 import org.telegram.api.storage.file.TLAbsFileType;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLBytes;
 import org.telegram.tl.TLContext;
-import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +12,7 @@ import java.io.OutputStream;
 /**
  * The type TL file.
  */
-public class TLFile extends TLObject {
+public class TLFile extends TLAbsFile {
     /**
      * The constant CLASS_ID.
      */

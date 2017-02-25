@@ -2506,6 +2506,10 @@
           "type":"flags.2?true"
         },
         {
+          "name":"cdn",
+          "type":"flags.3?true"
+        },
+        {
           "name":"id",
           "type":"int"
         },
@@ -9531,6 +9535,47 @@
         }
       ],
       "type":"Update"
+    },
+    {
+      "id":"1405551849",
+      "predicate":"upload.fileCdnRedirect",
+      "params":[
+        {
+          "name":"dc_id",
+          "type":"int"
+        },
+        {
+          "name":"encryption_key",
+          "type":"bytes"
+        },
+        {
+          "name":"file_token",
+          "type":"bytes"
+        }
+      ],
+      "type":"upload.File"
+    },
+    {
+      "id":"-290921362",
+      "predicate":"upload.cdnFileReuploadNeeded",
+      "params":[
+        {
+          "name":"request_token",
+          "type":"bytes"
+        }
+      ],
+      "type":"upload.CdnFile"
+    },
+    {
+      "id":"-1449145777",
+      "predicate":"upload.cdnFile",
+      "params":[
+        {
+          "name":"bytes",
+          "type":"bytes"
+        }
+      ],
+      "type":"upload.CdnFile"
     }
   ],
   "methods":[
@@ -12996,7 +13041,7 @@
           "type":"#"
         },
         {
-          "name":"succes",
+          "name":"success",
           "type":"flags.1?true"
         },
         {
@@ -13009,6 +13054,44 @@
         }
       ],
       "type":"Bool"
+    },
+    {
+      "id":"536919235",
+      "method":"upload.getCdnFile",
+      "params":[
+        {
+          "name":"file_token",
+          "type":"bytes"
+        },
+        {
+          "name":"offset",
+          "type":"int"
+        },
+        {
+          "name":"limit",
+          "type":"int"
+        }
+      ],
+      "type":"upload.CdnFile"
+    },
+    {
+      "id":"-1000779235",
+      "method":"upload.reuploadCdnFile",
+      "params":[
+        {
+          "name":"file_token",
+          "type":"bytes"
+        },
+        {
+          "name":"offset",
+          "type":"int"
+        },
+        {
+          "name":"request_token",
+          "type":"bytes"
+        }
+      ],
+      "type":"upload.File"
     }
   ]
 }

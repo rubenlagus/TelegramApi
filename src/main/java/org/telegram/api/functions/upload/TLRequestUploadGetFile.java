@@ -1,7 +1,7 @@
 package org.telegram.api.functions.upload;
 
 import org.telegram.api.input.filelocation.TLAbsInputFileLocation;
-import org.telegram.api.upload.TLFile;
+import org.telegram.api.upload.file.TLAbsFile;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
 import org.telegram.tl.TLMethod;
@@ -14,7 +14,7 @@ import java.io.OutputStream;
 /**
  * The type TL request upload get file.
  */
-public class TLRequestUploadGetFile extends TLMethod<TLFile> {
+public class TLRequestUploadGetFile extends TLMethod<TLAbsFile> {
     /**
      * The constant CLASS_ID.
      */
@@ -35,14 +35,15 @@ public class TLRequestUploadGetFile extends TLMethod<TLFile> {
         return CLASS_ID;
     }
 
-    public TLFile deserializeResponse(InputStream stream, TLContext context)
+    public TLAbsFile deserializeResponse(InputStream stream, TLContext context)
             throws IOException {
         TLObject res = StreamingUtils.readTLObject(stream, context);
         if (res == null)
             throw new IOException("Unable to parse response");
-        if ((res instanceof TLFile))
-            return (TLFile) res;
-        throw new IOException("Incorrect response type. Expected org.telegram.api.upload.TLFile, got: " + res.getClass().getCanonicalName());
+        if ((res instanceof TLAbsFile))
+            return (TLAbsFile) res;
+        throw new IOException("Incorrect response type. Expected " + TLAbsFile.class.getCanonicalName()
+                + ", got: " + res.getClass().getCanonicalName());
     }
 
     /**

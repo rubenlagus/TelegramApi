@@ -4,7 +4,11 @@ import org.telegram.api.engine.Logger;
 import org.telegram.api.engine.TelegramApi;
 import org.telegram.api.input.filelocation.TLAbsInputFileLocation;
 import org.telegram.api.storage.file.TLAbsFileType;
-import org.telegram.api.upload.TLFile;
+import org.telegram.api.upload.cdn.TLAbsCdnFile;
+import org.telegram.api.upload.cdn.TLCdnFile;
+import org.telegram.api.upload.file.TLAbsFile;
+import org.telegram.api.upload.file.TLFile;
+import org.telegram.api.upload.file.TLFileCdnRedirect;
 import org.telegram.tl.TLBytes;
 
 import java.io.FileNotFoundException;
@@ -459,18 +463,42 @@ public class Downloader {
                 long start = System.nanoTime();
                 Logger.d(Downloader.this.TAG, "Block #" + block.index + " of #" + block.task.taskId + "| Starting");
                 try {
-                    TLFile file = Downloader.this.api.doGetFile(block.task.dcId, block.task.location, block.index * block.task.blockSize, block.task.blockSize);
+                    TLAbsFile file = Downloader.this.api.doGetFile(block.task.dcId, block.task.location, block.index * block.task.blockSize, block.task.blockSize);
                     Logger.d(Downloader.this.TAG, "Block #" + block.index + " of #" + block.task.taskId + "| Downloaded in " + (System.nanoTime() - start) / (1000 * 1000L) + " ms");
-                    if (block.task.type == null) {
-                        block.task.type = file.getType();
+                    TLBytes data = null;
+
+                    if (file instanceof TLFile) {
+                        data = ((TLFile) file).getBytes();
+                        if (block.task.type == null) {
+                            block.task.type = ((TLFile) file).getType();
+                        }
+                    } else if (file instanceof TLFileCdnRedirect) {
+                        TLAbsCdnFile cdnFile = Downloader.this.api.doGetCdnFile(((TLFileCdnRedirect) file).getDcId(),
+                                ((TLFileCdnRedirect) file).getFileToken(),block.index * block.task.blockSize, block.task.blockSize);
+
+                        if (cdnFile instanceof TLCdnFile) {
+                            data = ((TLCdnFile) cdnFile).getBytes();
+                        } else {
+                            Logger.d(Downloader.this.TAG, "File need to be reuploaded");
+                            onBlockFailure(block);
+                        }
                     }
-                    onBlockDownloaded(block, file.getBytes());
+
+                    if (data == null) {
+                        Logger.d(Downloader.this.TAG, "Failed to download file data");
+                        onBlockFailure(block);
+                    }
+                    onBlockDownloaded(block, data);
                 } catch (IOException | TimeoutException e) {
                     Logger.d(Downloader.this.TAG, "Block #" + block.index + " of #" + block.task.taskId + "| Failure");
                     Logger.e(Downloader.this.TAG, e);
                     onBlockFailure(block);
                 }
             }
+        }
+
+        private TLAbsCdnFile getFileFromCdn(TLFileCdnRedirect file) {
+            return null;
         }
     }
 }
