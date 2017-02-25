@@ -57,6 +57,14 @@ public class TLRequestChannelsUpdatePinnedMessage extends TLMethod<TLAbsUpdates>
         this.channel = channel;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void serializeBody(OutputStream stream)
             throws IOException {
         StreamingUtils.writeInt(this.flags, stream);
