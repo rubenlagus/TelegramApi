@@ -186,6 +186,10 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
                 onTLUpdateBotWebhookJSON((TLUpdateBotWebhookJSON) update);
             } else if (update instanceof TLUpdateBotWebhookJSONQuery) {
                 onTLUpdateBotWebhookJSONQuery((TLUpdateBotWebhookJSONQuery) update);
+            } else if (update instanceof TLUpdateBotShippingQuery) {
+                onTLUpdateBotShippingQuery((TLUpdateBotShippingQuery) update, updateWrapper.isGettingDifferences());
+            } else if (update instanceof TLUpdateBotPrecheckoutQuery) {
+                onTLUpdateBotPrecheckoutQuery((TLUpdateBotPrecheckoutQuery) update, updateWrapper.isGettingDifferences());
             } else {
                 BotLogger.debug(LOGTAG, "Unsupported TLAbsUpdate: " + update.toString());
             }
@@ -315,6 +319,26 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
             }
         } else {
             onTLUpdateNewMessageCustom(update);
+        }
+    }
+
+    private void onTLUpdateBotShippingQuery(TLUpdateBotShippingQuery update, boolean gettingDifferences) {
+        if (isUserMissing(update.getUserId())) {
+            if (!gettingDifferences) {
+                differencesHandler.getDifferences();
+            }
+        } else {
+            onTLUpdateBotShippingQueryCustom(update);
+        }
+    }
+
+    private void onTLUpdateBotPrecheckoutQuery(TLUpdateBotPrecheckoutQuery update, boolean gettingDifferences) {
+        if (isUserMissing(update.getUserId())) {
+            if (!gettingDifferences) {
+                differencesHandler.getDifferences();
+            }
+        } else {
+            onTLUpdateBotPrecheckoutQueryCustom(update);
         }
     }
 
@@ -922,4 +946,6 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     protected abstract void onTLUpdatePinnedDialogsCustom(TLUpdatePinnedDialogs update);
     protected abstract void onTLUpdateBotWebhookJSONCustom(TLUpdateBotWebhookJSON update);
     protected abstract void onTLUpdateBotWebhookJSONQueryCustom(TLUpdateBotWebhookJSONQuery update);
+    protected abstract void onTLUpdateBotShippingQueryCustom(TLUpdateBotShippingQuery update);
+    protected abstract void onTLUpdateBotPrecheckoutQueryCustom(TLUpdateBotPrecheckoutQuery update);
 }

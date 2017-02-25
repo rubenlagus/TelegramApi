@@ -141,6 +141,6 @@ public class TLInputMediaUploadedDocument extends TLAbsInputMedia {
     }
 
     public String toString() {
-        return "inputMediaUploadedDocument#1d89306d";
+        return "inputMediaUploadedDocument#d070f1e9";
     }
 }

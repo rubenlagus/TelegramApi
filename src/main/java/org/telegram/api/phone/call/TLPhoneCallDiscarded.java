@@ -18,6 +18,7 @@ public class TLPhoneCallDiscarded extends TLObject {
 
     private static final int FLAG_DISCARD_REASON           = 0x00000001; // 0
     private static final int FLAG_DURATION                 = 0x00000002; // 1
+    private static final int FLAG_NEED_RATING              = 0x00000002; // 1
 
     private int flags;
     private long id;
@@ -43,6 +44,18 @@ public class TLPhoneCallDiscarded extends TLObject {
 
     public int getDuration() {
         return duration;
+    }
+
+    public boolean needRatting() {
+        return (flags & FLAG_NEED_RATING) != 0;
+    }
+
+    public boolean hasDuration() {
+        return (flags & FLAG_DURATION) != 0;
+    }
+
+    public boolean hasDiscardReason() {
+        return (flags & FLAG_DISCARD_REASON) != 0;
     }
 
     @Override

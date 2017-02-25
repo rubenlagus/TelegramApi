@@ -347,4 +347,14 @@ public class DefaultUpdatesHandler extends UpdatesHandlerBase {
     protected void onTLUpdateBotWebhookJSONQueryCustom(TLUpdateBotWebhookJSONQuery update) {
 
     }
+
+    @Override
+    protected void onTLUpdateBotShippingQueryCustom(TLUpdateBotShippingQuery update) {
+
+    }
+
+    @Override
+    protected void onTLUpdateBotPrecheckoutQueryCustom(TLUpdateBotPrecheckoutQuery update) {
+
+    }
 }

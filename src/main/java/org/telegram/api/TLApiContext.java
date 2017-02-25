@@ -85,6 +85,7 @@ import org.telegram.api.functions.channels.*;
 import org.telegram.api.functions.contacts.*;
 import org.telegram.api.functions.help.*;
 import org.telegram.api.functions.messages.*;
+import org.telegram.api.functions.payments.*;
 import org.telegram.api.functions.phone.*;
 import org.telegram.api.functions.photos.TLRequestPhotosDeletePhotos;
 import org.telegram.api.functions.photos.TLRequestPhotosGetUserPhotos;
@@ -94,6 +95,7 @@ import org.telegram.api.functions.updates.TLRequestUpdatesGetChannelDifference;
 import org.telegram.api.functions.updates.TLRequestUpdatesGetDifference;
 import org.telegram.api.functions.updates.TLRequestUpdatesGetState;
 import org.telegram.api.functions.upload.TLRequestUploadGetFile;
+import org.telegram.api.functions.upload.TLRequestUploadGetWebFile;
 import org.telegram.api.functions.upload.TLRequestUploadSaveBigFilePart;
 import org.telegram.api.functions.upload.TLRequestUploadSaveFilePart;
 import org.telegram.api.functions.users.TLRequestUsersGetFullUser;
@@ -140,6 +142,10 @@ import org.telegram.api.input.notify.TLInputNotifyAll;
 import org.telegram.api.input.notify.TLInputNotifyChats;
 import org.telegram.api.input.notify.TLInputNotifyPeer;
 import org.telegram.api.input.notify.TLInputNotifyUsers;
+import org.telegram.api.input.paymentapi.TLInputWebDocument;
+import org.telegram.api.input.paymentapi.TLInputWebFileLocation;
+import org.telegram.api.input.paymentapi.paymentcredentials.TLInputPaymentCredentials;
+import org.telegram.api.input.paymentapi.paymentcredentials.TLInputPaymentCredentialsSaved;
 import org.telegram.api.input.peer.*;
 import org.telegram.api.input.peer.notify.TLInputPeerNotifySettings;
 import org.telegram.api.input.peer.notify.events.TLInputPeerNotifyEventsAll;
@@ -198,6 +204,14 @@ import org.telegram.api.notify.peer.TLNotifyUsers;
 import org.telegram.api.page.TLPageFull;
 import org.telegram.api.page.TLPagePart;
 import org.telegram.api.page.block.*;
+import org.telegram.api.paymentapi.*;
+import org.telegram.api.paymentapi.payments.TLPaymentsPaymentForm;
+import org.telegram.api.paymentapi.payments.TLPaymentsPaymentReceipt;
+import org.telegram.api.paymentapi.payments.TLPaymentsSavedInfo;
+import org.telegram.api.paymentapi.payments.TLPaymentsValidatedRequestedInfo;
+import org.telegram.api.paymentapi.payments.result.TLPaymentsPaymentResult;
+import org.telegram.api.paymentapi.payments.result.TLPaymentsPaymentVerificationNeeded;
+import org.telegram.api.paymentapi.savedcredentails.TLPaymentSavedCredentialsCard;
 import org.telegram.api.peer.TLPeerChannel;
 import org.telegram.api.peer.TLPeerChat;
 import org.telegram.api.peer.TLPeerSettings;
@@ -251,6 +265,7 @@ import org.telegram.api.updates.difference.TLDifferenceEmpty;
 import org.telegram.api.updates.difference.TLDifferenceSlice;
 import org.telegram.api.updates.difference.TLDifferenceTooLong;
 import org.telegram.api.upload.TLFile;
+import org.telegram.api.upload.TLWebFile;
 import org.telegram.api.user.TLUser;
 import org.telegram.api.user.TLUserEmpty;
 import org.telegram.api.user.TLUserFull;
@@ -601,6 +616,8 @@ public class TLApiContext extends TLContext {
         addApiLayer62();
         // api layer 63
         addApiLayer63();
+        // api layer 64
+        addApiLayer64();
     }
 
     private void addApiLayer19() {
@@ -1081,5 +1098,45 @@ public class TLApiContext extends TLContext {
 
     private void addApiLayer63() {
         registerClass(TLRequestPhoneSetCallRating.CLASS_ID, TLRequestPhoneSetCallRating.class);
+    }
+
+    private void addApiLayer64() {
+        registerClass(TLInputMediaInvoice.CLASS_ID, TLInputMediaInvoice.class);
+        registerClass(TLMessageMediaInvoice.CLASS_ID, TLMessageMediaInvoice.class);
+        registerClass(TLMessageActionPaymentSent.CLASS_ID, TLMessageActionPaymentSent.class);
+        registerClass(TLMessageActionPaymentSentMe.CLASS_ID, TLMessageActionPaymentSentMe.class);
+        registerClass(TLUpdateBotShippingQuery.CLASS_ID, TLUpdateBotShippingQuery.class);
+        registerClass(TLUpdateBotPrecheckoutQuery.CLASS_ID, TLUpdateBotPrecheckoutQuery.class);
+        registerClass(TLKeyboardButtonBuy.CLASS_ID, TLKeyboardButtonBuy.class);
+        registerClass(TLLabeledPrice.CLASS_ID, TLLabeledPrice.class);
+        registerClass(TLInvoice.CLASS_ID, TLInvoice.class);
+        registerClass(TLPaymentCharge.CLASS_ID, TLPaymentCharge.class);
+        registerClass(TLPostAddress.CLASS_ID, TLPostAddress.class);
+        registerClass(TLPaymentRequestedInfo.CLASS_ID, TLPaymentRequestedInfo.class);
+        registerClass(TLPaymentSavedCredentialsCard.CLASS_ID, TLPaymentSavedCredentialsCard.class);
+        registerClass(TLWebDocument.CLASS_ID, TLWebDocument.class);
+        registerClass(TLInputWebDocument.CLASS_ID, TLInputWebDocument.class);
+        registerClass(TLInputWebFileLocation.CLASS_ID, TLInputWebFileLocation.class);
+        registerClass(TLWebFile.CLASS_ID, TLWebFile.class);
+        registerClass(TLPaymentsPaymentForm.CLASS_ID, TLPaymentsPaymentForm.class);
+        registerClass(TLPaymentsValidatedRequestedInfo.CLASS_ID, TLPaymentsValidatedRequestedInfo.class);
+        registerClass(TLPaymentsPaymentVerificationNeeded.CLASS_ID, TLPaymentsPaymentVerificationNeeded.class);
+        registerClass(TLPaymentsPaymentResult.CLASS_ID, TLPaymentsPaymentResult.class);
+        registerClass(TLPaymentsSavedInfo.CLASS_ID, TLPaymentsSavedInfo.class);
+        registerClass(TLPaymentsPaymentReceipt.CLASS_ID, TLPaymentsPaymentReceipt.class);
+        registerClass(TLInputPaymentCredentialsSaved.CLASS_ID, TLInputPaymentCredentialsSaved.class);
+        registerClass(TLInputPaymentCredentials.CLASS_ID, TLInputPaymentCredentials.class);
+        registerClass(TLShippingOption.CLASS_ID, TLShippingOption.class);
+        registerClass(TLAccountTmpPassword.CLASS_ID, TLAccountTmpPassword.class);
+        registerClass(TLRequestGetTmpPassword.CLASS_ID, TLRequestGetTmpPassword.class);
+        registerClass(TLRequestMessagesSetBotShippingResults.CLASS_ID, TLRequestMessagesSetBotShippingResults.class);
+        registerClass(TLRequestMessagesSetBotPrecheckoutResults.CLASS_ID, TLRequestMessagesSetBotPrecheckoutResults.class);
+        registerClass(TLRequestUploadGetWebFile.CLASS_ID, TLRequestUploadGetWebFile.class);
+        registerClass(TLRequestPaymentsGetPaymentForm.CLASS_ID, TLRequestPaymentsGetPaymentForm.class);
+        registerClass(TLRequestPaymentsGetPaymentReceipt.CLASS_ID, TLRequestPaymentsGetPaymentReceipt.class);
+        registerClass(TLRequestPaymentsValidateRequestedInfo.CLASS_ID, TLRequestPaymentsValidateRequestedInfo.class);
+        registerClass(TLRequestPaymentsSendPaymentForm.CLASS_ID, TLRequestPaymentsSendPaymentForm.class);
+        registerClass(TLRequestPaymentsGetSavedInfo.CLASS_ID, TLRequestPaymentsGetSavedInfo.class);
+        registerClass(TLRequestPaymentsClearSavedInfo.CLASS_ID, TLRequestPaymentsClearSavedInfo.class);
     }
 }

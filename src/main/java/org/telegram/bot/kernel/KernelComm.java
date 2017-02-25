@@ -32,6 +32,7 @@ import org.telegram.api.message.entity.TLMessageEntityCode;
 import org.telegram.api.message.entity.TLMessageEntityItalic;
 import org.telegram.api.messages.TLAffectedHistory;
 import org.telegram.api.messages.TLAffectedMessages;
+import org.telegram.api.paymentapi.payments.result.TLPaymentsPaymentResult;
 import org.telegram.api.update.TLFakeUpdate;
 import org.telegram.api.updates.TLAbsUpdates;
 import org.telegram.api.updates.TLUpdateShort;
@@ -159,6 +160,8 @@ public class KernelComm implements IKernelComm {
             handleFakeUpdate(((TLAffectedHistory) object).getPts(), ((TLAffectedHistory) object).getPtsCount());
         } else if (object instanceof TLAffectedMessages) {
             handleFakeUpdate(((TLAffectedMessages) object).getPts(), ((TLAffectedMessages) object).getPtsCount());
+        } else if (object instanceof TLPaymentsPaymentResult) {
+            mainHandler.onUpdate(((TLPaymentsPaymentResult) object).getUpdates());
         }
     }
 

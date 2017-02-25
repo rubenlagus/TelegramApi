@@ -10,13 +10,15 @@ import java.io.OutputStream;
 /**
  * @author Ruben Bermudez
  * @version 1.0
+ * @brief Represetation of a button in keyboard
+ * @date 07 of July of 2015
  */
-public class TLKeyboardButtonGame extends TLAbsKeyboardButton {
-    public static final int CLASS_ID = 0x50f41ccf;
+public class TLKeyboardButtonBuy extends TLAbsKeyboardButton {
+    public static final int CLASS_ID = 0xafd93fbb;
 
     private String text;
 
-    public TLKeyboardButtonGame() {
+    public TLKeyboardButtonBuy() {
         super();
     }
 
@@ -42,6 +44,6 @@ public class TLKeyboardButtonGame extends TLAbsKeyboardButton {
 
     @Override
     public String toString() {
-        return "keyboardButtonGame#50f41ccf";
+        return "keyboardButtonBuy#afd93fbb";
     }
 }
