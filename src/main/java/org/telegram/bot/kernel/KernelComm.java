@@ -6,10 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.telegram.api.document.attribute.TLAbsDocumentAttribute;
 import org.telegram.api.document.attribute.TLDocumentAttributeFilename;
 import org.telegram.api.document.attribute.TLDocumentAttributeSticker;
-import org.telegram.api.engine.ApiCallback;
-import org.telegram.api.engine.AppInfo;
-import org.telegram.api.engine.RpcException;
-import org.telegram.api.engine.TelegramApi;
+import org.telegram.api.engine.*;
 import org.telegram.api.engine.TimeoutException;
 import org.telegram.api.engine.file.Downloader;
 import org.telegram.api.engine.file.Uploader;
@@ -49,13 +46,10 @@ import org.telegram.tl.TLVector;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,6 +89,8 @@ public class KernelComm implements IKernelComm {
             sUrandomIn.read(buffer);
             sUrandomIn.close();
             this.random.setSeed(buffer);
+        } catch (FileNotFoundException e) {
+            BotLogger.info(LOGTAG, e);
         } catch (Exception e) {
             BotLogger.error(LOGTAG, e);
         }
