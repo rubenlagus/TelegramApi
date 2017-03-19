@@ -1511,6 +1511,10 @@
           "type":"flags.4?true"
         },
         {
+          "name":"phone_calls_private",
+          "type":"flags.5?true"
+        },
+        {
           "name":"user",
           "type":"User"
         },
@@ -2504,10 +2508,6 @@
         {
           "name":"tcpo_only",
           "type":"flags.2?true"
-        },
-        {
-          "name":"cdn",
-          "type":"flags.3?true"
         },
         {
           "name":"id",
@@ -4949,33 +4949,6 @@
         }
       ],
       "type":"InputUser"
-    },
-    {
-      "id":"-1350696044",
-      "predicate":"help.appChangelogEmpty",
-      "params":[
-
-      ],
-      "type":"help.AppChangelog"
-    },
-    {
-      "id":"705920636",
-      "predicate":"help.appChangelog",
-      "params":[
-        {
-          "name":"message",
-          "type":"string"
-        },
-        {
-          "name":"media",
-          "type":"MessageMedia"
-        },
-        {
-          "name":"entities",
-          "type":"Vector<MessageEntity>"
-        }
-      ],
-      "type":"help.AppChangelog"
     },
     {
       "id":"-1148011883",
@@ -8425,264 +8398,6 @@
       "type":"WebPage"
     },
     {
-      "id":"506920429",
-      "predicate":"inputPhoneCall",
-      "params":[
-        {
-          "name":"id",
-          "type":"long"
-        },
-        {
-          "name":"access_hash",
-          "type":"long"
-        }
-      ],
-      "type":"InputPhoneCall"
-    },
-    {
-      "id":"1399245077",
-      "predicate":"phoneCallEmpty",
-      "params":[
-        {
-          "name":"id",
-          "type":"long"
-        }
-      ],
-      "type":"PhoneCall"
-    },
-    {
-      "id":"462375633",
-      "predicate":"phoneCallWaiting",
-      "params":[
-        {
-          "name":"flags",
-          "type":"#"
-        },
-        {
-          "name":"id",
-          "type":"long"
-        },
-        {
-          "name":"access_hash",
-          "type":"long"
-        },
-        {
-          "name":"date",
-          "type":"int"
-        },
-        {
-          "name":"admin_id",
-          "type":"int"
-        },
-        {
-          "name":"participant_id",
-          "type":"int"
-        },
-        {
-          "name":"protocol",
-          "type":"PhoneCallProtocol"
-        },
-        {
-          "name":"receive_date",
-          "type":"flags.0?int"
-        }
-      ],
-      "type":"PhoneCall"
-    },
-    {
-      "id":"1816431336",
-      "predicate":"phoneCallRequested",
-      "params":[
-        {
-          "name":"id",
-          "type":"long"
-        },
-        {
-          "name":"access_hash",
-          "type":"long"
-        },
-        {
-          "name":"date",
-          "type":"int"
-        },
-        {
-          "name":"admin_id",
-          "type":"int"
-        },
-        {
-          "name":"participant_id",
-          "type":"int"
-        },
-        {
-          "name":"g_a",
-          "type":"bytes"
-        },
-        {
-          "name":"protocol",
-          "type":"PhoneCallProtocol"
-        }
-      ],
-      "type":"PhoneCall"
-    },
-    {
-      "id":"-1660057",
-      "predicate":"phoneCall",
-      "params":[
-        {
-          "name":"id",
-          "type":"long"
-        },
-        {
-          "name":"access_hash",
-          "type":"long"
-        },
-        {
-          "name":"date",
-          "type":"int"
-        },
-        {
-          "name":"admin_id",
-          "type":"int"
-        },
-        {
-          "name":"participant_id",
-          "type":"int"
-        },
-        {
-          "name":"g_a_or_b",
-          "type":"bytes"
-        },
-        {
-          "name":"key_fingerprint",
-          "type":"long"
-        },
-        {
-          "name":"protocol",
-          "type":"PhoneCallProtocol"
-        },
-        {
-          "name":"connection",
-          "type":"PhoneConnection"
-        },
-        {
-          "name":"alternative_connections",
-          "type":"Vector<PhoneConnection>"
-        },
-        {
-          "name":"start_date",
-          "type":"int"
-        }
-      ],
-      "type":"PhoneCall"
-    },
-    {
-      "id":"1355435489",
-      "predicate":"phoneCallDiscarded",
-      "params":[
-        {
-          "name":"flags",
-          "type":"#"
-        },
-        {
-          "name":"need_rating",
-          "type":"flags.2?true"
-        },
-        {
-          "name":"id",
-          "type":"long"
-        },
-        {
-          "name":"reason",
-          "type":"flags.0?PhoneCallDiscardReason"
-        },
-        {
-          "name":"duration",
-          "type":"flags.1?int"
-        }
-      ],
-      "type":"PhoneCall"
-    },
-    {
-      "id":"-1655957568",
-      "predicate":"phoneConnection",
-      "params":[
-        {
-          "name":"id",
-          "type":"long"
-        },
-        {
-          "name":"ip",
-          "type":"string"
-        },
-        {
-          "name":"ipv6",
-          "type":"string"
-        },
-        {
-          "name":"port",
-          "type":"int"
-        },
-        {
-          "name":"peer_tag",
-          "type":"bytes"
-        }
-      ],
-      "type":"PhoneConnection"
-    },
-    {
-      "id":"-1564789301",
-      "predicate":"phoneCallProtocol",
-      "params":[
-        {
-          "name":"flags",
-          "type":"#"
-        },
-        {
-          "name":"udp_p2p",
-          "type":"flags.0?true"
-        },
-        {
-          "name":"udp_reflector",
-          "type":"flags.1?true"
-        },
-        {
-          "name":"min_layer",
-          "type":"int"
-        },
-        {
-          "name":"max_layer",
-          "type":"int"
-        }
-      ],
-      "type":"PhoneCallProtocol"
-    },
-    {
-      "id":"-1425052898",
-      "predicate":"updatePhoneCall",
-      "params":[
-        {
-          "name":"phone_call",
-          "type":"PhoneCall"
-        }
-      ],
-      "type":"Update"
-    },
-    {
-      "id":"-326966976",
-      "predicate":"phone.phoneCall",
-      "params":[
-        {
-          "name":"phone_call",
-          "type":"PhoneCall"
-        },
-        {
-          "name":"users",
-          "type":"Vector<User>"
-        }
-      ],
-      "type":"phone.PhoneCall"
-    },
-    {
       "id":"-88417185",
       "predicate":"inputPrivacyKeyPhoneCall",
       "params":[
@@ -8771,44 +8486,6 @@
         }
       ],
       "type":"Update"
-    },
-    {
-      "id":"-2134272152",
-      "predicate":"inputMessagesFilterPhoneCalls",
-      "params":[
-        {
-          "name":"flags",
-          "type":"#"
-        },
-        {
-          "name":"missed",
-          "type":"flags.0?true"
-        }
-      ],
-      "type":"MessagesFilter"
-    },
-    {
-      "id":"-2132731265",
-      "predicate":"messageActionPhoneCall",
-      "params":[
-        {
-          "name":"flags",
-          "type":"#"
-        },
-        {
-          "name":"call_id",
-          "type":"long"
-        },
-        {
-          "name":"reason",
-          "type":"flags.0?PhoneCallDiscardReason"
-        },
-        {
-          "name":"duration",
-          "type":"flags.1?int"
-        }
-      ],
-      "type":"MessageAction"
     },
     {
       "id":"2104790276",
@@ -9537,45 +9214,339 @@
       "type":"Update"
     },
     {
-      "id":"1405551849",
-      "predicate":"upload.fileCdnRedirect",
+      "id":"-1425052898",
+      "predicate":"updatePhoneCall",
       "params":[
         {
-          "name":"dc_id",
+          "name":"phone_call",
+          "type":"PhoneCall"
+        }
+      ],
+      "type":"Update"
+    },
+    {
+      "id":"506920429",
+      "predicate":"inputPhoneCall",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        }
+      ],
+      "type":"InputPhoneCall"
+    },
+    {
+      "id":"1399245077",
+      "predicate":"phoneCallEmpty",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"462375633",
+      "predicate":"phoneCallWaiting",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        },
+        {
+          "name":"date",
           "type":"int"
         },
         {
-          "name":"encryption_key",
+          "name":"admin_id",
+          "type":"int"
+        },
+        {
+          "name":"participant_id",
+          "type":"int"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        },
+        {
+          "name":"receive_date",
+          "type":"flags.0?int"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"-2089411356",
+      "predicate":"phoneCallRequested",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        },
+        {
+          "name":"date",
+          "type":"int"
+        },
+        {
+          "name":"admin_id",
+          "type":"int"
+        },
+        {
+          "name":"participant_id",
+          "type":"int"
+        },
+        {
+          "name":"g_a_hash",
           "type":"bytes"
         },
         {
-          "name":"file_token",
-          "type":"bytes"
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
         }
       ],
-      "type":"upload.File"
+      "type":"PhoneCall"
     },
     {
-      "id":"-290921362",
-      "predicate":"upload.cdnFileReuploadNeeded",
+      "id":"1828732223",
+      "predicate":"phoneCallAccepted",
       "params":[
         {
-          "name":"request_token",
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        },
+        {
+          "name":"date",
+          "type":"int"
+        },
+        {
+          "name":"admin_id",
+          "type":"int"
+        },
+        {
+          "name":"participant_id",
+          "type":"int"
+        },
+        {
+          "name":"g_b",
           "type":"bytes"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
         }
       ],
-      "type":"upload.CdnFile"
+      "type":"PhoneCall"
     },
     {
-      "id":"-1449145777",
-      "predicate":"upload.cdnFile",
+      "id":"-1660057",
+      "predicate":"phoneCall",
       "params":[
         {
-          "name":"bytes",
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"access_hash",
+          "type":"long"
+        },
+        {
+          "name":"date",
+          "type":"int"
+        },
+        {
+          "name":"admin_id",
+          "type":"int"
+        },
+        {
+          "name":"participant_id",
+          "type":"int"
+        },
+        {
+          "name":"g_a_or_b",
+          "type":"bytes"
+        },
+        {
+          "name":"key_fingerprint",
+          "type":"long"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        },
+        {
+          "name":"connection",
+          "type":"PhoneConnection"
+        },
+        {
+          "name":"alternative_connections",
+          "type":"Vector<PhoneConnection>"
+        },
+        {
+          "name":"start_date",
+          "type":"int"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"1355435489",
+      "predicate":"phoneCallDiscarded",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"need_rating",
+          "type":"flags.2?true"
+        },
+        {
+          "name":"need_debug",
+          "type":"flags.3?true"
+        },
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"reason",
+          "type":"flags.0?PhoneCallDiscardReason"
+        },
+        {
+          "name":"duration",
+          "type":"flags.1?int"
+        }
+      ],
+      "type":"PhoneCall"
+    },
+    {
+      "id":"-1655957568",
+      "predicate":"phoneConnection",
+      "params":[
+        {
+          "name":"id",
+          "type":"long"
+        },
+        {
+          "name":"ip",
+          "type":"string"
+        },
+        {
+          "name":"ipv6",
+          "type":"string"
+        },
+        {
+          "name":"port",
+          "type":"int"
+        },
+        {
+          "name":"peer_tag",
           "type":"bytes"
         }
       ],
-      "type":"upload.CdnFile"
+      "type":"PhoneConnection"
+    },
+    {
+      "id":"-1564789301",
+      "predicate":"phoneCallProtocol",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"udp_p2p",
+          "type":"flags.0?true"
+        },
+        {
+          "name":"udp_reflector",
+          "type":"flags.1?true"
+        },
+        {
+          "name":"min_layer",
+          "type":"int"
+        },
+        {
+          "name":"max_layer",
+          "type":"int"
+        }
+      ],
+      "type":"PhoneCallProtocol"
+    },
+    {
+      "id":"-326966976",
+      "predicate":"phone.phoneCall",
+      "params":[
+        {
+          "name":"phone_call",
+          "type":"PhoneCall"
+        },
+        {
+          "name":"users",
+          "type":"Vector<User>"
+        }
+      ],
+      "type":"phone.PhoneCall"
+    },
+    {
+      "id":"-2134272152",
+      "predicate":"inputMessagesFilterPhoneCalls",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"missed",
+          "type":"flags.0?true"
+        }
+      ],
+      "type":"MessagesFilter"
+    },
+    {
+      "id":"-2132731265",
+      "predicate":"messageActionPhoneCall",
+      "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"call_id",
+          "type":"long"
+        },
+        {
+          "name":"reason",
+          "type":"flags.0?PhoneCallDiscardReason"
+        },
+        {
+          "name":"duration",
+          "type":"flags.1?int"
+        }
+      ],
+      "type":"MessageAction"
     }
   ],
   "methods":[
@@ -11348,12 +11319,15 @@
       "type":"Updates"
     },
     {
-      "id":"-1189013126",
+      "id":"-1877938321",
       "method":"help.getAppChangelog",
       "params":[
-
+        {
+          "name":"prev_app_version",
+          "type":"string"
+        }
       ],
-      "type":"help.AppChangelog"
+      "type":"Updates"
     },
     {
       "id":"-993483427",
@@ -12702,86 +12676,6 @@
       "type":"WebPage"
     },
     {
-      "id":"-1541757468",
-      "method":"phone.requestCall",
-      "params":[
-        {
-          "name":"user_id",
-          "type":"InputUser"
-        },
-        {
-          "name":"random_id",
-          "type":"int"
-        },
-        {
-          "name":"g_a",
-          "type":"bytes"
-        },
-        {
-          "name":"protocol",
-          "type":"PhoneCallProtocol"
-        }
-      ],
-      "type":"phone.PhoneCall"
-    },
-    {
-      "id":"571411232",
-      "method":"phone.acceptCall",
-      "params":[
-        {
-          "name":"peer",
-          "type":"InputPhoneCall"
-        },
-        {
-          "name":"g_b",
-          "type":"bytes"
-        },
-        {
-          "name":"key_fingerprint",
-          "type":"long"
-        },
-        {
-          "name":"protocol",
-          "type":"PhoneCallProtocol"
-        }
-      ],
-      "type":"phone.PhoneCall"
-    },
-    {
-      "id":"2027164582",
-      "method":"phone.discardCall",
-      "params":[
-        {
-          "name":"peer",
-          "type":"InputPhoneCall"
-        },
-        {
-          "name":"duration",
-          "type":"int"
-        },
-        {
-          "name":"reason",
-          "type":"PhoneCallDiscardReason"
-        },
-        {
-          "name":"connection_id",
-          "type":"long"
-        }
-      ],
-      "type":"Updates"
-    },
-    {
-      "id":"399855457",
-      "method":"phone.receivedCall",
-      "params":[
-        {
-          "name":"peer",
-          "type":"InputPhoneCall"
-        }
-      ],
-      "type":"Bool"
-    },
-    {
       "id":"847887978",
       "method":"messages.toggleDialogPin",
       "params":[
@@ -12856,25 +12750,6 @@
         }
       ],
       "type":"Bool"
-    },
-    {
-      "id":"475228724",
-      "method":"phone.setCallRating",
-      "params":[
-        {
-          "name":"peer",
-          "type":"InputPhoneCall"
-        },
-        {
-          "name":"rating",
-          "type":"int"
-        },
-        {
-          "name":"comment",
-          "type":"string"
-        }
-      ],
-      "type":"Updates"
     },
     {
       "id":"619086221",
@@ -13056,42 +12931,145 @@
       "type":"Bool"
     },
     {
-      "id":"536919235",
-      "method":"upload.getCdnFile",
+      "id":"1430593449",
+      "method":"phone.getCallConfig",
       "params":[
-        {
-          "name":"file_token",
-          "type":"bytes"
-        },
-        {
-          "name":"offset",
-          "type":"int"
-        },
-        {
-          "name":"limit",
-          "type":"int"
-        }
+
       ],
-      "type":"upload.CdnFile"
+      "type":"DataJSON"
     },
     {
-      "id":"-1000779235",
-      "method":"upload.reuploadCdnFile",
+      "id":"1536537556",
+      "method":"phone.requestCall",
       "params":[
         {
-          "name":"file_token",
-          "type":"bytes"
+          "name":"user_id",
+          "type":"InputUser"
         },
         {
-          "name":"offset",
+          "name":"random_id",
           "type":"int"
         },
         {
-          "name":"request_token",
+          "name":"g_a_hash",
           "type":"bytes"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
         }
       ],
-      "type":"upload.File"
+      "type":"phone.PhoneCall"
+    },
+    {
+      "id":"1003664544",
+      "method":"phone.acceptCall",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        },
+        {
+          "name":"g_b",
+          "type":"bytes"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        }
+      ],
+      "type":"phone.PhoneCall"
+    },
+    {
+      "id":"788404002",
+      "method":"phone.confirmCall",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        },
+        {
+          "name":"g_a",
+          "type":"bytes"
+        },
+        {
+          "name":"key_fingerprint",
+          "type":"long"
+        },
+        {
+          "name":"protocol",
+          "type":"PhoneCallProtocol"
+        }
+      ],
+      "type":"phone.PhoneCall"
+    },
+    {
+      "id":"399855457",
+      "method":"phone.receivedCall",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        }
+      ],
+      "type":"Bool"
+    },
+    {
+      "id":"2027164582",
+      "method":"phone.discardCall",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        },
+        {
+          "name":"duration",
+          "type":"int"
+        },
+        {
+          "name":"reason",
+          "type":"PhoneCallDiscardReason"
+        },
+        {
+          "name":"connection_id",
+          "type":"long"
+        }
+      ],
+      "type":"Updates"
+    },
+    {
+      "id":"475228724",
+      "method":"phone.setCallRating",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        },
+        {
+          "name":"rating",
+          "type":"int"
+        },
+        {
+          "name":"comment",
+          "type":"string"
+        }
+      ],
+      "type":"Updates"
+    },
+    {
+      "id":"662363518",
+      "method":"phone.saveCallDebug",
+      "params":[
+        {
+          "name":"peer",
+          "type":"InputPhoneCall"
+        },
+        {
+          "name":"debug",
+          "type":"DataJSON"
+        }
+      ],
+      "type":"Bool"
     }
   ]
 }

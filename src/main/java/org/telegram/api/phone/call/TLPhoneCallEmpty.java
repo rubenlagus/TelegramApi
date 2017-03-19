@@ -2,7 +2,6 @@ package org.telegram.api.phone.call;
 
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
-import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +11,7 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPhoneCallEmpty extends TLObject {
+public class TLPhoneCallEmpty extends TLAbsPhoneCall {
     public static final int CLASS_ID = 0x5366c915;
 
     private long id;

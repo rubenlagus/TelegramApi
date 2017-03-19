@@ -101,8 +101,6 @@ import org.telegram.api.game.TLGame;
 import org.telegram.api.geo.point.TLGeoPoint;
 import org.telegram.api.geo.point.TLGeoPointEmpty;
 import org.telegram.api.help.*;
-import org.telegram.api.help.changelog.TLAppChangelog;
-import org.telegram.api.help.changelog.TLAppChangelogEmpty;
 import org.telegram.api.input.TLInputAppEvent;
 import org.telegram.api.input.TLInputPhoneContact;
 import org.telegram.api.input.bot.TLInputBotInlineMessageId;
@@ -262,10 +260,7 @@ import org.telegram.api.updates.difference.TLDifferenceEmpty;
 import org.telegram.api.updates.difference.TLDifferenceSlice;
 import org.telegram.api.updates.difference.TLDifferenceTooLong;
 import org.telegram.api.upload.TLWebFile;
-import org.telegram.api.upload.cdn.TLCdnFile;
-import org.telegram.api.upload.cdn.TLCdnFileReuploadNeeded;
 import org.telegram.api.upload.file.TLFile;
-import org.telegram.api.upload.file.TLFileCdnRedirect;
 import org.telegram.api.user.TLUser;
 import org.telegram.api.user.TLUserEmpty;
 import org.telegram.api.user.TLUserFull;
@@ -754,8 +749,6 @@ public class TLApiContext extends TLContext {
     }
 
     private void addApiLayer38() {
-        registerClass(TLAppChangelog.CLASS_ID, TLAppChangelog.class);
-        registerClass(TLAppChangelogEmpty.CLASS_ID, TLAppChangelogEmpty.class);
         registerClass(TLChannel.CLASS_ID, TLChannel.class);
         registerClass(TLChannelForbidden.CLASS_ID, TLChannelForbidden.class);
         registerClass(TLChannelFull.CLASS_ID, TLChannelFull.class);
@@ -1143,10 +1136,9 @@ public class TLApiContext extends TLContext {
     }
 
     private void addApiLayer65() {
-        registerClass(TLFileCdnRedirect.CLASS_ID, TLFileCdnRedirect.class);
-        registerClass(TLCdnFile.CLASS_ID, TLCdnFile.class);
-        registerClass(TLCdnFileReuploadNeeded.CLASS_ID, TLCdnFileReuploadNeeded.class);
-        registerClass(TLRequestUploadGetCdnFile.CLASS_ID, TLRequestUploadGetCdnFile.class);
-        registerClass(TLRequestReuploadCdnFile.CLASS_ID, TLRequestReuploadCdnFile.class);
+        registerClass(TLPhoneCallAccepted.CLASS_ID, TLPhoneCallAccepted.class);
+        registerClass(TLRequestPhoneConfirmCall.CLASS_ID, TLRequestPhoneConfirmCall.class);
+        registerClass(TLRequestPhoneSaveCallDebug.CLASS_ID, TLRequestPhoneSaveCallDebug.class);
+        registerClass(TLRequestPhoneGetCallConfig.CLASS_ID, TLRequestPhoneGetCallConfig.class);
     }
 }

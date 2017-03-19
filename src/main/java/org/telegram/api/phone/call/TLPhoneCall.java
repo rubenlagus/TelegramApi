@@ -12,7 +12,7 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPhoneCall extends TLObject {
+public class TLPhoneCall extends TLAbsPhoneCall {
     public static final int CLASS_ID = 0xffe6ab67;
 
     private long id;

@@ -21,11 +21,12 @@ public class TLUserFull extends TLObject {
      */
     public static final int CLASS_ID = 0xf220f3f;
 
-    private static final int FLAG_BLOCKED         = 0x00000001; // 0
-    private static final int FLAG_ABOUT           = 0x00000002; // 1
-    private static final int FLAG_PROFILE_PHOTO   = 0x00000004; // 2
-    private static final int FLAG_BOT_INFO        = 0x00000008; // 3
-    private static final int FLAG_CALLS_AVAILABLE = 0x00000010; // 4
+    private static final int FLAG_BLOCKED             = 0x00000001; // 0
+    private static final int FLAG_ABOUT               = 0x00000002; // 1
+    private static final int FLAG_PROFILE_PHOTO       = 0x00000004; // 2
+    private static final int FLAG_BOT_INFO            = 0x00000008; // 3
+    private static final int FLAG_CALLS_AVAILABLE     = 0x00000010; // 4
+    private static final int FLAG_PHONE_CALLS_PRIVATE = 0x00000020; // 5
 
     private int flags;
     private TLAbsUser user;
@@ -85,6 +86,10 @@ public class TLUserFull extends TLObject {
 
     public boolean hasPhoneCallsAvailable() {
         return (flags & FLAG_CALLS_AVAILABLE) != 0;
+    }
+
+    public boolean hasPhoneCallsPrivate() {
+        return (flags & FLAG_PHONE_CALLS_PRIVATE) != 0;
     }
 
     public void serializeBody(OutputStream stream)

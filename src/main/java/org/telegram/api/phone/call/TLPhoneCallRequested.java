@@ -4,7 +4,6 @@ import org.telegram.api.phone.TLPhoneCallProtocol;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLBytes;
 import org.telegram.tl.TLContext;
-import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,15 +13,15 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPhoneCallRequested extends TLObject {
-    public static final int CLASS_ID = 0x6c448ae8;
+public class TLPhoneCallRequested extends TLAbsPhoneCall {
+    public static final int CLASS_ID = 0x83761ce4;
 
     private long id;
     private long accessHash;
     private int date;
     private int adminId;
     private int participantId;
-    private TLBytes gA;
+    private TLBytes gAHash;
     private TLPhoneCallProtocol protocol;
 
     public TLPhoneCallRequested() {
@@ -54,8 +53,8 @@ public class TLPhoneCallRequested extends TLObject {
         return participantId;
     }
 
-    public TLBytes getgA() {
-        return gA;
+    public TLBytes getgAHash() {
+        return gAHash;
     }
 
     public TLPhoneCallProtocol getProtocol() {
@@ -69,7 +68,7 @@ public class TLPhoneCallRequested extends TLObject {
         StreamingUtils.writeInt(date, stream);
         StreamingUtils.writeInt(adminId, stream);
         StreamingUtils.writeInt(participantId, stream);
-        StreamingUtils.writeTLBytes(gA, stream);
+        StreamingUtils.writeTLBytes(gAHash, stream);
         StreamingUtils.writeTLObject(protocol, stream);
     }
 
@@ -80,12 +79,12 @@ public class TLPhoneCallRequested extends TLObject {
         date = StreamingUtils.readInt(stream);
         adminId = StreamingUtils.readInt(stream);
         participantId = StreamingUtils.readInt(stream);
-        gA = StreamingUtils.readTLBytes(stream, context);
+        gAHash = StreamingUtils.readTLBytes(stream, context);
         protocol = StreamingUtils.readTLObject(stream, context, TLPhoneCallProtocol.class);
     }
 
     @Override
     public String toString() {
-        return "phoneCallRequested#6c448ae8";
+        return "phoneCallRequested#83761ce4";
     }
 }

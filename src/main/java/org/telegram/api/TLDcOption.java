@@ -14,7 +14,6 @@ public class TLDcOption extends TLObject {
     private static final int FLAG_IPV6         = 0x00000001; // 0
     private static final int FLAG_MEDIA_ONLY   = 0x00000002; // 1
     private static final int FLAG_TCP_ONLY     = 0x00000004; // 2
-    private static final int FLAG_CDN          = 0x00000008; // 3
 
     private int flags;
     private int id;
@@ -55,10 +54,6 @@ public class TLDcOption extends TLObject {
 
     private boolean isTcpOnly() {
         return (this.flags & FLAG_TCP_ONLY) != 0;
-    }
-
-    private boolean isCdn() {
-        return (this.flags & FLAG_CDN) != 0;
     }
 
     public void serializeBody(OutputStream stream)

@@ -13,14 +13,15 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLRequestPhoneAcceptCall extends TLMethod<TLPhonePhoneCall> {
-    public static final int CLASS_ID = 0x3bd2b4a0;
+public class TLRequestPhoneConfirmCall extends TLMethod<TLPhonePhoneCall> {
+    public static final int CLASS_ID = 0x2efe1722;
 
     private TLInputPhoneCall peer;
-    private TLBytes gB;
+    private TLBytes gA;
+    private long keyFingerprint;
     private TLPhoneCallProtocol protocol;
 
-    public TLRequestPhoneAcceptCall() {
+    public TLRequestPhoneConfirmCall() {
         super();
     }
 
@@ -32,12 +33,20 @@ public class TLRequestPhoneAcceptCall extends TLMethod<TLPhonePhoneCall> {
         this.peer = peer;
     }
 
-    public TLBytes getgB() {
-        return gB;
+    public TLBytes getgA() {
+        return gA;
     }
 
-    public void setgB(TLBytes gB) {
-        this.gB = gB;
+    public void setgA(TLBytes gA) {
+        this.gA = gA;
+    }
+
+    public long getKeyFingerprint() {
+        return keyFingerprint;
+    }
+
+    public void setKeyFingerprint(long keyFingerprint) {
+        this.keyFingerprint = keyFingerprint;
     }
 
     public TLPhoneCallProtocol getProtocol() {
@@ -69,19 +78,21 @@ public class TLRequestPhoneAcceptCall extends TLMethod<TLPhonePhoneCall> {
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
         StreamingUtils.writeTLObject(peer, stream);
-        StreamingUtils.writeTLBytes(gB, stream);
+        StreamingUtils.writeTLBytes(gA, stream);
+        StreamingUtils.writeLong(keyFingerprint, stream);
         StreamingUtils.writeTLObject(protocol, stream);
     }
 
     @Override
     public void deserializeBody(InputStream stream, TLContext context) throws IOException {
         peer = StreamingUtils.readTLObject(stream, context, TLInputPhoneCall.class);
-        gB = StreamingUtils.readTLBytes(stream, context);
+        gA = StreamingUtils.readTLBytes(stream, context);
+        keyFingerprint = StreamingUtils.readLong(stream);
         protocol = StreamingUtils.readTLObject(stream, context, TLPhoneCallProtocol.class);
     }
 
     @Override
     public String toString() {
-        return "phone.acceptCall#3bd2b4a0";
+        return "phone.confirmCall#2efe1722";
     }
 }
