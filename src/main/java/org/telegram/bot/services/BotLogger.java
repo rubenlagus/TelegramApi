@@ -52,6 +52,10 @@ public class BotLogger {
         }
     }
 
+    public static void setLevel(Level level) {
+        logger.setLevel(level);
+    }
+
     public static void log(@NotNull Level level, String tag, String msg) {
         logger.log(level, String.format("[%s] %s", tag, msg));
         logToFile(level, tag, msg);
