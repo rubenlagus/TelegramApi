@@ -1,5 +1,6 @@
 package org.telegram.mtproto;
 
+import org.telegram.mtproto.backoff.ApiErrorExponentialBackoff;
 import org.telegram.mtproto.backoff.ExponentalBackoff;
 import org.telegram.mtproto.log.Logger;
 import org.telegram.mtproto.schedule.PrepareSchedule;
@@ -106,12 +107,14 @@ public class MTProto {
     private long lastPingTime = (System.nanoTime() / 1000000L) - (PING_INTERVAL_REQUEST * 10);
 
     private ExponentalBackoff exponentalBackoff;
+    private ApiErrorExponentialBackoff apiErrorExponentialBackoff;
     private ConcurrentLinkedQueue<Long> newSessionsIds = new ConcurrentLinkedQueue<>();
 
     public MTProto(AbsMTProtoState state, MTProtoCallback callback, CallWrapper callWrapper, int connectionsCount) {
         this.INSTANCE_INDEX = instanceIndex.incrementAndGet();
         this.TAG = "MTProto#" + this.INSTANCE_INDEX;
         this.exponentalBackoff = new ExponentalBackoff(this.TAG + "#BackOff");
+        this.apiErrorExponentialBackoff = new ApiErrorExponentialBackoff();
         this.state = state;
         this.connectionRate = new TransportRate(state.getAvailableConnections());
         this.callback = callback;
@@ -372,6 +375,14 @@ public class MTProto {
                             }
                         }
 
+                        if (error.getErrorCode() == 500) {
+                            Logger.w(this.TAG, error.getErrorTag());
+                            long delay = this.apiErrorExponentialBackoff.nextBackOffMillis();
+                            this.scheduller.resendAsNewMessageDelayed(result.getMessageId(), delay);
+                            requestSchedule();
+                            return;
+                        }
+
                         this.callback.onRpcError(id, error.getErrorCode(), error.getMessage(), this);
                         this.scheduller.forgetMessage(id);
                     } catch (IOException e) {
@@ -380,6 +391,7 @@ public class MTProto {
                     }
                 } else {
                     Logger.d(this.TAG, "rpc_result: " + result.getMessageId() + " #" + Integer.toHexString(responseConstructor));
+                    this.apiErrorExponentialBackoff.reset();
                     this.callback.onRpcResult(id, result.getContent(), this);
                     BytesCache.getInstance().put(result.getContent());
                     this.scheduller.forgetMessage(id);
