@@ -264,7 +264,7 @@ public class Scheduller {
         resendAsNewMessageDelayed(msgId, 0);
     }
 
-    public void resendAsNewMessageDelayed(long msgId, int delay) {
+    public void resendAsNewMessageDelayed(long msgId, long delay) {
         for (SchedullerPackage schedullerPackage : this.messages.values().toArray(new SchedullerPackage[0])) {
             if (schedullerPackage.relatedMessageIds.contains(msgId)) {
                 schedullerPackage.idGenerationTime = 0;
