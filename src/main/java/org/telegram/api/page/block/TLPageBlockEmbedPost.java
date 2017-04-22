@@ -3,7 +3,6 @@ package org.telegram.api.page.block;
 import org.telegram.api.richtext.TLAbsRichText;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
-import org.telegram.tl.TLObject;
 import org.telegram.tl.TLVector;
 
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPageBlockEmbedPost extends TLObject {
+public class TLPageBlockEmbedPost extends TLAbsPageBlock {
     public static final int CLASS_ID = 0x292c7be9;
 
     private String url;

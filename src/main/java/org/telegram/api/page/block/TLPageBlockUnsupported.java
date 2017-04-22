@@ -1,12 +1,10 @@
 package org.telegram.api.page.block;
 
-import org.telegram.tl.TLObject;
-
 /**
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPageBlockUnsupported extends TLObject {
+public class TLPageBlockUnsupported extends TLAbsPageBlock {
     public static final int CLASS_ID = 0x13567e8a;
 
     public TLPageBlockUnsupported() {

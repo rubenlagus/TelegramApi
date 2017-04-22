@@ -13,7 +13,7 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPageBlockPhoto extends TLObject {
+public class TLPageBlockPhoto extends TLAbsPageBlock {
     public static final int CLASS_ID = 0xe9c69982;
 
     private long photoId;

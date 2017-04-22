@@ -1,12 +1,10 @@
 package org.telegram.api.page.block;
 
-import org.telegram.tl.TLObject;
-
 /**
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPageBlockDivider extends TLObject {
+public class TLPageBlockDivider extends TLAbsPageBlock {
     public static final int CLASS_ID = 0xdb20b188;
 
     public TLPageBlockDivider() {
