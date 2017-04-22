@@ -13,7 +13,7 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLTextConcat extends TLObject {
+public class TLTextConcat extends TLAbsRichText {
     public static final int CLASS_ID = 0x7e6260d7;
 
     private TLVector<TLAbsRichText> texts;

@@ -12,7 +12,7 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLTextBold extends TLObject {
+public class TLTextBold extends TLAbsRichText {
     public static final int CLASS_ID = 0x6724abc4;
 
     private TLAbsRichText text;

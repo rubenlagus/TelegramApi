@@ -12,7 +12,7 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLTextUnderline extends TLObject {
+public class TLTextUnderline extends TLAbsRichText {
     public static final int CLASS_ID = 0xc12622c4;
 
     private TLAbsRichText text;

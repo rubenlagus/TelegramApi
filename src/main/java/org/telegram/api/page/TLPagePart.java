@@ -16,7 +16,7 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPagePart extends TLObject {
+public class TLPagePart extends TLAbsPage {
     public static final int CLASS_ID = 0x8dee6c44;
 
     private TLVector<TLAbsPageBlock> blocks;
