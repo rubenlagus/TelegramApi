@@ -62,6 +62,7 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
 
         if (canHandle) {
             final TLObject update = updateWrapper.getUpdate();
+            BotLogger.debug(LOGTAG, "Recived update: " + update.toString());
             if (update instanceof TLUpdateShortMessage) {
                 onTLUpdateShortMessage((TLUpdateShortMessage) update, updateWrapper.isGettingDifferences());
             } else if (update instanceof TLUpdateShortChatMessage) {
