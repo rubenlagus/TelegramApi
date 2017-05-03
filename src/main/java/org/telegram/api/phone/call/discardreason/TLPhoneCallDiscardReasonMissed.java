@@ -6,7 +6,7 @@ import org.telegram.tl.TLObject;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPhoneCallDiscardReasonMissed extends TLObject {
+public class TLPhoneCallDiscardReasonMissed extends TLAbsPhoneCallDiscardReason {
     public static final int CLASS_ID = 0x85e42301;
 
     public TLPhoneCallDiscardReasonMissed() {

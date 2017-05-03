@@ -6,7 +6,7 @@ import org.telegram.tl.TLObject;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLPhoneCallDiscardReasonHangup extends TLObject {
+public class TLPhoneCallDiscardReasonHangup extends TLAbsPhoneCallDiscardReason {
     public static final int CLASS_ID = 0x57adc690;
 
     public TLPhoneCallDiscardReasonHangup() {
