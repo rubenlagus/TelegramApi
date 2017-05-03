@@ -1055,7 +1055,7 @@ public class TLApiContext extends TLContext {
         registerClass(TLInputPhoneCall.CLASS_ID, TLInputPhoneCall.class);
         registerClass(TLPhoneCallEmpty.CLASS_ID, TLPhoneCallEmpty.class);
         registerClass(TLPhoneCallWaiting.CLASS_ID, TLPhoneCallWaiting.class);
-        registerClass(TLPhoneCallRequested.CLASS_ID, TLPhoneCallWaiting.class);
+        registerClass(TLPhoneCallRequested.CLASS_ID, TLPhoneCallRequested.class);
         registerClass(TLPhoneCall.CLASS_ID, TLPhoneCall.class);
         registerClass(TLPhoneCallDiscarded.CLASS_ID, TLPhoneCallDiscarded.class);
         registerClass(TLPhoneConnection.CLASS_ID, TLPhoneConnection.class);
