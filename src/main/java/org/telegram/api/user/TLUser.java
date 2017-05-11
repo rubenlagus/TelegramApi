@@ -12,11 +12,10 @@ import java.io.OutputStream;
 /**
  * @author Ruben Bermudez
  * @version 1.0
- * @brief User information
- * @date 07 of July of 2015
+ * User information
  */
 public class TLUser extends TLAbsUser {
-    public static final int CLASS_ID = 0xd10d979a;
+    public static final int CLASS_ID = 0x2e13f4c3;
 
     private static final int FLAG_ACCESS_HASH           = 0x00000001; // 0
     private static final int FLAG_FIRST_NAME            = 0x00000002; // 1
@@ -40,6 +39,7 @@ public class TLUser extends TLAbsUser {
     private static final int FLAG_INLINE_PLACEHOLDER    = 0x00080000; // 19
     private static final int FLAG_MIN                   = 0x00100000; // 20
     private static final int FLAG_BOT_INLINE_GEO        = 0x00200000; // 21
+    private static final int FLAG_LANG_CODE             = 0x00200000; // 22
 
     private int flags;
     private long accessHash;
@@ -52,6 +52,7 @@ public class TLUser extends TLAbsUser {
     private int botInfoVersion;
     private String restrictionReason;
     private String botInlinePlaceholder;
+    private String langCode;
 
     public TLUser() {
         super();
@@ -67,88 +68,48 @@ public class TLUser extends TLAbsUser {
         return this.flags;
     }
 
-    public void setFlags(int flags) {
-        this.flags = flags;
-    }
-
     public long getAccessHash() {
         return this.accessHash;
-    }
-
-    public void setAccessHash(long accessHash) {
-        this.accessHash = accessHash;
     }
 
     public String getFirstName() {
         return this.firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getUserName() {
         return this.userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getPhone() {
         return this.phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public TLAbsUserProfilePhoto getPhoto() {
         return this.photo;
     }
 
-    public void setPhoto(TLAbsUserProfilePhoto photo) {
-        this.photo = photo;
-    }
-
     public TLAbsUserStatus getStatus() {
         return this.status;
-    }
-
-    public void setStatus(TLAbsUserStatus status) {
-        this.status = status;
     }
 
     public int getBotInfoVersion() {
         return this.botInfoVersion;
     }
 
-    public void setBotInfoVersion(int botInfoVersion) {
-        this.botInfoVersion = botInfoVersion;
-    }
-
     public String getRestrictionReason() {
         return restrictionReason;
-    }
-
-    public void setRestrictionReason(String restrictionReason) {
-        this.restrictionReason = restrictionReason;
     }
 
     public String getBotInlinePlaceholder() {
         return botInlinePlaceholder;
     }
 
-    public void setBotInlinePlaceholder(String botInlinePlaceholder) {
-        this.botInlinePlaceholder = botInlinePlaceholder;
+    public String getLangCode() {
+        return langCode;
     }
 
     public boolean hasAccessHash() {
@@ -211,6 +172,10 @@ public class TLUser extends TLAbsUser {
         return (this.flags & FLAG_INLINE_PLACEHOLDER) != 0;
     }
 
+    public boolean hasLangCode() {
+        return (this.flags & FLAG_LANG_CODE) != 0;
+    }
+
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
         StreamingUtils.writeInt(this.flags, stream);
@@ -245,6 +210,9 @@ public class TLUser extends TLAbsUser {
         }
         if ((this.flags & FLAG_INLINE_PLACEHOLDER) != 0) {
             StreamingUtils.writeTLString(this.botInlinePlaceholder, stream);
+        }
+        if ((this.flags & FLAG_LANG_CODE) != 0) {
+            StreamingUtils.writeTLString(this.langCode, stream);
         }
     }
 
@@ -282,10 +250,13 @@ public class TLUser extends TLAbsUser {
         if ((this.flags & FLAG_INLINE_PLACEHOLDER) != 0) {
             this.botInlinePlaceholder = StreamingUtils.readTLString(stream);
         }
+        if ((this.flags & FLAG_LANG_CODE) != 0) {
+            this.langCode = StreamingUtils.readTLString(stream);
+        }
     }
 
     @Override
     public String toString() {
-        return "user.TLUser#d10d979a";
+        return "user.TLUser#2e13f4c3";
     }
 }

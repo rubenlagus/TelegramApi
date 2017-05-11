@@ -2510,6 +2510,10 @@
           "type":"flags.2?true"
         },
         {
+          "name":"cdn",
+          "type":"flags.3?true"
+        },
+        {
           "name":"id",
           "type":"int"
         },
@@ -3903,9 +3907,17 @@
       "type":"DocumentAttribute"
     },
     {
-      "id":"1494273227",
+      "id":"250621158",
       "predicate":"documentAttributeVideo",
       "params":[
+        {
+          "name":"flags",
+          "type":"#"
+        },
+        {
+          "name":"round_message",
+          "type":"flags.0?true"
+        },
         {
           "name":"duration",
           "type":"int"
@@ -4705,7 +4717,7 @@
       "type":"messages.StickerSet"
     },
     {
-      "id":"-787638374",
+      "id":"773059779",
       "predicate":"user",
       "params":[
         {
@@ -4799,6 +4811,10 @@
         {
           "name":"bot_inline_placeholder",
           "type":"flags.19?string"
+        },
+        {
+          "name":"lang_code",
+          "type":"flags.22?string"
         }
       ],
       "type":"User"
@@ -9547,6 +9563,123 @@
         }
       ],
       "type":"MessageAction"
+    },
+    {
+      "id":"2054952868",
+      "predicate":"inputMessagesFilterRoundVoice",
+      "params":[
+
+      ],
+      "type":"MessagesFilter"
+    },
+    {
+      "id":"-1253451181",
+      "predicate":"inputMessagesFilterRoundVideo",
+      "params":[
+
+      ],
+      "type":"MessagesFilter"
+    },
+    {
+      "id":"-1997373508",
+      "predicate":"sendMessageRecordRoundAction",
+      "params":[
+
+      ],
+      "type":"SendMessageAction"
+    },
+    {
+      "id":"608050278",
+      "predicate":"sendMessageUploadRoundAction",
+      "params":[
+        {
+          "name":"progress",
+          "type":"int"
+        }
+      ],
+      "type":"SendMessageAction"
+    },
+    {
+      "id":"352864346",
+      "predicate":"upload.fileCdnRedirect",
+      "params":[
+        {
+          "name":"dc_id",
+          "type":"int"
+        },
+        {
+          "name":"file_token",
+          "type":"bytes"
+        },
+        {
+          "name":"encryption_key",
+          "type":"bytes"
+        },
+        {
+          "name":"encryption_iv",
+          "type":"bytes"
+        }
+      ],
+      "type":"upload.File"
+    },
+    {
+      "id":"-290921362",
+      "predicate":"upload.cdnFileReuploadNeeded",
+      "params":[
+        {
+          "name":"request_token",
+          "type":"bytes"
+        }
+      ],
+      "type":"upload.CdnFile"
+    },
+    {
+      "id":"-1449145777",
+      "predicate":"upload.cdnFile",
+      "params":[
+        {
+          "name":"bytes",
+          "type":"bytes"
+        }
+      ],
+      "type":"upload.CdnFile"
+    },
+    {
+      "id":"-914167110",
+      "predicate":"cdnPublicKey",
+      "params":[
+        {
+          "name":"dc_id",
+          "type":"int"
+        },
+        {
+          "name":"public_key",
+          "type":"string"
+        }
+      ],
+      "type":"CdnPublicKey"
+    },
+    {
+      "id":"1462101002",
+      "predicate":"cdnConfig",
+      "params":[
+        {
+          "name":"public_keys",
+          "type":"Vector<CdnPublicKey>"
+        }
+      ],
+      "type":"CdnConfig"
+    },
+    {
+      "id":"-283684427",
+      "predicate":"pageBlockChannel",
+      "params":[
+        {
+          "name":"channel",
+          "type":"Chat"
+        }
+      ],
+      "type":"PageBlock"
     }
   ],
   "methods":[
@@ -13070,6 +13203,48 @@
         }
       ],
       "type":"Bool"
+    },
+    {
+      "id":"536919235",
+      "method":"upload.getCdnFile",
+      "params":[
+        {
+          "name":"file_token",
+          "type":"bytes"
+        },
+        {
+          "name":"offset",
+          "type":"int"
+        },
+        {
+          "name":"limit",
+          "type":"int"
+        }
+      ],
+      "type":"upload.CdnFile"
+    },
+    {
+      "id":"779755552",
+      "method":"upload.reuploadCdnFile",
+      "params":[
+        {
+          "name":"file_token",
+          "type":"bytes"
+        },
+        {
+          "name":"request_token",
+          "type":"bytes"
+        }
+      ],
+      "type":"Bool"
+    },
+    {
+      "id":"1375900482",
+      "method":"help.getCdnConfig",
+      "params":[
+
+      ],
+      "type":"CdnConfig"
     }
   ]
 }

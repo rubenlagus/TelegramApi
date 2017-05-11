@@ -18,6 +18,8 @@ import org.telegram.api.bot.TLInlineBotSwitchPm;
 import org.telegram.api.bot.inlinemessage.*;
 import org.telegram.api.bot.inlineresult.TLBotInlineMediaResult;
 import org.telegram.api.bot.inlineresult.TLBotInlineResult;
+import org.telegram.api.cdn.TLCdnConfig;
+import org.telegram.api.cdn.TLCdnPublicKey;
 import org.telegram.api.channel.TLChannelParticipants;
 import org.telegram.api.channel.filters.TLChannelMessagesFilter;
 import org.telegram.api.channel.filters.TLChannelMessagesFilterEmpty;
@@ -260,7 +262,10 @@ import org.telegram.api.updates.difference.TLDifferenceEmpty;
 import org.telegram.api.updates.difference.TLDifferenceSlice;
 import org.telegram.api.updates.difference.TLDifferenceTooLong;
 import org.telegram.api.upload.TLWebFile;
+import org.telegram.api.upload.cdn.TLCdnFile;
+import org.telegram.api.upload.cdn.TLCdnFileReuploadNeeded;
 import org.telegram.api.upload.file.TLFile;
+import org.telegram.api.upload.file.TLFileCdnRedirect;
 import org.telegram.api.user.TLUser;
 import org.telegram.api.user.TLUserEmpty;
 import org.telegram.api.user.TLUserFull;
@@ -615,6 +620,8 @@ public class TLApiContext extends TLContext {
         addApiLayer64();
         // api layer 65
         addApiLayer65();
+        // api layer 66
+        addApiLayer66();
     }
 
     private void addApiLayer19() {
@@ -1140,5 +1147,21 @@ public class TLApiContext extends TLContext {
         registerClass(TLRequestPhoneConfirmCall.CLASS_ID, TLRequestPhoneConfirmCall.class);
         registerClass(TLRequestPhoneSaveCallDebug.CLASS_ID, TLRequestPhoneSaveCallDebug.class);
         registerClass(TLRequestPhoneGetCallConfig.CLASS_ID, TLRequestPhoneGetCallConfig.class);
+    }
+
+    private void addApiLayer66() {
+        registerClass(TLMessagesFilterRoundVoice.CLASS_ID, TLMessagesFilterRoundVoice.class);
+        registerClass(TLMessagesFilterRoundVideo.CLASS_ID, TLMessagesFilterRoundVideo.class);
+        registerClass(TLFileCdnRedirect.CLASS_ID, TLFileCdnRedirect.class);
+        registerClass(TLSendMessageRecordRoundAction.CLASS_ID, TLSendMessageRecordRoundAction.class);
+        registerClass(TLSendMessageUploadRoundAction.CLASS_ID, TLSendMessageUploadRoundAction.class);
+        registerClass(TLPageBlockChannel.CLASS_ID, TLPageBlockChannel.class);
+        registerClass(TLCdnFile.CLASS_ID, TLCdnFile.class);
+        registerClass(TLCdnFileReuploadNeeded.CLASS_ID, TLCdnFileReuploadNeeded.class);
+        registerClass(TLCdnPublicKey.CLASS_ID, TLCdnPublicKey.class);
+        registerClass(TLCdnConfig.CLASS_ID, TLCdnConfig.class);
+        registerClass(TLRequestUploadGetCdnFile.CLASS_ID, TLRequestUploadGetCdnFile.class);
+        registerClass(TLRequestReuploadCdnFile.CLASS_ID, TLRequestReuploadCdnFile.class);
+        registerClass(TLRequestHelpGetCdnConfig.CLASS_ID, TLRequestHelpGetCdnConfig.class);
     }
 }

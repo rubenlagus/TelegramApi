@@ -18,15 +18,13 @@ import java.io.OutputStream;
  * Indicate the duration and size of a video
  * @author Ruben Bermudez
  * @version 2.0
- * @brief TLDocumentAttributeVideo
- * @date 9 /01/15
  */
 public class TLDocumentAttributeVideo extends TLAbsDocumentAttribute {
-    /**
-     * The constant CLASS_ID.
-     */
-    public static final int CLASS_ID = 0x5910cccb;
+    public static final int CLASS_ID = 0xef02ce6;
 
+    private static final int FLAG_ROUND_MESSAGE   = 0x00000001; // 0
+
+    private int flags;
     private int duration; ///< Duration of the videw in seconds
     private int w; ///< Width in pixels
     private int h; ///< Height in pixels
@@ -43,63 +41,46 @@ public class TLDocumentAttributeVideo extends TLAbsDocumentAttribute {
         return CLASS_ID;
     }
 
-    /**
-     * Gets duration.
-     *
-     * @return the duration
-     */
     public int getDuration() {
         return this.duration;
     }
 
-    /**
-     * Sets duration.
-     *
-     * @param duration the duration
-     */
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    /**
-     * Gets w.
-     *
-     * @return the w
-     */
     public int getW() {
         return this.w;
     }
 
-    /**
-     * Sets w.
-     *
-     * @param w the w
-     */
     public void setW(int w) {
         this.w = w;
     }
 
-    /**
-     * Gets h.
-     *
-     * @return the h
-     */
     public int getH() {
         return this.h;
     }
 
-    /**
-     * Sets h.
-     *
-     * @param h the h
-     */
     public void setH(int h) {
         this.h = h;
+    }
+
+    public boolean isRoundMessage() {
+        return (flags & FLAG_ROUND_MESSAGE) != 0;
+    }
+
+    public void setRoundMessage(boolean enabled) {
+        if (enabled) {
+            this.flags |= FLAG_ROUND_MESSAGE;
+        } else {
+            this.flags &= ~FLAG_ROUND_MESSAGE;
+        }
     }
 
     @Override
     public void serializeBody(OutputStream stream)
             throws IOException {
+        StreamingUtils.writeInt(this.flags, stream);
         StreamingUtils.writeInt(this.duration, stream);
         StreamingUtils.writeInt(this.w, stream);
         StreamingUtils.writeInt(this.h, stream);
@@ -108,6 +89,7 @@ public class TLDocumentAttributeVideo extends TLAbsDocumentAttribute {
     @Override
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
+        this.flags = StreamingUtils.readInt(stream);
         this.duration = StreamingUtils.readInt(stream);
         this.w = StreamingUtils.readInt(stream);
         this.h = StreamingUtils.readInt(stream);
@@ -115,6 +97,6 @@ public class TLDocumentAttributeVideo extends TLAbsDocumentAttribute {
 
     @Override
     public String toString() {
-        return "documentAttributeVideo#5910cccb";
+        return "documentAttributeVideo#ef02ce6";
     }
 }

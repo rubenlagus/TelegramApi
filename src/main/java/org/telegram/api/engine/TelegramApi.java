@@ -11,11 +11,13 @@ import org.telegram.api.functions.TLRequestInvokeWithLayer;
 import org.telegram.api.functions.auth.TLRequestAuthExportAuthorization;
 import org.telegram.api.functions.auth.TLRequestAuthImportAuthorization;
 import org.telegram.api.functions.help.TLRequestHelpGetConfig;
+import org.telegram.api.functions.upload.TLRequestUploadGetCdnFile;
 import org.telegram.api.functions.upload.TLRequestUploadGetFile;
 import org.telegram.api.functions.upload.TLRequestUploadSaveBigFilePart;
 import org.telegram.api.functions.upload.TLRequestUploadSaveFilePart;
 import org.telegram.api.input.filelocation.TLAbsInputFileLocation;
 import org.telegram.api.updates.TLAbsUpdates;
+import org.telegram.api.upload.cdn.TLAbsCdnFile;
 import org.telegram.api.upload.file.TLAbsFile;
 import org.telegram.mtproto.CallWrapper;
 import org.telegram.mtproto.MTProto;
@@ -591,6 +593,14 @@ public class TelegramApi {
         tlRequestUploadGetFile.setOffset(_offset);
         tlRequestUploadGetFile.setLimit(_limit);
         return doRpcCall(tlRequestUploadGetFile, FILE_TIMEOUT, dcId);
+    }
+
+    public TLAbsCdnFile doGetCdnFile(int dcId, TLBytes fileToken, int offset, int limit) throws IOException, java.util.concurrent.TimeoutException {
+        final TLRequestUploadGetCdnFile tlRequestUploadGetCdnFile = new TLRequestUploadGetCdnFile();
+        tlRequestUploadGetCdnFile.setFileToken(fileToken);
+        tlRequestUploadGetCdnFile.setOffset(offset);
+        tlRequestUploadGetCdnFile.setLimit(limit);
+        return doRpcCall(tlRequestUploadGetCdnFile, FILE_TIMEOUT, dcId);
     }
 
     private void checkDcAuth(int dcId) {

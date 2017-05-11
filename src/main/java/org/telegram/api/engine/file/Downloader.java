@@ -4,8 +4,11 @@ import org.telegram.api.engine.Logger;
 import org.telegram.api.engine.TelegramApi;
 import org.telegram.api.input.filelocation.TLAbsInputFileLocation;
 import org.telegram.api.storage.file.TLAbsFileType;
+import org.telegram.api.upload.cdn.TLAbsCdnFile;
+import org.telegram.api.upload.cdn.TLCdnFile;
 import org.telegram.api.upload.file.TLAbsFile;
 import org.telegram.api.upload.file.TLFile;
+import org.telegram.api.upload.file.TLFileCdnRedirect;
 import org.telegram.tl.TLBytes;
 
 import java.io.FileNotFoundException;
@@ -469,6 +472,16 @@ public class Downloader {
                         if (block.task.type == null) {
                             block.task.type = ((TLFile) file).getType();
                         }
+                    } else if (file instanceof TLFileCdnRedirect) {
+                        TLAbsCdnFile cdnFile = Downloader.this.api.doGetCdnFile(((TLFileCdnRedirect) file).getDcId(),
+                                ((TLFileCdnRedirect) file).getFileToken(),block.index * block.task.blockSize, block.task.blockSize);
+
+                        if (cdnFile instanceof TLCdnFile) {
+                            data = ((TLCdnFile) cdnFile).getBytes();
+                        } else {
+                            Logger.d(Downloader.this.TAG, "File need to be reuploaded");
+                            onBlockFailure(block);
+                        }
                     }
 
                     if (data == null) {
@@ -482,6 +495,10 @@ public class Downloader {
                     onBlockFailure(block);
                 }
             }
+        }
+
+        private TLAbsCdnFile getFileFromCdn(TLFileCdnRedirect file) {
+            return null;
         }
     }
 }
