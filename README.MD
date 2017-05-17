@@ -20,18 +20,13 @@ Just add the library to your project with one of these options:
     <dependency>
         <groupId>org.telegram</groupId>
         <artifactId>telegramapi</artifactId>
-        <version>57.2</version>
+        <version>66.0</version>
     </dependency>
 ```
 
   2. Using Jitpack from [here](https://jitpack.io/#rubenlagus/TelegramApi)
   3. Download the jar(including all dependencies) from [here](https://github.com/rubenlagus/TelegramApi/releases)
 
-    
-## Sample bots
-
-Create your own stickers with [Clippy](https://telegram.me/clippy)
-    
 ## Telegram API and MTPROTO:
 
 If you want more information about Telegram API, you can go [here](https://core.telegram.org/api#telegram-api). And [here](https://core.telegram.org/mtproto) you will find extra information about mtproto.
