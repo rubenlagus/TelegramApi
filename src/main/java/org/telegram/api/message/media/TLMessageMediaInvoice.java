@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class TLMessageMediaInvoice extends TLAbsInputMedia {
+public class TLMessageMediaInvoice extends TLAbsMessageMedia {
     public static final int CLASS_ID = 0x84551347;
 
     private static final int FLAG_PHOTO                      = 0x00000001; // 0
