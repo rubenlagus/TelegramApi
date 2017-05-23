@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class TLMessageMediaInvoice extends TLAbsInputMedia {
+public class TLMessageMediaInvoice extends TLAbsMessageMedia {
     public static final int CLASS_ID = 0x84551347;
 
     private static final int FLAG_PHOTO                      = 0x00000001; // 0
@@ -23,7 +23,7 @@ public class TLMessageMediaInvoice extends TLAbsInputMedia {
     private TLWebDocument photo;
     private int receiptMsgId;
     private String currency;
-    private String totalAmount;
+    private Long totalAmount;
     private String startParam;
 
     public TLMessageMediaInvoice() {
@@ -58,7 +58,7 @@ public class TLMessageMediaInvoice extends TLAbsInputMedia {
         return currency;
     }
 
-    public String getTotalAmount() {
+    public Long getTotalAmount() {
         return totalAmount;
     }
 
@@ -93,7 +93,7 @@ public class TLMessageMediaInvoice extends TLAbsInputMedia {
             StreamingUtils.writeInt(receiptMsgId, stream);
         }
         StreamingUtils.writeTLString(currency, stream);
-        StreamingUtils.writeTLString(totalAmount, stream);
+        StreamingUtils.writeLong(totalAmount, stream);
         StreamingUtils.writeTLString(startParam, stream);
     }
 
@@ -109,7 +109,7 @@ public class TLMessageMediaInvoice extends TLAbsInputMedia {
             receiptMsgId = StreamingUtils.readInt(stream);
         }
         currency = StreamingUtils.readTLString(stream);
-        totalAmount = StreamingUtils.readTLString(stream);
+        totalAmount = StreamingUtils.readLong(stream);
         startParam = StreamingUtils.readTLString(stream);
     }
 
