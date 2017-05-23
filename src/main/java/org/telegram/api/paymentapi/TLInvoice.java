@@ -19,7 +19,7 @@ public class TLInvoice extends TLObject {
     private static final int FLAG_TEST                         = 0x00000001; // 0
     private static final int FLAG_NAME_REQUESTED               = 0x00000002; // 1
     private static final int FLAG_PHONE_REQUESTED              = 0x00000004; // 2
-    private static final int FLAG_EMAIL_REQUESTED = 0x00000008; // 3
+    private static final int FLAG_EMAIL_REQUESTED              = 0x00000008; // 3
     private static final int FLAG_SHIPPING_ADDRESS_REQUESTED   = 0x00000010; // 4
     private static final int FLAG_FLEXIBLE                     = 0x00000020; // 5
 
