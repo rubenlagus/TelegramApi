@@ -23,7 +23,7 @@ public class TLMessageMediaInvoice extends TLAbsMessageMedia {
     private TLWebDocument photo;
     private int receiptMsgId;
     private String currency;
-    private String totalAmount;
+    private Long totalAmount;
     private String startParam;
 
     public TLMessageMediaInvoice() {
@@ -58,7 +58,7 @@ public class TLMessageMediaInvoice extends TLAbsMessageMedia {
         return currency;
     }
 
-    public String getTotalAmount() {
+    public Long getTotalAmount() {
         return totalAmount;
     }
 
@@ -93,7 +93,7 @@ public class TLMessageMediaInvoice extends TLAbsMessageMedia {
             StreamingUtils.writeInt(receiptMsgId, stream);
         }
         StreamingUtils.writeTLString(currency, stream);
-        StreamingUtils.writeTLString(totalAmount, stream);
+        StreamingUtils.writeLong(totalAmount, stream);
         StreamingUtils.writeTLString(startParam, stream);
     }
 
@@ -109,7 +109,7 @@ public class TLMessageMediaInvoice extends TLAbsMessageMedia {
             receiptMsgId = StreamingUtils.readInt(stream);
         }
         currency = StreamingUtils.readTLString(stream);
-        totalAmount = StreamingUtils.readTLString(stream);
+        totalAmount = StreamingUtils.readLong(stream);
         startParam = StreamingUtils.readTLString(stream);
     }
 
