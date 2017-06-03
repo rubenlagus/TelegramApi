@@ -138,9 +138,9 @@ public class TLUpdates extends TLAbsUpdates {
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.updates = StreamingUtils.readTLVector(stream, context);
-        this.users = StreamingUtils.readTLVector(stream, context);
-        this.chats = StreamingUtils.readTLVector(stream, context);
+        this.updates = StreamingUtils.readTLVector(stream, context, TLAbsUpdate.class);
+        this.users = StreamingUtils.readTLVector(stream, context, TLAbsUser.class);
+        this.chats = StreamingUtils.readTLVector(stream, context, TLAbsChat.class);
         this.date = StreamingUtils.readInt(stream);
         this.seq = StreamingUtils.readInt(stream);
     }

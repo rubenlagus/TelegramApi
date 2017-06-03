@@ -192,12 +192,12 @@ public class TLChat extends TLAbsChat {
         this.flags = StreamingUtils.readInt(stream);
         this.id = StreamingUtils.readInt(stream);
         this.title = StreamingUtils.readTLString(stream);
-        this.photo = ((TLAbsChatPhoto) StreamingUtils.readTLObject(stream, context));
+        this.photo = StreamingUtils.readTLObject(stream, context, TLAbsChatPhoto.class);
         this.participantsCount = StreamingUtils.readInt(stream);
         this.date = StreamingUtils.readInt(stream);
         this.version = StreamingUtils.readInt(stream);
         if ((this.flags & FLAG_MIGRATED_TO) != 0) {
-            this.migratedTo = (TLAbsInputChannel) StreamingUtils.readTLObject(stream, context);
+            this.migratedTo = StreamingUtils.readTLObject(stream, context, TLAbsInputChannel.class);
         }
     }
 

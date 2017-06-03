@@ -39,7 +39,7 @@ public class TLUser extends TLAbsUser {
     private static final int FLAG_INLINE_PLACEHOLDER    = 0x00080000; // 19
     private static final int FLAG_MIN                   = 0x00100000; // 20
     private static final int FLAG_BOT_INLINE_GEO        = 0x00200000; // 21
-    private static final int FLAG_LANG_CODE             = 0x00200000; // 22
+    private static final int FLAG_LANG_CODE             = 0x00400000; // 22
 
     private int flags;
     private long accessHash;
@@ -57,7 +57,6 @@ public class TLUser extends TLAbsUser {
     public TLUser() {
         super();
     }
-
 
     @Override
     public int getClassId() {
@@ -236,10 +235,10 @@ public class TLUser extends TLAbsUser {
             this.phone = StreamingUtils.readTLString(stream);
         }
         if ((this.flags & FLAG_PHOTO) != 0) {
-            this.photo = (TLAbsUserProfilePhoto) StreamingUtils.readTLObject(stream, context);
+            this.photo = StreamingUtils.readTLObject(stream, context, TLAbsUserProfilePhoto.class);
         }
         if ((this.flags & FLAG_STATUS) != 0) {
-            this.status = (TLAbsUserStatus) StreamingUtils.readTLObject(stream, context);
+            this.status = StreamingUtils.readTLObject(stream, context, TLAbsUserStatus.class);
         }
         if ((this.flags & FLAG_BOT) != 0) {
             this.botInfoVersion = StreamingUtils.readInt(stream);
