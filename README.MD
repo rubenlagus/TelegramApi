@@ -20,7 +20,7 @@ Just add the library to your project with one of these options:
     <dependency>
         <groupId>org.telegram</groupId>
         <artifactId>telegramapi</artifactId>
-        <version>66.0</version>
+        <version>66.2</version>
     </dependency>
 ```
 
