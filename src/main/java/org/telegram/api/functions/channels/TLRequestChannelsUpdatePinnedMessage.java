@@ -49,6 +49,14 @@ public class TLRequestChannelsUpdatePinnedMessage extends TLMethod<TLAbsUpdates>
         throw new IOException("Incorrect response type. Expected " + TLAbsUpdates.class.getName() +", got: " + res.getClass().getName());
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public TLAbsInputChannel getChannel() {
         return channel;
     }
