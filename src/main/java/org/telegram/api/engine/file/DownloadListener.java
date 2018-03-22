@@ -1,5 +1,7 @@
 package org.telegram.api.engine.file;
 
+import org.telegram.api.engine.file.downloader.DownloadTask;
+
 /**
  * Created by Ruben Bermudez on 18.11.13.
  */
@@ -17,7 +19,7 @@ public interface DownloadListener {
      *
      * @param task the task
      */
-    void onDownloaded(Downloader.DownloadTask task);
+    void onDownloaded(DownloadTask task);
 
     /**
      * On failed.

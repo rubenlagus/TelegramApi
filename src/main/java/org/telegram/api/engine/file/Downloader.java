@@ -2,8 +2,14 @@ package org.telegram.api.engine.file;
 
 import org.telegram.api.engine.Logger;
 import org.telegram.api.engine.TelegramApi;
+import org.telegram.api.engine.file.downloader.DownloadBlock;
+import org.telegram.api.engine.file.downloader.DownloadTask;
+import org.telegram.api.engine.file.downloader.DownloadTaskBuffer;
+import org.telegram.api.engine.file.downloader.DownloadTaskFile;
+import org.telegram.api.engine.file.downloader.DownloaderBudder;
+import org.telegram.api.engine.file.downloader.DownloaderFile;
+import org.telegram.api.engine.file.downloader.DownloaderOperation;
 import org.telegram.api.input.filelocation.TLAbsInputFileLocation;
-import org.telegram.api.storage.file.TLAbsFileType;
 import org.telegram.api.upload.cdn.TLAbsCdnFile;
 import org.telegram.api.upload.cdn.TLCdnFile;
 import org.telegram.api.upload.file.TLAbsFile;
@@ -15,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -50,7 +57,7 @@ public class Downloader {
     private static final int PARALLEL_PARTS_COUNT = 4;
     private static final int BLOCK_QUEUED = 0;
     private static final int BLOCK_DOWNLOADING = 1;
-    private static final int BLOCK_COMPLETED = 2;
+    public static final int BLOCK_COMPLETED = 2;
     private final AtomicInteger fileIds = new AtomicInteger(1);
     private final String TAG;
     private final Object threadLocker = new Object();
@@ -58,6 +65,7 @@ public class Downloader {
     private ArrayList<DownloadTask> tasks = new ArrayList<DownloadTask>();
     private ArrayList<DownloadFileThread> threads = new ArrayList<DownloadFileThread>();
     private Random rnd = new Random();
+    private DownloaderOperation baseDownloader;
 
     /**
      * Instantiates a new Downloader.
@@ -99,7 +107,7 @@ public class Downloader {
      * @param taskId the task id
      */
     public synchronized void cancelTask(int taskId) {
-        DownloadTask task = getTask(taskId);
+    	DownloadTask task = getTask(taskId);
         if (task != null && task.state != FILE_COMPLETED) {
             task.state = FILE_CANCELED;
             Logger.d(this.TAG, "File #" + task.taskId + "| Canceled");
@@ -114,7 +122,7 @@ public class Downloader {
      * @return the task state
      */
     public synchronized int getTaskState(int taskId) {
-        DownloadTask task = getTask(taskId);
+    	DownloadTask task = getTask(taskId);
         if (task != null) {
             return task.state;
         }
@@ -157,11 +165,12 @@ public class Downloader {
     public synchronized int requestTask(int dcId, TLAbsInputFileLocation location, int size, String destFile, DownloadListener listener) {
         int blockSize = BLOCK_SIZE;
         int totalBlockCount = (int) Math.ceil(((double) size) / blockSize);
-
-        DownloadTask task = new DownloadTask();
+        baseDownloader = new DownloaderFile(this);
+        DownloadTaskFile task = new DownloadTaskFile();
         task.listener = listener;
         task.blockSize = blockSize;
         task.destFile = destFile;
+       
         try {
             task.file = new RandomAccessFile(destFile, "rw");
             task.file.setLength(size);
@@ -192,6 +201,43 @@ public class Downloader {
         return task.taskId;
     }
 
+    /**
+     * Request task.
+     *
+     * @param dcId the dc id
+     * @param location the location
+     * @param size the size
+     * @param bytes the link list Byte
+     * @param listener the listener
+     * @return the int
+     */
+    public synchronized int requestTask(int dcId, TLAbsInputFileLocation location, int size, List<Byte> bytes, DownloadListener listener) {
+        int blockSize = BLOCK_SIZE;
+        int totalBlockCount = (int) Math.ceil(((double) size) / blockSize);
+        baseDownloader = new DownloaderBudder(this);
+        DownloadTaskBuffer task = new DownloadTaskBuffer();
+        task.listener = listener;
+        task.blockSize = blockSize;
+        task.bytes = bytes;
+        task.taskId = this.fileIds.getAndIncrement();
+        task.dcId = dcId;
+        task.location = location;
+        task.size = size;
+        task.blocks = new DownloadBlock[totalBlockCount];
+        for (int i = 0; i < totalBlockCount; i++) {
+            task.blocks[i] = new DownloadBlock();
+            task.blocks[i].task = task;
+            task.blocks[i].index = i;
+            task.blocks[i].state = BLOCK_QUEUED;
+        }
+        task.state = FILE_QUEUED;
+        task.queueTime = System.nanoTime();
+        this.tasks.add(task);
+        Logger.d(this.TAG, "File #" + task.taskId + "| Requested");
+        updateFileQueueStates();
+        return task.taskId;
+    }
+
     private synchronized DownloadTask[] getActiveTasks() {
         ArrayList<DownloadTask> res = new ArrayList<DownloadTask>();
         for (DownloadTask task : this.tasks) {
@@ -202,8 +248,8 @@ public class Downloader {
         return res.toArray(new DownloadTask[res.size()]);
     }
 
-    private synchronized void updateFileQueueStates() {
-        DownloadTask[] activeTasks = getActiveTasks();
+    public synchronized void updateFileQueueStates() {
+    	DownloadTask[] activeTasks = getActiveTasks();
         outer:
         for (DownloadTask task : activeTasks) {
             for (DownloadBlock block : task.blocks) {
@@ -211,7 +257,7 @@ public class Downloader {
                     continue outer;
                 }
             }
-            onTaskCompleted(task);
+            baseDownloader.onTaskCompleted(task);
         }
         activeTasks = getActiveTasks();
 
@@ -237,43 +283,8 @@ public class Downloader {
         }
     }
 
-    private synchronized void onTaskCompleted(DownloadTask task) {
-        if (task.state != FILE_COMPLETED) {
-            Logger.d(this.TAG, "File #" + task.taskId + "| Completed in " + (System.nanoTime() - task.queueTime) / (1000 * 1000L) + " ms");
-            task.state = FILE_COMPLETED;
-            try {
-                if (task.file != null) {
-                    task.file.close();
-                    task.file = null;
-                }
-                if (task.listener != null) {
-                    task.listener.onDownloaded(task);
-                }
-            } catch (IOException e) {
-                Logger.e(this.TAG, e);
-            }
-        }
-        updateFileQueueStates();
-    }
-
-    private synchronized void onTaskFailure(DownloadTask task) {
-        if (task.state != FILE_FAILURE) {
-            Logger.d(this.TAG, "File #" + task.taskId + "| Failure in " + (System.nanoTime() - task.queueTime) / (1000 * 1000L) + " ms");
-            task.state = FILE_FAILURE;
-            try {
-                if (task.file != null) {
-                    task.file.close();
-                    task.file = null;
-                }
-            } catch (IOException e) {
-                Logger.e(this.TAG, e);
-            }
-        }
-        updateFileQueueStates();
-    }
-
     private synchronized DownloadTask fetchTask() {
-        DownloadTask[] activeTasks = getActiveTasks();
+    	DownloadTask[] activeTasks = getActiveTasks();
         if (activeTasks.length == 0) {
             return null;
         } else if (activeTasks.length == 1) {
@@ -284,7 +295,7 @@ public class Downloader {
     }
 
     private synchronized DownloadBlock fetchBlock() {
-        DownloadTask task = fetchTask();
+    	DownloadTask task = fetchTask();
         if (task == null) {
             return null;
         }
@@ -302,130 +313,15 @@ public class Downloader {
         return null;
     }
 
-    private synchronized void onBlockDownloaded(DownloadBlock block, TLBytes data) {
-        try {
-            if (block.task.file != null) {
-                block.task.file.seek(block.index * block.task.blockSize);
-                block.task.file.write(data.getData(), data.getOffset(), data.getLength());
-            } else {
-                return;
-            }
-        } catch (IOException e) {
-            Logger.e(this.TAG, e);
-        } finally {
-            this.api.getApiContext().releaseBytes(data);
-        }
-        block.task.lastSuccessBlock = System.nanoTime();
-        block.state = BLOCK_COMPLETED;
-        if (block.task.listener != null) {
-            int downloadedCount = 0;
-            for (DownloadBlock b : block.task.blocks) {
-                if (b.state == BLOCK_COMPLETED) {
-                    downloadedCount++;
-                }
-            }
-
-            int percent = downloadedCount * 100 / block.task.blocks.length;
-            block.task.listener.onPartDownloaded(percent, downloadedCount);
-        }
-        updateFileQueueStates();
-    }
 
     private synchronized void onBlockFailure(DownloadBlock block) {
         block.state = BLOCK_QUEUED;
         if (block.task.lastSuccessBlock != 0 && (System.nanoTime() - block.task.lastSuccessBlock > DOWNLOAD_TIMEOUT * 1000L * 1000L)) {
-            onTaskFailure(block.task);
+        	baseDownloader.onTaskFailure(block.task);
         }
         updateFileQueueStates();
     }
 
-    /**
-     * The type Download task.
-     */
-    public class DownloadTask {
-
-        /**
-         * The Listener.
-         */
-        public DownloadListener listener;
-        /**
-         * The Last notify time.
-         */
-        public long lastNotifyTime;
-
-        /**
-         * The Task id.
-         */
-        public int taskId;
-
-        /**
-         * The Block size.
-         */
-        public int blockSize;
-
-        /**
-         * The Dc id.
-         */
-        public int dcId;
-        /**
-         * The Location.
-         */
-        public TLAbsInputFileLocation location;
-        /**
-         * The Size.
-         */
-        public int size;
-
-        /**
-         * The Queue time.
-         */
-        public long queueTime;
-
-        /**
-         * The State.
-         */
-        public int state;
-
-        /**
-         * The Blocks.
-         */
-        public DownloadBlock[] blocks;
-
-        /**
-         * The Dest file.
-         */
-        public String destFile;
-
-        /**
-         * The File.
-         */
-        public RandomAccessFile file;
-
-        /**
-         * The Last success block.
-         */
-        public long lastSuccessBlock;
-
-        /**
-         * The Type.
-         */
-        public TLAbsFileType type;
-    }
-
-    private class DownloadBlock {
-        /**
-         * The Task.
-         */
-        public DownloadTask task;
-        /**
-         * The State.
-         */
-        public int state;
-        /**
-         * The Index.
-         */
-        public int index;
-    }
 
     private class DownloadFileThread extends Thread {
 
@@ -488,7 +384,7 @@ public class Downloader {
                         Logger.d(Downloader.this.TAG, "Failed to download file data");
                         onBlockFailure(block);
                     }
-                    onBlockDownloaded(block, data);
+                    baseDownloader.onBlockDownloaded(block, data);
                 } catch (IOException | TimeoutException e) {
                     Logger.d(Downloader.this.TAG, "Block #" + block.index + " of #" + block.task.taskId + "| Failure");
                     Logger.e(Downloader.this.TAG, e);
@@ -500,5 +396,9 @@ public class Downloader {
         private TLAbsCdnFile getFileFromCdn(TLFileCdnRedirect file) {
             return null;
         }
+    }
+   
+    public String getTag() {
+    	return TAG;
     }
 }
