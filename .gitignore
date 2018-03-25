@@ -99,6 +99,7 @@ local.properties
 /out/
 /target/
 .idea
+out
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
