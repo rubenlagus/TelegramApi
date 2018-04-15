@@ -3,6 +3,7 @@ package org.telegram.mtproto.transport;
 import org.telegram.mtproto.MTProto;
 import org.telegram.mtproto.log.Logger;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
@@ -544,6 +545,11 @@ public class TcpContext implements PyroClientListener {
             client = null;
         }
         callback.onChannelBroken(TcpContext.this);
+        try {
+            selector.close();
+        } catch (IOException e) {
+            Logger.e(TcpContext.this.TAG, e);
+        }
         isFirstPackage = true;
         if (restOfTheData != null) {
             BuffersStorage.getInstance().reuseFreeBuffer(restOfTheData);
