@@ -1,6 +1,7 @@
 package org.telegram.api.engine.file.downloader;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.telegram.api.engine.Logger;
@@ -28,10 +29,10 @@ public class DownloaderBudder implements DownloaderOperation {
 
 		try {
 			DownloadTaskBuffer taskBuffer = getTaskBuffer(block.task);
-			if (taskBuffer.bytes != null) {
+			if (taskBuffer.getIndex2bytes() != null) {
 				int seek = block.index * block.task.blockSize;
-				List<Byte> listByte = arrayByte2List(data.getData());
-				taskBuffer.bytes.addAll(seek + data.getOffset(), listByte);
+				List<Byte> listByte = arrayByte2List(data.getData(), data.getOffset());
+				taskBuffer.getIndex2bytes().put(seek, listByte);
 			} else {
 				return;
 			}
@@ -61,8 +62,16 @@ public class DownloaderBudder implements DownloaderOperation {
 			Logger.d(download.getTag(), "File #" + task.taskId + "| Completed in "
 					+ (System.nanoTime() - task.queueTime) / (1000 * 1000L) + " ms");
 			task.state = Downloader.FILE_COMPLETED;
-			if (taskBuffer.bytes != null) {
-				// ничего не делаем
+			if (taskBuffer.getIndex2bytes() != null) {
+				ArrayList<Integer> sortIndex = new ArrayList<Integer>(taskBuffer.getIndex2bytes().keySet());
+				Collections.sort(sortIndex);
+				Logger.w(download.getTag(), "sortIndex " + sortIndex);
+				for (Integer index : sortIndex) {
+					List<Byte> butes = taskBuffer.getIndex2bytes().get(index);
+					if (butes != null) {
+						taskBuffer.getBytes().addAll(butes);
+					}
+				}
 			}
 			if (taskBuffer.listener != null) {
 				taskBuffer.listener.onDownloaded(task);
@@ -78,8 +87,9 @@ public class DownloaderBudder implements DownloaderOperation {
 			Logger.d(download.getTag(), "File #" + task.taskId + "| Failure in "
 					+ (System.nanoTime() - task.queueTime) / (1000 * 1000L) + " ms");
 			task.state = Downloader.FILE_FAILURE;
-			if (taskBuffer.bytes != null) {
-				taskBuffer.bytes = null;
+			if (taskBuffer.getBytes() != null) {
+				taskBuffer.setBytes(null);
+				taskBuffer.getIndex2bytes().clear();
 			}
 		}
 		download.updateFileQueueStates();
@@ -100,10 +110,10 @@ public class DownloaderBudder implements DownloaderOperation {
 	 *            массив байт
 	 * @return список байт
 	 */
-	public static List<Byte> arrayByte2List(byte[] bytes) {
+	public static List<Byte> arrayByte2List(byte[] bytes, int offset) {
 		List<Byte> listBytes = new ArrayList<Byte>();
-		for (byte aByte : bytes) {
-			listBytes.add(aByte);
+		for (int index = offset; index < bytes.length; index++) {
+			listBytes.add(bytes[index]);
 		}
 		return listBytes;
 	}

@@ -218,7 +218,7 @@ public class Downloader {
         DownloadTaskBuffer task = new DownloadTaskBuffer();
         task.listener = listener;
         task.blockSize = blockSize;
-        task.bytes = bytes;
+        task.setBytes(bytes);
         task.taskId = this.fileIds.getAndIncrement();
         task.dcId = dcId;
         task.location = location;
@@ -393,10 +393,7 @@ public class Downloader {
             }
         }
 
-        private TLAbsCdnFile getFileFromCdn(TLFileCdnRedirect file) {
-            return null;
-        }
-    }
+   }
    
     public String getTag() {
     	return TAG;
