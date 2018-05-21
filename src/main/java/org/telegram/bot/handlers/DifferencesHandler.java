@@ -57,7 +57,7 @@ public class DifferencesHandler implements IDifferencesHandler {
         synchronized (differencesLock) {
             canGetDifferences = canGetDifferences();
             if (canGetDifferences) {
-                BotLogger.info(LOGTAG, "Getting differences");
+                BotLogger.debug(LOGTAG, "Getting differences");
 
                 final TLRequestUpdatesGetDifference requestUpdatesGetDifference = new TLRequestUpdatesGetDifference();
                 requestUpdatesGetDifference.setQts(0);
@@ -84,7 +84,7 @@ public class DifferencesHandler implements IDifferencesHandler {
                         BotLogger.error(LOGTAG, e);
                     }
                 } while ((absDifference instanceof TLDifferenceSlice));
-                BotLogger.info(LOGTAG, "Getting differences finished");
+                BotLogger.debug(LOGTAG, "Getting differences finished");
             }
         }
     }
@@ -110,7 +110,7 @@ public class DifferencesHandler implements IDifferencesHandler {
 
     private void getChannelDifferencesInternal(int chatId, long accessHash) {
         synchronized (differencesLock) {
-            BotLogger.info(LOGTAG, "Getting differences");
+            BotLogger.debug(LOGTAG, "Getting differences");
 
             final TLRequestUpdatesGetChannelDifference requestGetChannelDifference = new TLRequestUpdatesGetChannelDifference();
             requestGetChannelDifference.setFilter(new TLChannelMessagesFilterEmpty());
@@ -141,7 +141,7 @@ public class DifferencesHandler implements IDifferencesHandler {
                     BotLogger.error(LOGTAG, e);
                 }
             } while ((absDifference instanceof TLUpdatesChannelDifferencesTooLong));
-            BotLogger.info(LOGTAG, "Getting differences finished");
+            BotLogger.debug(LOGTAG, "Getting differences finished");
         }
     }
 
@@ -160,7 +160,7 @@ public class DifferencesHandler implements IDifferencesHandler {
      * @param absDifference AbsDifferences to handle
      */
     private void onTLAbsDifferences(@NotNull TLAbsDifference absDifference) {
-        BotLogger.info(LOGTAG, "Received differences");
+        BotLogger.debug(LOGTAG, "Received differences");
         final TLUpdatesState updatesState;
 
         if (absDifference instanceof TLDifferenceSlice) {
@@ -189,7 +189,7 @@ public class DifferencesHandler implements IDifferencesHandler {
     }
 
     private void handleChannelDifferences(int chatId, int pts, List<TLAbsUser> users, List<TLAbsMessage> messages, List<TLAbsUpdate> updates, List<TLAbsChat> chats) {
-        BotLogger.info(LOGTAG, "Handling channel differences");
+        BotLogger.debug(LOGTAG, "Handling channel differences");
         updatesHandlerBase.onTLChannelDifferences(users, messages, updates, chats);
         updateChannelStateModification(chatId, null, pts, true);
     }
@@ -200,7 +200,7 @@ public class DifferencesHandler implements IDifferencesHandler {
      * @param updatesState Updates state of differences
      */
     private void handleDifferences(@NotNull TLAbsDifference absDifference, @NotNull TLUpdatesState updatesState) {
-        BotLogger.info(LOGTAG, "Handling differences");
+        BotLogger.debug(LOGTAG, "Handling differences");
         updatesHandlerBase.onTLAbsDifference(absDifference);
         updateStateModification(updatesState, true);
     }
