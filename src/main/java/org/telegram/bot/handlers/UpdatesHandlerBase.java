@@ -806,6 +806,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
             if (tlMessage.hasFromId()) {
                 isFromMissing = isUserMissing(tlMessage.getFromId());
             }
+            if (tlMessage.getFromId() == 0) {
+                isFromMissing = isUserMissing(tlMessage.getFromId());
+            }
 
             boolean isToMissing = true;
             if (tlMessage.getToId() instanceof TLPeerUser) {
