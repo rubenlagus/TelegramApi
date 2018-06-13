@@ -39,26 +39,13 @@
 		</developer>
 	</developers>
 
-	<parent>
-		<groupId>com.clickconcepts.project</groupId>
-		<artifactId>master-site-pom</artifactId>
-		<version>0.20</version>
-	</parent>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.encoding>UTF-8</project.encoding>
 		<jdk.version>1.8</jdk.version>
-		<annotations.version>15.0</annotations.version>
-		<reportOutputDirectory>${project.build.directory}/site/${project.artifactId}</reportOutputDirectory>
-		<scm-publish.scmBranch>master</scm-publish.scmBranch>
-		<scm-publish.pubScmUrl>scm:git:git@bitbucket.org:onixred/onixred.bitbucket.org.git</scm-publish.pubScmUrl>
-		<scm-publish.siteDocOuputDirectory>${project.build.directory}/site</scm-publish.siteDocOuputDirectory>
-
-		<!-- Overwrite from Parent Pom -->
-		<changelog.fileUri>${changelog.bitbucket.fileUri}</changelog.fileUri>
-		<changelog.revision.fileUri>${changelog.revision.bitbucket.fileUri}</changelog.revision.fileUri>
 	</properties>
 
 	<distributionManagement>
@@ -124,12 +111,16 @@
 				</includes>
 			</testResource>
 		</testResources>
-		<directory>${project.basedir}/target</directory>
-		<outputDirectory>${project.build.directory}/classes</outputDirectory>
-		<finalName>${project.artifactId}-${project.version}</finalName>
-		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
-		<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<encoding>${project.encoding}</encoding>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -145,16 +136,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<doctitle>This API for ${project.name} ${project.version}</doctitle>
-					<windowtitle>This API for ${project.name} ${project.version}</windowtitle>
-					<reportOutputDirectory>${reportOutputDirectory}</reportOutputDirectory>
-					<destDir>apidocs</destDir>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -174,18 +155,5 @@
 				<artifactId>wagon-git</artifactId>
 			</extension>
 		</extensions>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>${jdk.version}</source>
-						<target>${jdk.version}</target>
-						<encoding>${project.encoding}</encoding>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 </project>
