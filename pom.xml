@@ -145,8 +145,8 @@
 				<configuration>
 					<preparationGoals>clean test</preparationGoals>
 					<arguments>-DskipTests</arguments>
-					<!-- <goals>clean javadoc:javadoc scm-publish:publish-scm deploy</goals>
-					<goals>deploy</goals> -->
+					<!-- <goals>clean javadoc:javadoc scm-publish:publish-scm deploy</goals>-->
+					<goals>deploy</goals> 
 					<tagNameFormat>rel-@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
