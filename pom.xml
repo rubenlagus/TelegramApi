@@ -46,6 +46,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.encoding>UTF-8</project.encoding>
 		<jdk.version>1.8</jdk.version>
+		<annotations.version>15.0</annotations.version>
 	</properties>
 
 	<distributionManagement>
