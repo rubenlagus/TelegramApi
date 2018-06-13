@@ -5,7 +5,7 @@
 	<packaging>jar</packaging>
 	<groupId>org.telegram</groupId>
 	<artifactId>telegramapi</artifactId>
-	<version>66.7</version>
+	<version>66.7-SNAPSHOT</version>
 	<name>Telegram Api</name>
 	<url>https://github.com/rubenlagus/TelegramApi</url>
 	<description>Java library to create Telegram Clients</description>
