@@ -150,7 +150,7 @@
 				<configuration>
 					<preparationGoals>clean test</preparationGoals>
 					<arguments>-DskipTests -Dmaven.javadoc.skip=true</arguments>
-					<tagNameFormat>rel-@{project.version}</tagNameFormat>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 				<version>2.5.3</version>
 				<dependencies>
