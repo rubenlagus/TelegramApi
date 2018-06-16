@@ -1,6 +1,13 @@
-#  Telegram API 
+ 
+# Alternative Telegram API 
+[![Jitpack](https://jitpack.io/v/onixred/TelegramApi.svg)](https://jitpack.io/#onixred/TelegramApi)
+[![bitbucket maven Central](https://jitpack.io/v/onixred/TelegramApi.svg)](https://bitbucket.org/onixred/maven-repo/src/releases/org/telegram/telegramapi/)
+
+
+# Official Telegram API 
 [![Jitpack](https://jitpack.io/v/rubenlagus/TelegramApi.svg)](https://jitpack.io/#rubenlagus/TelegramApi)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.telegram/telegramapi/badge.svg)](http://mvnrepository.com/artifact/org.telegram/telegramapi)
+
 
 Java library that implements Telegram API to create Telegram Clients
 
