@@ -4,7 +4,7 @@
 	<packaging>jar</packaging>
 	<groupId>org.telegram</groupId>
 	<artifactId>telegramapi</artifactId>
-	<version>66.13</version>
+	<version>66.14-SNAPSHOT</version>
 	<name>Telegram Api</name>
 	<url>https://github.com/rubenlagus/TelegramApi</url>
 	<description>Java library to create Telegram Clients</description>
@@ -18,7 +18,7 @@
 		<url>https://github.com/onixred/TelegramApi</url>
 		<connection>scm:git:git://github.com/rubenlagus/TelegramApi.git</connection>
 		<developerConnection>scm:git:git@github.com:onixred/TelegramApi.git</developerConnection>
-		<tag>rel-66.13</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<licenses>
