@@ -14,7 +14,10 @@ import java.util.ArrayList;
 
 public class BuffersStorage {
 
-    private final ArrayList<ByteBufferDesc> freeBuffers128;
+	private int MAX_COUNT_FREE_BUFFERS_OTHER = 10;
+	private int MAX_COUNT_FREE_BUFFERS_BIG = 6;
+
+	private final ArrayList<ByteBufferDesc> freeBuffers128;
     private final ArrayList<ByteBufferDesc> freeBuffers1024;
     private final ArrayList<ByteBufferDesc> freeBuffers4096;
     private final ArrayList<ByteBufferDesc> freeBuffers16384;
@@ -40,7 +43,7 @@ public class BuffersStorage {
     public BuffersStorage(boolean threadSafe) {
         isThreadSafe = threadSafe;
         freeBuffers128 = new ArrayList<ByteBufferDesc>();
-        freeBuffers1024 = new ArrayList<ByteBufferDesc>();
+		freeBuffers1024 = new ArrayList<ByteBufferDesc>();
         freeBuffers4096 = new ArrayList<ByteBufferDesc>();
         freeBuffers16384 = new ArrayList<ByteBufferDesc>();
         freeBuffers32768 = new ArrayList<ByteBufferDesc>();
@@ -101,7 +104,7 @@ public class BuffersStorage {
             }
         }
 
-        buffer.buffer.limit(size).rewind();
+        buffer.limit(size).rewind();
         return buffer;
     }
 
@@ -109,21 +112,21 @@ public class BuffersStorage {
         if (buffer == null) {
             return;
         }
-        int maxCount = 10;
+        int maxCount = MAX_COUNT_FREE_BUFFERS_OTHER;
         ArrayList<ByteBufferDesc> arrayToReuse = null;
-        if (buffer.buffer.capacity() == 128) {
+        if (buffer.capacity() == 128) {
             arrayToReuse = freeBuffers128;
-        } else if (buffer.buffer.capacity() == 1024 + 200) {
+        } else if (buffer.capacity() == 1024 + 200) {
             arrayToReuse = freeBuffers1024;
-        } if (buffer.buffer.capacity() == 4096 + 200) {
+        } if (buffer.capacity() == 4096 + 200) {
             arrayToReuse = freeBuffers4096;
-        } else if (buffer.buffer.capacity() == 16384 + 200) {
+        } else if (buffer.capacity() == 16384 + 200) {
             arrayToReuse = freeBuffers16384;
-        } else if (buffer.buffer.capacity() == 40000) {
+        } else if (buffer.capacity() == 40000) {
             arrayToReuse = freeBuffers32768;
-        } else if (buffer.buffer.capacity() == 280000) {
+        } else if (buffer.capacity() == 280000) {
             arrayToReuse = freeBuffersBig;
-            maxCount = 10;
+            maxCount = MAX_COUNT_FREE_BUFFERS_BIG;
         }
         if (arrayToReuse != null) {
             if (isThreadSafe) {
@@ -131,7 +134,7 @@ public class BuffersStorage {
                     if (arrayToReuse.size() < maxCount) {
                         arrayToReuse.add(buffer);
                     } else {
-                        Logger.w("tmessages", "too more");
+                        Logger.w("tmessages", "too more, buffer capacity " + buffer.capacity());
                     }
                 }
             } else {

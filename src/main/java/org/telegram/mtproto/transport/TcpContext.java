@@ -3,7 +3,6 @@ package org.telegram.mtproto.transport;
 import org.telegram.mtproto.MTProto;
 import org.telegram.mtproto.log.Logger;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
@@ -71,13 +70,13 @@ public class TcpContext implements PyroClientListener {
                 if ((restOfTheData.capacity() - restOfTheData.position()) >= buffer.limit()) {
                     restOfTheData.limit(restOfTheData.position() + buffer.limit());
                     restOfTheData.put(buffer);
-                    buffer = restOfTheData.buffer;
+                    buffer = restOfTheData.getBuffer();
                 } else {
                     final ByteBufferDesc newBuffer = BuffersStorage.getInstance().getFreeBuffer(restOfTheData.limit() + buffer.limit());
                     restOfTheData.rewind();
-                    newBuffer.put(restOfTheData.buffer);
+                    newBuffer.put(restOfTheData.getBuffer());
                     newBuffer.put(buffer);
-                    buffer = newBuffer.buffer;
+                    buffer = newBuffer.getBuffer();
                     BuffersStorage.getInstance().reuseFreeBuffer(restOfTheData);
                     restOfTheData = newBuffer;
                 }
@@ -98,7 +97,7 @@ public class TcpContext implements PyroClientListener {
                     } else {
                         parseLaterBuffer = null;
                     }
-                    buffer = restOfTheData.buffer;
+                    buffer = restOfTheData.getBuffer();
                 } else {
                     return;
                 }
@@ -201,11 +200,11 @@ public class TcpContext implements PyroClientListener {
             toProceed.rewind();
 
 
-            if (toProceed.buffer.remaining() == 4) {
+            if (toProceed.remaining() == 4) {
                 final int error = toProceed.readInt32(false);
                 TcpContext.this.onError(error);
             } else {
-                final byte[] pkg = new byte[toProceed.buffer.remaining()];
+                final byte[] pkg = new byte[toProceed.remaining()];
                 toProceed.readRaw(pkg, false);
                 onMessage(pkg, currentPacketLength);
                 BuffersStorage.getInstance().reuseFreeBuffer(toProceed);

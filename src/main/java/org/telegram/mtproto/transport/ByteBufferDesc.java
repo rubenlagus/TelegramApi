@@ -9,11 +9,12 @@ package org.telegram.mtproto.transport;
 
 import org.telegram.mtproto.log.Logger;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class ByteBufferDesc {
-    public ByteBuffer buffer;
+	private ByteBuffer buffer;
     private boolean justCalc;
     private int len;
 
@@ -29,6 +30,10 @@ public class ByteBufferDesc {
     public ByteBufferDesc(byte[] bytes) {
         this.buffer = ByteBuffer.wrap(bytes);
         this.buffer.order(ByteOrder.LITTLE_ENDIAN);
+    }
+ 
+    public ByteBuffer getBuffer() {
+        return buffer;
     }
 
     public int position() {
@@ -47,8 +52,8 @@ public class ByteBufferDesc {
         return this.buffer.limit();
     }
 
-    public void limit(int limit) {
-        this.buffer.limit(limit);
+    public Buffer limit(int limit) {
+        return this.buffer.limit(limit);
     }
 
     public void put(ByteBuffer buff) {
@@ -65,6 +70,14 @@ public class ByteBufferDesc {
 
     public boolean hasRemaining() {
         return this.buffer.hasRemaining();
+    }
+
+    public ByteBuffer slice() {
+        return this.buffer.slice();
+    }
+
+    public int remaining() {
+        return this.buffer.remaining();
     }
 
     public void writeInt32(int x) {

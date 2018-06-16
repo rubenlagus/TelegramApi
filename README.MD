@@ -1,16 +1,21 @@
-#  Telegram API 
+ 
+# Alternative Telegram API 
+[![Jitpack](66.13)](https://jitpack.io/#onixred/TelegramApi)
+[![bitbucket maven Central](66.13)](https://bitbucket.org/onixred/maven-repo/src/releases/org/telegram/telegramapi/)
+
+
+# Official Telegram API 
 [![Jitpack](https://jitpack.io/v/rubenlagus/TelegramApi.svg)](https://jitpack.io/#rubenlagus/TelegramApi)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.telegram/telegramapi/badge.svg)](http://mvnrepository.com/artifact/org.telegram/telegramapi)
+
 
 Java library that implements Telegram API to create Telegram Clients
 
 ## Contributions
 
-Feel free to fork this project, work on it and then make a pull request to **dev branch**.     
+Feel free to fork this project, work on it and then make a pull request to **dev branch**.
 
-Please, **DO NOT PUSH ANY API KEY OR API HASH**, I will never accept a pull request with that content.
-    
-## Usage
+## how to use an alternative version of the project
     
 Just add the library to your project with one of these options:
 
@@ -20,8 +25,32 @@ Just add the library to your project with one of these options:
     <dependency>
         <groupId>org.telegram</groupId>
         <artifactId>telegramapi</artifactId>
-        <version>66.2</version>
+        <version>66.13</version>
     </dependency>
+
+<!-- Maven Repository on Git-BitBucket -->
+	<repositories>
+		<repository>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>snapshots</id>
+			<url>https://api.bitbucket.org/1.0/repositories/onixred/maven-repo/raw/snapshots</url>
+		</repository>
+		<repository>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>releases</id>
+			<url>https://api.bitbucket.org/1.0/repositories/onixred/maven-repo/raw/releases</url>
+		</repository>
+	</repositories>
 ```
 
   2. Using Jitpack from [here](https://jitpack.io/#rubenlagus/TelegramApi)
@@ -44,7 +73,13 @@ I know this project still have many things to improve, please be patient or help
   * To [Drklo](https://github.com/drklo), whose code was also helpful in this project.
   * To [Marvin](https://github.com/dapoldi) for all the help, testing and programing that he spends in this project.
   * To [Telegram Team](https://telegram.org) for their help while developing it.
- 
+
+
+## next release
+1) mvn release:prepare
+2) mvn release:perform
+
+
 ## License 
 
 MIT License
