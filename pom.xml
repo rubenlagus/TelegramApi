@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>jar</packaging>
 	<groupId>org.telegram</groupId>
 	<artifactId>telegramapi</artifactId>
-	<version>66.13-SNAPSHOT</version>
+	<version>66.13</version>
 	<name>Telegram Api</name>
 	<url>https://github.com/rubenlagus/TelegramApi</url>
 	<description>Java library to create Telegram Clients</description>
@@ -19,7 +18,7 @@
 		<url>https://github.com/onixred/TelegramApi</url>
 		<connection>scm:git:git://github.com/rubenlagus/TelegramApi.git</connection>
 		<developerConnection>scm:git:git@github.com:onixred/TelegramApi.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>rel-66.13</tag>
 	</scm>
 
 	<licenses>
