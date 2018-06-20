@@ -545,7 +545,7 @@ public class TcpContext implements PyroClientListener {
         }
         callback.onChannelBroken(TcpContext.this);
         try {
-            selector.close();
+            selector.closeIfEmptyTasks();
         } catch (IOException e) {
             Logger.e(TcpContext.this.TAG, e);
         }
