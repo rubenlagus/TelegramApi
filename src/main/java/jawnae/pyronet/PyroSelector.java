@@ -195,7 +195,13 @@ public class PyroSelector {
         this.networkBuffer.clear();
     }
 
-    //
+    public void closeIfEmptyTasks() throws IOException {
+        if (tasks.isEmpty()) {
+            this.networkThread.interrupt();
+            this.nioSelector.close();
+            this.networkBuffer.clear();
+        }
+    }
 
     final SelectionKey register(SelectableChannel channel, int ops) throws IOException {
         return channel.register(this.nioSelector, ops);
