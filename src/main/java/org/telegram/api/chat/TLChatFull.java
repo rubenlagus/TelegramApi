@@ -80,7 +80,7 @@ public class TLChatFull extends TLAbsChatFull {
         this.participants = ((TLAbsChatParticipants) StreamingUtils.readTLObject(stream, context));
         this.photo = ((TLAbsPhoto) StreamingUtils.readTLObject(stream, context));
         this.notifySettings = ((TLAbsPeerNotifySettings) StreamingUtils.readTLObject(stream, context));
-        this.exportedInvite = ((TLChatInviteExported) StreamingUtils.readTLObject(stream, context));
+        this.exportedInvite = ((TLAbsChatInvite) StreamingUtils.readTLObject(stream, context));
         this.botInfo = (TLVector<TLBotInfo>) StreamingUtils.readTLVector(stream, context);
     }
 
