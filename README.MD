@@ -1,7 +1,7 @@
  
 # Alternative Telegram API 
 [![Jitpack](https://jitpack.io/v/onixred/TelegramApi.svg)](https://jitpack.io/#onixred/TelegramApi)
-[![bitbucket maven Central 66.13]](https://bitbucket.org/onixred/maven-repo/src/releases/org/telegram/telegramapi/)
+[bitbucket maven Central 66.15](https://bitbucket.org/onixred/maven-repo/src/releases/org/telegram/telegramapi/)
 
 
 # Official Telegram API 
