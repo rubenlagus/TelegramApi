@@ -22,16 +22,20 @@ public class BotLogger {
     private static final Object lockToWrite = new Object();
     private static volatile PrintWriter logginFile;
     private static volatile String currentFileName;
-    private static final String pathToLogs = "./";
+    private static String pathToLogs = "./";
     private static final Logger logger = Logger.getLogger("Telegram Bot");
     private static volatile LocalDateTime lastFileDate;
     private static LoggerThread loggerThread = new LoggerThread();
     private static final ConcurrentLinkedQueue<String> logsToFile = new ConcurrentLinkedQueue<>();
+    private static boolean isInit = false;
 
     static {
         logger.setLevel(Level.INFO);
-        loggerThread.start();
         lastFileDate = LocalDateTime.now();
+    }
+
+    static void init() {
+        loggerThread.start();
         if ((currentFileName == null) || (currentFileName.compareTo("") == 0)) {
             currentFileName = pathToLogs + dateFormatterForFileName(lastFileDate) + ".log";
             try {
@@ -48,8 +52,8 @@ public class BotLogger {
                 }
             } catch (IOException ignored) {
             }
-
         }
+        isInit = true;
     }
 
     public static void setLevel(Level level) {
@@ -60,7 +64,6 @@ public class BotLogger {
         logger.log(level, String.format("[%s] %s", tag, msg));
         logToFile(level, tag, msg);
     }
-
 
     public static void severe(String tag, String msg) {
         logger.severe(String.format("[%s] %s", tag, msg));
@@ -217,6 +220,10 @@ public class BotLogger {
         log(Level.FINER, tag, msg, throwable);
     }
 
+    public static void setPathToLogs(String path) {
+    	BotLogger.pathToLogs = path;
+    }
+
     private static boolean isCurrentDate(LocalDateTime dateTime) {
         return dateTime.toLocalDate().isEqual(lastFileDate.toLocalDate());
     }
@@ -242,6 +249,9 @@ public class BotLogger {
     }
 
     private static void updateAndCreateFile(LocalDateTime dateTime) {
+    	if(!isInit) {
+    		init();
+    	}
         if (!isCurrentDate(dateTime)) {
             lastFileDate = LocalDateTime.now();
             currentFileName = pathToLogs + dateFormatterForFileName(lastFileDate) + ".log";

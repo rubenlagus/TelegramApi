@@ -38,7 +38,6 @@ public class ByteStream {
     */
 
    public boolean hasData() {
-      final int size = this.queue.size();
       for (ByteBufferDesc aQueue : this.queue) {
          if (aQueue.hasRemaining()) {
             return true;
@@ -59,7 +58,7 @@ public class ByteStream {
       }
 
       for (ByteBufferDesc bufferDesc : this.queue) {
-         ByteBuffer data = bufferDesc.buffer.slice();
+         ByteBuffer data = bufferDesc.slice();
 
          if (data.remaining() > dst.remaining()) {
             data.limit(dst.remaining());
@@ -88,7 +87,7 @@ public class ByteStream {
       while (count > 0) {
          ByteBufferDesc data = this.queue.get(0);
 
-         if (count < data.buffer.remaining()) {
+         if (count < data.remaining()) {
             data.position(data.position() + count);
             count = 0;
             break;
@@ -96,7 +95,7 @@ public class ByteStream {
 
          this.queue.remove(0);
          BuffersStorage.getInstance().reuseFreeBuffer(data);
-         count -= data.buffer.remaining();
+         count -= data.remaining();
       }
 
       if (count != 0) {

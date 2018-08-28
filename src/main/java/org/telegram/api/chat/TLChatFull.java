@@ -8,7 +8,7 @@
 package org.telegram.api.chat;
 
 import org.telegram.api.bot.TLBotInfo;
-import org.telegram.api.chat.invite.TLChatInviteExported;
+import org.telegram.api.chat.invite.TLAbsChatInvite;
 import org.telegram.api.chat.participant.chatparticipants.TLAbsChatParticipants;
 import org.telegram.api.peer.notify.settings.TLAbsPeerNotifySettings;
 import org.telegram.api.photo.TLAbsPhoto;
@@ -27,7 +27,10 @@ import java.io.OutputStream;
  * @date 02 of May of 2015
  */
 public class TLChatFull extends TLAbsChatFull {
-    /**
+
+	private static final long serialVersionUID = 1L;
+
+	/**
      * The constant CLASS_ID.
      */
     public static final int CLASS_ID = 0x2e02a614;
@@ -74,13 +77,14 @@ public class TLChatFull extends TLAbsChatFull {
         StreamingUtils.writeTLVector(this.botInfo, stream);
     }
 
-    public void deserializeBody(InputStream stream, TLContext context)
+    @SuppressWarnings("unchecked")
+	public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
         this.id = StreamingUtils.readInt(stream);
         this.participants = ((TLAbsChatParticipants) StreamingUtils.readTLObject(stream, context));
         this.photo = ((TLAbsPhoto) StreamingUtils.readTLObject(stream, context));
         this.notifySettings = ((TLAbsPeerNotifySettings) StreamingUtils.readTLObject(stream, context));
-        this.exportedInvite = ((TLChatInviteExported) StreamingUtils.readTLObject(stream, context));
+        this.exportedInvite = ((TLAbsChatInvite) StreamingUtils.readTLObject(stream, context));
         this.botInfo = (TLVector<TLBotInfo>) StreamingUtils.readTLVector(stream, context);
     }
 

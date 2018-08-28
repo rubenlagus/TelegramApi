@@ -30,7 +30,7 @@ class SafeFileWriter {
     private final String fileName;
 
     public SafeFileWriter(String fileName) {
-        this.fileName = fileName;
+		this.fileName = fileName;
         String TAG = "SafeFileWriter#" + hashCode();
     }
 

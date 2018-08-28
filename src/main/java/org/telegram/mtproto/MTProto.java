@@ -551,90 +551,99 @@ public class MTProto {
         return null;
     }
 
-    private MTMessage decrypt(byte[] data, int offset, int len) throws IOException {
-        final ByteArrayInputStream stream = new ByteArrayInputStream(data);
-        stream.skip(offset);
-        final byte[] msgAuthKey = readBytes(8, stream);
-        for (int i = 0; i < this.authKeyId.length; i++) {
-            if (msgAuthKey[i] != this.authKeyId[i]) {
-                Logger.e(this.TAG, "Unsupported msgAuthKey");
-                throw new SecurityException();
-            }
-        }
-        final byte[] msgKey = readBytes(16, stream);
+	private MTMessage decrypt(byte[] data, int offset, int len) throws IOException {
+		final ByteArrayInputStream stream = new ByteArrayInputStream(data);
+		try {
+			stream.skip(offset);
+			final byte[] msgAuthKey = readBytes(8, stream);
+			for (int i = 0; i < this.authKeyId.length; i++) {
+				if (msgAuthKey[i] != this.authKeyId[i]) {
+					Logger.e(this.TAG, "Unsupported msgAuthKey");
+					throw new SecurityException();
+				}
+			}
+			final byte[] msgKey = readBytes(16, stream);
 
-        final byte[] sha1_a = SHA1(msgKey, substring(this.authKey, 8, 32));
-        final byte[] sha1_b = SHA1(substring(this.authKey, 40, 16), msgKey, substring(this.authKey, 56, 16));
-        final byte[] sha1_c = SHA1(substring(this.authKey, 72, 32), msgKey);
-        final byte[] sha1_d = SHA1(msgKey, substring(this.authKey, 104, 32));
+			final byte[] sha1_a = SHA1(msgKey, substring(this.authKey, 8, 32));
+			final byte[] sha1_b = SHA1(substring(this.authKey, 40, 16), msgKey, substring(this.authKey, 56, 16));
+			final byte[] sha1_c = SHA1(substring(this.authKey, 72, 32), msgKey);
+			final byte[] sha1_d = SHA1(msgKey, substring(this.authKey, 104, 32));
 
-        final byte[] aesKey = concat(substring(sha1_a, 0, 8), substring(sha1_b, 8, 12), substring(sha1_c, 4, 12));
-        final byte[] aesIv = concat(substring(sha1_a, 8, 12), substring(sha1_b, 0, 8), substring(sha1_c, 16, 4), substring(sha1_d, 0, 8));
+			final byte[] aesKey = concat(substring(sha1_a, 0, 8), substring(sha1_b, 8, 12), substring(sha1_c, 4, 12));
+			final byte[] aesIv = concat(substring(sha1_a, 8, 12), substring(sha1_b, 0, 8), substring(sha1_c, 16, 4),
+					substring(sha1_d, 0, 8));
 
-        final int totalLen = len - 8 - 16;
-        final byte[] encMessage = BytesCache.getInstance().allocate(totalLen);
-        readBytes(encMessage, 0, totalLen, stream);
+			final int totalLen = len - 8 - 16;
+			final byte[] encMessage = BytesCache.getInstance().allocate(totalLen);
+			readBytes(encMessage, 0, totalLen, stream);
 
-        final byte[] rawMessage = BytesCache.getInstance().allocate(totalLen);
-        final long decryptStart = System.currentTimeMillis();
-        AES256IGEDecryptBig(encMessage, rawMessage, totalLen, aesIv, aesKey);
-        Logger.d(this.TAG, "Decrypted in " + (System.currentTimeMillis() - decryptStart) + " ms");
-        BytesCache.getInstance().put(encMessage);
+			final byte[] rawMessage = BytesCache.getInstance().allocate(totalLen);
+			final long decryptStart = System.currentTimeMillis();
+			AES256IGEDecryptBig(encMessage, rawMessage, totalLen, aesIv, aesKey);
+			Logger.d(this.TAG, "Decrypted in " + (System.currentTimeMillis() - decryptStart) + " ms");
+			BytesCache.getInstance().put(encMessage);
 
-        final ByteArrayInputStream bodyStream = new ByteArrayInputStream(rawMessage);
-        final byte[] serverSalt = readBytes(8, bodyStream);
-        final byte[] session = readBytes(8, bodyStream);
-        final long messageId = readLong(bodyStream);
-        final int mes_seq = StreamingUtils.readInt(bodyStream);
+			final ByteArrayInputStream bodyStream = new ByteArrayInputStream(rawMessage);
+			final byte[] serverSalt = readBytes(8, bodyStream);
+			final byte[] session = readBytes(8, bodyStream);
+			final long messageId = readLong(bodyStream);
+			final int mes_seq = StreamingUtils.readInt(bodyStream);
 
-        final int msg_len = StreamingUtils.readInt(bodyStream);
+			final int msg_len = StreamingUtils.readInt(bodyStream);
 
-        final int bodySize = totalLen - 32;
+			final int bodySize = totalLen - 32;
 
-        if ((msg_len % 4) != 0) {
-            throw new SecurityException("Message length is not multiple of 4");
-        }
+			if ((msg_len % 4) != 0) {
+				throw new SecurityException("Message length is not multiple of 4");
+			}
 
-        if (msg_len > bodySize) {
-            throw new SecurityException("Message length is longer than body size");
-        }
+			if (msg_len > bodySize) {
+				throw new SecurityException("Message length is longer than body size");
+			}
 
-        if ((msg_len - bodySize) > 15) {
-            throw new SecurityException("Message length is more than 15 bytes longer than body size");
-        }
+			if ((msg_len - bodySize) > 15) {
+				throw new SecurityException("Message length is more than 15 bytes longer than body size");
+			}
 
-        final byte[] message = BytesCache.getInstance().allocate(msg_len);
-        readBytes(message, 0, msg_len, bodyStream);
+			final byte[] message = BytesCache.getInstance().allocate(msg_len);
+			readBytes(message, 0, msg_len, bodyStream);
 
-        BytesCache.getInstance().put(rawMessage);
+			BytesCache.getInstance().put(rawMessage);
 
-        final byte[] checkHash = optimizedSHA(serverSalt, session, messageId, mes_seq, msg_len, message, msg_len);
+			final byte[] checkHash = optimizedSHA(serverSalt, session, messageId, mes_seq, msg_len, message, msg_len);
 
-        if (!arrayEq(substring(checkHash, 4, 16), msgKey)) {
-            throw new SecurityException();
-        }
+			if (!arrayEq(substring(checkHash, 4, 16), msgKey)) {
+				throw new SecurityException();
+			}
 
-        if (!arrayEq(session, this.session)) {
-            return null;
-        }
+			if (!arrayEq(session, this.session)) {
+				return null;
+			}
 
-        if (TimeOverlord.getInstance().getTimeAccuracy() < 10) {
-            final long time = (messageId >> 32);
-            final long serverTime = TimeOverlord.getInstance().getServerTime() / 1000;
+			if (TimeOverlord.getInstance().getTimeAccuracy() < 10) {
+				final long time = (messageId >> 32);
+				final long serverTime = TimeOverlord.getInstance().getServerTime() / 1000;
 
-            if ((serverTime + 30) < time) {
-                Logger.e(this.TAG, "1. Incorrect message (" + messageId + ") time: " + time + " with server time: " + serverTime);
-                // return null;
-            }
+				if ((serverTime + 30) < time) {
+					Logger.e(this.TAG, "1. Incorrect message (" + messageId + ") time: " + time + " with server time: "
+							+ serverTime);
+					// return null;
+				}
 
-            if (time < (serverTime - 300)) {
-                Logger.e(this.TAG, "2. Incorrect message (" + messageId + ") time: " + time + " with server time: " + serverTime);
-                // return null;
-            }
-        }
+				if (time < (serverTime - 300)) {
+					Logger.e(this.TAG, "2. Incorrect message (" + messageId + ") time: " + time + " with server time: "
+							+ serverTime);
+					// return null;
+				}
+			}
 
-        return new MTMessage(messageId, mes_seq, message, message.length);
-    }
+			return new MTMessage(messageId, mes_seq, message, message.length);
+		} finally {
+			if (stream != null) {
+				stream.close();
+			}
+		}
+	}
 
     private class SchedullerThread extends Thread {
         private SchedullerThread() {
@@ -878,7 +887,14 @@ public class MTProto {
                     MTProto.this.contexts.notifyAll();
                     MTProto.this.scheduller.onConnectionDies(context.getContextId());
                 }
-            }
+            } finally {
+/*                synchronized (MTProto.this.contexts) {
+                   context.suspendConnection(true);
+                   contexts.remove(context);
+                   contexts.notifyAll();
+                   scheduller.onConnectionDies(context.getContextId());
+                 }*/
+			}
         }
 
         @Override

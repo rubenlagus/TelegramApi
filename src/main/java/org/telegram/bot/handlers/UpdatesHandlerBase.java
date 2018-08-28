@@ -344,7 +344,7 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     }
 
     private void onTLUpdateChannelNewMessage(TLUpdateChannelNewMessage update, boolean gettingDifferences) {
-        if (isUserFromMessageMissing(update.getMessage(), false)) {
+        if (isUserFromMessageMissing(update.getMessage(), true)) {
             if (isChatMissing(update.getChannelId())) {
                 if (!gettingDifferences) {
                     differencesHandler.getDifferences();
@@ -512,7 +512,7 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
     }
 
     private void onTLUpdateEditChannelMessage(TLUpdateEditChannelMessage update, boolean gettingDifferences) {
-        if (isUserFromMessageMissing(update.getMessage(), false)) {
+        if (isUserFromMessageMissing(update.getMessage(), true)) {
             if (isChatMissing(update.getChannelId())) {
                 if (!gettingDifferences) {
                     differencesHandler.getDifferences();
@@ -804,6 +804,9 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
             final TLMessage tlMessage = (TLMessage) message;
             boolean isFromMissing = true;
             if (tlMessage.hasFromId()) {
+                isFromMissing = isUserMissing(tlMessage.getFromId());
+            }
+            if (tlMessage.getFromId() == 0) {
                 isFromMissing = isUserMissing(tlMessage.getFromId());
             }
 
