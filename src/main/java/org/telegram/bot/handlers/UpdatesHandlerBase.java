@@ -8,6 +8,7 @@ import org.telegram.api.message.TLMessageService;
 import org.telegram.api.notify.peer.TLAbsNotifyPeer;
 import org.telegram.api.notify.peer.TLNotifyPeer;
 import org.telegram.api.peer.TLAbsPeer;
+import org.telegram.api.peer.TLPeerChannel;
 import org.telegram.api.peer.TLPeerUser;
 import org.telegram.api.update.*;
 import org.telegram.api.update.encrypted.TLUpdateEncryptedChatTyping;
@@ -810,6 +811,8 @@ public abstract class UpdatesHandlerBase implements IUpdatesHandler {
             boolean isToMissing = true;
             if (tlMessage.getToId() instanceof TLPeerUser) {
                 isToMissing = isUserMissing(tlMessage.getToId().getId());
+            } else if(tlMessage.getToId() instanceof TLPeerChannel){
+                isToMissing = isChatMissing(tlMessage.getToId().getId());
             } else if (checkChatId) {
                 isToMissing = isChatMissing(tlMessage.getChatId());
             }
