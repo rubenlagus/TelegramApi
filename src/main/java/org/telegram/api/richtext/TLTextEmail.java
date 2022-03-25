@@ -12,10 +12,9 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLTextEmail extends TLAbsRichText {
+public class TLTextEmail extends TLAbstractText {
     public static final int CLASS_ID = 0xde5a0dd6;
 
-    private TLAbsRichText text;
     private String email;
 
     public TLTextEmail() {
@@ -25,10 +24,6 @@ public class TLTextEmail extends TLAbsRichText {
     @Override
     public int getClassId() {
         return CLASS_ID;
-    }
-
-    public TLAbsRichText getText() {
-        return text;
     }
 
     public String getEmail() {

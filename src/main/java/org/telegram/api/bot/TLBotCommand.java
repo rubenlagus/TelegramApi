@@ -14,11 +14,10 @@ import java.io.OutputStream;
  * @brief TODO
  * @date 07 of July of 2015
  */
-public class TLBotCommand extends TLObject {
+public class TLBotCommand extends TLAbsBot {
     public static final int CLASS_ID = 0xc27ac8c7;
 
     private String command;
-    private String description;
 
     @Override
     public int getClassId() {
@@ -31,14 +30,6 @@ public class TLBotCommand extends TLObject {
 
     public void setCommand(String command) {
         this.command = command;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Override

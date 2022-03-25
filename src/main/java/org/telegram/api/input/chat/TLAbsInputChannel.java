@@ -9,5 +9,5 @@ import org.telegram.tl.TLObject;
  * @date 19 of September of 2015
  */
 public abstract class TLAbsInputChannel extends TLObject{
-    public abstract int getChannelId();
+    /* Changes to be done in case of any other field needs to be added */
 }

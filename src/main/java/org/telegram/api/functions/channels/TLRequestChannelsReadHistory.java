@@ -1,6 +1,7 @@
 package org.telegram.api.functions.channels;
 
 import org.telegram.api.input.chat.TLAbsInputChannel;
+import org.telegram.api.input.chat.TLInputChannel;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLBool;
 import org.telegram.tl.TLContext;
@@ -20,7 +21,7 @@ public class TLRequestChannelsReadHistory extends TLMethod<TLBool> {
      */
     public static final int CLASS_ID = 0xcc104937;
 
-    private TLAbsInputChannel channel;
+    private TLInputChannel channel;
     private int maxId;
 
     /**
@@ -54,11 +55,11 @@ public class TLRequestChannelsReadHistory extends TLMethod<TLBool> {
         this.maxId = maxId;
     }
 
-    public TLAbsInputChannel getChannel() {
+    public TLInputChannel getChannel() {
         return channel;
     }
 
-    public void setChannel(TLAbsInputChannel channel) {
+    public void setChannel(TLInputChannel channel) {
         this.channel = channel;
     }
 
@@ -70,7 +71,7 @@ public class TLRequestChannelsReadHistory extends TLMethod<TLBool> {
 
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
-        this.channel = (TLAbsInputChannel) StreamingUtils.readTLObject(stream, context);
+        this.channel = (TLInputChannel) StreamingUtils.readTLObject(stream, context);
         this.maxId = StreamingUtils.readInt(stream);
     }
 

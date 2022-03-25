@@ -23,6 +23,10 @@ public class BuffersStorage {
     private boolean isThreadSafe;
     private final static Object sync = new Object();
 
+    public int byteCount = 0;
+    public ArrayList<ByteBufferDesc> arrayToGetFrom = null;
+    public ByteBufferDesc buffer = null;
+
     private static volatile BuffersStorage Instance = null;
     public static BuffersStorage getInstance() {
         BuffersStorage localInstance = Instance;
@@ -55,9 +59,15 @@ public class BuffersStorage {
         if (size <= 0) {
             return null;
         }
+
+        int byteCount = initializeArrayValue(size);
+        initializeBuffer(byteCount, size);
+
+        return buffer;
+    }
+
+    public int initializeArrayValue (int size) {
         int byteCount = 0;
-        ArrayList<ByteBufferDesc> arrayToGetFrom = null;
-        ByteBufferDesc buffer = null;
         if (size <= 128) {
             arrayToGetFrom = freeBuffers128;
             byteCount = 128;
@@ -80,6 +90,10 @@ public class BuffersStorage {
             buffer = new ByteBufferDesc(size);
         }
 
+        return byteCount;
+    }
+
+    public void initializeBuffer (int byteCount, int size) {
         if (arrayToGetFrom != null) {
             if (isThreadSafe) {
                 synchronized (sync) {
@@ -102,7 +116,6 @@ public class BuffersStorage {
         }
 
         buffer.buffer.limit(size).rewind();
-        return buffer;
     }
 
     public void reuseFreeBuffer(ByteBufferDesc buffer) {
