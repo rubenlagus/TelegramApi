@@ -2,6 +2,7 @@ package org.telegram.api.functions.updates;
 
 import org.telegram.api.channel.filters.TLAbsChannelMessagesFilter;
 import org.telegram.api.input.chat.TLAbsInputChannel;
+import org.telegram.api.input.chat.TLInputChannel;
 import org.telegram.api.updates.channel.differences.TLAbsUpdatesChannelDifferences;
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
@@ -18,7 +19,7 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
     private static final int FLAG_FORCE    = 0x00000001; // 0
 
     private int flags;
-    private TLAbsInputChannel channel;
+    private TLInputChannel channel;
     private TLAbsChannelMessagesFilter filter;
     private int pts;
     private int limit;
@@ -55,11 +56,11 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
         this.pts = pts;
     }
 
-    public TLAbsInputChannel getChannel() {
+    public TLInputChannel getChannel() {
         return channel;
     }
 
-    public void setChannel(TLAbsInputChannel channel) {
+    public void setChannel(TLInputChannel channel) {
         this.channel = channel;
     }
 
@@ -100,7 +101,7 @@ public class TLRequestUpdatesGetChannelDifference extends TLMethod<TLAbsUpdatesC
     public void deserializeBody(InputStream stream, TLContext context)
             throws IOException {
         this.flags = StreamingUtils.readInt(stream);
-        this.channel = StreamingUtils.readTLObject(stream, context, TLAbsInputChannel.class);
+        this.channel = (TLInputChannel) StreamingUtils.readTLObject(stream, context);
         this.filter = StreamingUtils.readTLObject(stream, context, TLAbsChannelMessagesFilter.class);
         this.pts = StreamingUtils.readInt(stream);
         this.limit = StreamingUtils.readInt(stream);

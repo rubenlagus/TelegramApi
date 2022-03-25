@@ -12,10 +12,8 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLTextItalic extends TLAbsRichText {
+public class TLTextItalic extends TLAbstractText {
     public static final int CLASS_ID = 0xd912a59c;
-
-    private TLAbsRichText text;
 
     public TLTextItalic() {
         super();
@@ -24,10 +22,6 @@ public class TLTextItalic extends TLAbsRichText {
     @Override
     public int getClassId() {
         return CLASS_ID;
-    }
-
-    public TLAbsRichText getText() {
-        return text;
     }
 
     @Override

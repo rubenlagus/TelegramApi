@@ -12,10 +12,9 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLTextUrl extends TLAbsRichText {
+public class TLTextUrl extends TLAbstractText {
     public static final int CLASS_ID = 0x3c2884c1;
 
-    private TLAbsRichText text;
     private String url;
     private long webpageId;
 
@@ -26,10 +25,6 @@ public class TLTextUrl extends TLAbsRichText {
     @Override
     public int getClassId() {
         return CLASS_ID;
-    }
-
-    public TLAbsRichText getText() {
-        return text;
     }
 
     public String getUrl() {

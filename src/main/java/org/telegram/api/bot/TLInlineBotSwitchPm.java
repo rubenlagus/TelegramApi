@@ -14,7 +14,7 @@ import java.io.OutputStream;
  * @brief TODO
  * @date 09 of April of 2016
  */
-public class TLInlineBotSwitchPm extends TLObject {
+public class TLInlineBotSwitchPm extends TLAbsBot {
     public static final int CLASS_ID = 0x3c20629f;
 
     private String text;

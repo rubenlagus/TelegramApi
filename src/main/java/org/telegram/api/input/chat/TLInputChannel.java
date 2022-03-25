@@ -2,6 +2,7 @@ package org.telegram.api.input.chat;
 
 import org.telegram.tl.StreamingUtils;
 import org.telegram.tl.TLContext;
+import org.telegram.tl.TLObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +14,7 @@ import java.io.OutputStream;
  * @brief Input channel
  * @date 19 of September of 2015
  */
-public class TLInputChannel extends TLAbsInputChannel {
+public class TLInputChannel extends TLObject {
     public static final int CLASS_ID = 0xafeb712e;
 
     private int channelId;

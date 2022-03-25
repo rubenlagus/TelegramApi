@@ -15,32 +15,15 @@ import java.io.OutputStream;
  * @brief TODO
  * @date 07 of July of 2015
  */
-public class TLBotInfo extends TLObject {
+public class TLBotInfo extends TLAbsBot {
     public static final int CLASS_ID = 0x98e81d3a;
 
     private int userId;
-    private String description;
     private TLVector<TLBotCommand> commands = new TLVector<>();
 
     @Override
     public int getClassId() {
         return CLASS_ID;
-    }
-
-    public int getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public TLVector<TLBotCommand> getCommands() {

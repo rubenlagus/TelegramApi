@@ -41,18 +41,18 @@ public class MemoryApiState extends TLPersistence<TLStorage> implements AbsApiSt
         }
     }
 
-    public int[] getKnownDc() {
-        HashSet<Integer> dcs = new HashSet<Integer>();
-        for (TLDcInfo dcInfo : getObj().getDcInfos()) {
-            dcs.add(dcInfo.getDcId());
-        }
-        Integer[] dcsArray = dcs.toArray(new Integer[0]);
-        int[] res = new int[dcs.size()];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = dcsArray[i];
-        }
-        return res;
-    }
+//    public int[] getKnownDc() {
+//        HashSet<Integer> dcs = new HashSet<Integer>();
+//        for (TLDcInfo dcInfo : getObj().getDcInfos()) {
+//            dcs.add(dcInfo.getDcId());
+//        }
+//        Integer[] dcsArray = dcs.toArray(new Integer[0]);
+//        int[] res = new int[dcs.size()];
+//        for (int i = 0; i < res.length; i++) {
+//            res[i] = dcsArray[i];
+//        }
+//        return res;
+//    }
 
 
     private TLKey findKey(int dc) {

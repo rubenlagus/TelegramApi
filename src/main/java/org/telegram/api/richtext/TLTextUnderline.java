@@ -12,10 +12,8 @@ import java.io.OutputStream;
  * @author Ruben Bermudez
  * @version 1.0
  */
-public class TLTextUnderline extends TLAbsRichText {
+public class TLTextUnderline extends TLAbstractText {
     public static final int CLASS_ID = 0xc12622c4;
-
-    private TLAbsRichText text;
 
     public TLTextUnderline() {
         super();
@@ -24,10 +22,6 @@ public class TLTextUnderline extends TLAbsRichText {
     @Override
     public int getClassId() {
         return CLASS_ID;
-    }
-
-    public TLAbsRichText getText() {
-        return text;
     }
 
     @Override

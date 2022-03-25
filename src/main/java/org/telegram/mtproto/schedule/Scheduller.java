@@ -87,7 +87,7 @@ public class Scheduller {
         return res;
     }
 
-    private synchronized void generateParams(SchedullerPackage schedullerPackage) {
+    private synchronized void generatePackageParams(SchedullerPackage schedullerPackage) {
         schedullerPackage.messageId = generateMessageId();
         schedullerPackage.seqNo = generateSeqNo();
         schedullerPackage.idGenerationTime = getCurrentTime();
@@ -464,7 +464,7 @@ public class Scheduller {
             SchedullerPackage schedullerPackage = foundedPackages.get(0);
             schedullerPackage.state = STATE_SENT;
             if (schedullerPackage.idGenerationTime == 0) {
-                generateParams(schedullerPackage);
+                generatePackageParams(schedullerPackage);
             }
             Logger.d(this.TAG, "Single package: #" + schedullerPackage.id + " " + schedullerPackage.supportTag + " (" + schedullerPackage.messageId + ", " + schedullerPackage.seqNo + ")");
             schedullerPackage.writtenToChannel = contextId;
@@ -489,7 +489,7 @@ public class Scheduller {
             for (SchedullerPackage schedullerPackage : packages) {
                 schedullerPackage.state = STATE_SENT;
                 if (schedullerPackage.idGenerationTime == 0) {
-                    generateParams(schedullerPackage);
+                    generatePackageParams(schedullerPackage);
                 }
 
                 if (schedullerPackage.isDepend) {

@@ -26,10 +26,6 @@ public class TLTextStrike extends TLAbsRichText {
         return CLASS_ID;
     }
 
-    public TLAbsRichText getText() {
-        return text;
-    }
-
     @Override
     public void serializeBody(OutputStream stream) throws IOException {
         StreamingUtils.writeTLObject(text, stream);
